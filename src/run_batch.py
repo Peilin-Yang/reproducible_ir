@@ -240,7 +240,7 @@ def output_smart_ctf_atom(para_file):
 
 
 def del_method_related_files(method_name):
-    folders = ['split_results', 'merge_results', 'evals', 'performances']
+    folders = ['split_results', 'merged_results', 'evals', 'performances']
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
