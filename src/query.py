@@ -221,7 +221,7 @@ class Query(object):
                 self.indent(qf)
 
                 tree = ET.ElementTree(qf)
-                tree.write(os.path.join(self.corpus_path, output_root, part+'_'+ele['num']))
+                tree.write(os.path.join(self.corpus_path, output_root, part+'_'+qid.text))
 
 
     def gen_run_split_query_paras(self, methods, use_which_part=['title']):
