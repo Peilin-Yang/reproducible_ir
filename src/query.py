@@ -212,7 +212,7 @@ class Query(object):
                 
                 t = ET.SubElement(qf, 'query')
                 qid = ET.SubElement(t, 'number')
-                qid.text = ele['num']
+                qid.text = int(ele['num'])
                 q = ET.SubElement(t, 'text')
                 q.text = ''
                 for sep_part in part.split('+'):
