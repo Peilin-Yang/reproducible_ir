@@ -247,7 +247,10 @@ def del_method_related_files(method_name):
         for f in folders:
             if os.path.exists( os.path.join(collection_path, f) ):
                 print 'Deleting ' + os.path.join(collection_path, f) + ' *' + method_name + '*'
-                subprocess.call('find %s -name "*%s*" -exec rm -rf {} \\;' % (os.path.join(collection_path, f), method_name), shell=True)
+                if f == 'split_results' or f == 'merged_results':
+                    subprocess.call('find %s -name "*method:%s*" -exec rm -rf {} \\;' % (os.path.join(collection_path, f), method_name), shell=True)
+                else:
+                    subprocess.call('find %s -name "*%s*" -exec rm -rf {} \\;' % (os.path.join(collection_path, f), method_name), shell=True)
 
 
 if __name__ == '__main__':
