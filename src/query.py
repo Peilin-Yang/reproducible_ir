@@ -200,7 +200,7 @@ class Query(object):
                 if remove_stopwords:
                     ele_stopwords = ET.SubElement(qf, 'stopper')
                     for w in stop_words_list:
-                        stopword = ET.SubElement(ele_stopwords)
+                        stopword = ET.SubElement(ele_stopwords, 'word')
                         stopword.word = w
                 
                 t = ET.SubElement(qf, 'query')
