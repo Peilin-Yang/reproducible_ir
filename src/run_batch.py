@@ -76,12 +76,12 @@ def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
     """
 
 
-def gen_split_queries():
+def gen_split_queries(use_stopwords=False):
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
         q['query_class'](collection_path).gen_query_file_for_indri( 
-            use_which_part=q['qf_parts']
+            stopwords=use_stopwords, use_which_part=q['qf_parts']
         )   
 
 
@@ -257,7 +257,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-a", "--gen_split_queries",
-        action='store_true',
+        nargs=1,
         help="First Step: Generate the split queries (one query file only contains one qid)")
 
     parser.add_argument("-b1", "--gen_run_query_batch",
@@ -316,7 +316,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.gen_split_queries:
-        gen_split_queries()
+        use_stopwords = False if args.gen_split_queries == '0' else True
+        gen_split_queries(use_stopwords)
 
     if args.gen_run_query_batch:
         gen_run_query_batch()
