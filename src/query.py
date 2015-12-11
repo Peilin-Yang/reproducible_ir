@@ -184,7 +184,7 @@ class Query(object):
 
 
     def gen_query_file_for_indri(self, output_foler='split_queries', 
-            index_path='index', is_trec_format=True, count=1000, use_which_part=['title']):
+            index_path='index', is_trec_format=True, count=1000, use_which_part=['title'] ):
         """
         generate the query file for Indri use.
 
