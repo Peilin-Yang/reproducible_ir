@@ -76,12 +76,12 @@ def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
     """
 
 
-def gen_split_queries(use_stopwords=False):
+def gen_split_queries(remove_stopwords=False):
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
         q['query_class'](collection_path).gen_query_file_for_indri( 
-            stopwords=use_stopwords, use_which_part=q['qf_parts']
+            remove_stopwords=remove_stopwords, use_which_part=q['qf_parts']
         )   
 
 

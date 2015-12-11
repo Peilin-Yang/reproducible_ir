@@ -14,24 +14,6 @@ import argparse
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
-stopwords="a,about,above,after,again,against,all,am,an,and,any,are,aren't,as,\
-at,be,because,been,before,being,below,between,both,but,by,can't,cannot,could,\
-couldn't,did,didn't,do,does,doesn't,doing,don't,down,during,each,few,for,from,\
-further,had,hadn't,has,hasn't,have,haven't,having,he,he'd,he'll,he's,her,here,\
-here's,hers,herself,him,himself,his,how,how's,i,i'd,i'll,i'm,i've,if,in,into,\
-is,isn't,it,it's,its,itself,let's,me,more,most,mustn't,my,myself,no,nor,not,of,\
-off,on,once,only,or,other,ought,our,ours,ourselves,out,over,own,same,shan't,\
-she,she'd,she'll,she's,should,shouldn't,so,some,such,than,that,that's,the,\
-their,theirs,them,themselves,then,there,there's,these,they,they'd,they'll,\
-they're,they've,this,those,through,to,too,under,until,up,very,was,wasn't,\
-we,we'd,we'll,we're,we've,were,weren't,what,what's,when,when's,where,where's,\
-which,while,who,who's,whom,why,why's,with,won't,would,wouldn't,you,you'd,\
-you'll,you're,you've,your,yours,yourself,yourselves"
-punct="""
-'!"#$%&()*+,-./:;<=>?@[\]^_`{|}~'
-"""
-
 class Query(object):
     """
     Get the judgments of a corpus.
@@ -184,8 +166,8 @@ class Query(object):
 
 
     def gen_query_file_for_indri(self, output_foler='split_queries', 
-            index_path='index', is_trec_format=True, count=1000, stopwords=False, 
-            use_which_part=['title']):
+            index_path='index', is_trec_format=True, count=1000, 
+            remove_stopwords=False, use_which_part=['title']):
         """
         generate the query file for Indri use.
 
@@ -195,6 +177,10 @@ class Query(object):
             is_trec_format - whether to output the results in TREC format, default True
             count - how many documents will be returned for each topic, default 1000
         """
+        if remove_stopwords:
+            with open('stopwords') as f:
+                stop_words_list = [line.stip() for line in f.readlines()]
+
         output_root = os.path.join(self.corpus_path, output_foler)
         if not os.path.exists(output_root):
             os.makedirs(output_root)
@@ -210,6 +196,12 @@ class Query(object):
                 ele_trec_format.text = 'true' if is_trec_format else 'false'
                 ele_count = ET.SubElement(qf, 'count')
                 ele_count.text = str(count)
+
+                if remove_stopwords:
+                    ele_stopwords = ET.SubElement(qf, 'stopper')
+                    for w in stop_words_list:
+                        stopword = ET.SubElement(ele_stopwords)
+                        stopword.word = w
                 
                 t = ET.SubElement(qf, 'query')
                 qid = ET.SubElement(t, 'number')
