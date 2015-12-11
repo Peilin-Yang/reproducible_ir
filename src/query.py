@@ -198,6 +198,7 @@ class Query(object):
                 ele_count.text = str(count)
 
                 if remove_stopwords:
+                    print stop_words_list
                     ele_stopwords = ET.SubElement(qf, 'stopper')
                     for w in stop_words_list:
                         stopword = ET.SubElement(ele_stopwords, 'word')
