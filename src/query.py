@@ -179,7 +179,7 @@ class Query(object):
         """
         if remove_stopwords:
             with open('stopwords') as f:
-                stop_words_list = [line.stip() for line in f.readlines()]
+                stop_words_list = [line.strip() for line in f.readlines()]
 
         output_root = os.path.join(self.corpus_path, output_foler)
         if not os.path.exists(output_root):
