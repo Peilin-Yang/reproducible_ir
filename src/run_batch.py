@@ -316,7 +316,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.gen_split_queries:
-        use_stopwords = False if args.gen_split_queries == '0' else True
+        use_stopwords = False if args.gen_split_queries[0] == '0' else True
         gen_split_queries(use_stopwords)
 
     if args.gen_run_query_batch:
