@@ -21,7 +21,7 @@ query = [
     "cnt": 150,
     "qf_parts": ['title'],
     "qrel_program": 'trec_eval -m all_trec -q'
-  },  
+  },   
   {
     "collection": "gov2",
     "query_class": query.Query,
