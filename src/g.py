@@ -1,6 +1,6 @@
 import query
 
-query = [
+query = [ 
   {
     "collection": "wt2g",
     "query_class": query.Query,
