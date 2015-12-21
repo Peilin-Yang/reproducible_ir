@@ -80,7 +80,8 @@ class Evaluation(object):
         all_performances = self.get_all_performance()
         return {k: all_performances.get(k, None) for k in qids}
 
-
+class EvaluationClueWeb(Evaluation):
+    
 
 
 if __name__ == '__main__':
