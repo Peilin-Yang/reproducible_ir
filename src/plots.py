@@ -78,8 +78,8 @@ class Plots(object):
         #xticks.append('')
         #xticks(x+2*width, xticks, rotation=40)
         #print xaxis
-        ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
-        ax.set_xticklabels(xticks, rotation=40)
+        #ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
+        #ax.set_xticklabels(xticks, rotation=40)
 
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
