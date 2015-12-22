@@ -69,6 +69,7 @@ class Plots(object):
             ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
+        print xticks
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
         ax.set_xticks(xticks)
