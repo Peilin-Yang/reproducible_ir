@@ -54,7 +54,7 @@ class Plots(object):
         return data
  
     def plot_optimal_for_single_collection(self, collection_path, ax=None, 
-            evaluation_method='map', query_part='title'):
+            evaluation_method='map', query_part='title', show_xlabel=True, show_ylabel=True):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance(evaluation_method, query_part)
 
@@ -73,8 +73,10 @@ class Plots(object):
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
         ax.set_title(collection_path.split('/')[-1])
-        ax.set_xlabel('Publish Year')
-        ax.set_ylabel(evaluation_method.upper())
+        if show_xlabel:
+            ax.set_xlabel('Publish Year')
+        if show_ylabel:
+            ax.set_ylabel(evaluation_method.upper())
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
         ax.set_xticks(xticks_value)
         ax.set_xticklabels(xticks_label, rotation=90)
@@ -97,7 +99,7 @@ class Plots(object):
             else:
                 ax = axs[col_idx]
             self.plot_optimal_for_single_collection(collection, ax, 
-                evaluation_method, query_part)
+                evaluation_method, query_part, row_idx==num_rows-1, col_idx==0)
             col_idx += 1
             if col_idx >= num_cols:
                 col_idx = 0
