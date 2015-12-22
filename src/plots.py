@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os,sys
+import math
 import numpy as np
 import argparse
 import json
@@ -85,7 +86,7 @@ class Plots(object):
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
         num_cols = 2
-        num_rows = len(self.collection_paths)
+        num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
         size = 3
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
             sharey=False, figsize=(size*num_cols, size*num_rows))
@@ -95,12 +96,16 @@ class Plots(object):
         col_idx = 0
         print self.collection_paths
         for collection in self.collection_paths:
-            ax = axs[col_idx]
+            if num_rows > 1:
+                ax = axs[row_idx][col_idx]
+            else:
+                ax = axs[col_idx]
             self.plot_optimal_for_single_collection(collection, ax, 
                 evaluation_method, query_part)
             col_idx += 1
             if col_idx >= num_cols:
                 col_idx = 0
+                row_idx += 1
             
         plot_figures_root = '../plots/'        
         if not os.path.exists(plot_figures_root):
