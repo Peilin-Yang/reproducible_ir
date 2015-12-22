@@ -61,19 +61,20 @@ class Plots(object):
         markers = ['.', '+', '3', 'v', 'h', 's', 'd', '1', '8', 'p', '*', 'o', 
             '4', 'H', 'D', 'x', '2']
         marker_idx = 0
-        xticks = []
+        xticks_label = []
+        xticks_value = []
         for d in data:
             str_year = str(d[2])[2:]+'\''
-            if str_year not in xticks:
-                xticks.append(str_year)
+            if str_year not in xticks_label:
+                xticks_label.append(str_year)
+                xticks_value.append(d[2])
             ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
-        print xticks
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
-        ax.set_xticks(xticks)
-        ax.set_xticklabels(xticks, rotation=40)
+        ax.set_xticks(xticks_value)
+        ax.set_xticklabels(xticks_label, rotation=40)
 
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
