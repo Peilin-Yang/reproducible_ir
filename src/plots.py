@@ -75,8 +75,7 @@ class Plots(object):
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
         ax.set_xticks(xticks_value)
-        font = {'size' : 14}
-        ax.set_xticklabels(xticks_label, rotation=45, fontsize=14)
+        ax.set_xticklabels(xticks_label, rotation=80, fontsize=14)
 
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
