@@ -105,9 +105,11 @@ class Plots(object):
                 ax = axs[row_idx][col_idx]
             else:
                 ax = axs[col_idx]
-            self.plot_optimal_for_single_collection(collection, ax, 
-                evaluation_method, query_part, legend_line_list, legend_list, 
+            self.plot_optimal_for_single_collection(collection, 
+                legend_line_list, legend_list, 
                 row_idx == 0 and col_idx == 0, 
+                ax, 
+                evaluation_method, query_part, 
                 row_idx==num_rows-1, col_idx==0)
             col_idx += 1
             if col_idx >= num_cols:
