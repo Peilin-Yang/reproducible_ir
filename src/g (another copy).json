@@ -1,0 +1,192 @@
+{ 
+  "methods": [
+    {
+      "year": 2001,
+      "paper": "C. Zhai and J. Lafferty. A study of smoothingmethods for language models applied to ad hoc information retrieval.",
+      "name": "dir",
+      "formal_name": "DIR",
+      "paras": 
+      {
+        "mu": [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
+      }
+    },
+    {
+      "year": 2002,
+      "paper": "Zhai, C. and Lafferty, J., Two-stage language models for information retrieval",
+      "name": "twostage",
+      "formal_name": "TSL",
+      "paras": 
+      {
+        "mu": [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000],
+        "lambda": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 1994,
+      "paper": "Okapi at trec-3",
+      "name": "okapi",
+      "formal_name": "BM25",
+      "paras": 
+      {
+        "b": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0]
+      }
+    },
+    {
+      "year": 1996,
+      "paper": "Pivoted Document Length Normalization",
+      "name": "pivoted",
+      "formal_name": "PIV",
+      "paras": 
+      {
+        "s": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0]
+      }
+    },
+    {
+      "year": 2004,
+      "paper": "Formal Multiple-Bernoulli Models for Language Modeling",
+      "name": "multibernoulli",
+      "formal_name": "BLM",
+      "paras": 
+      {
+        "mu": [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
+      }
+    },
+    {
+      "year": 2002,
+      "paper": "Probabilistic models of information retrieval based on measuring the divergence from randomness",
+      "name": "pl2",
+      "formal_name": "PL2",
+      "paras": 
+      {
+        "c": [0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "A Study of the Dirichlet Priors for Term Frequency Normalisation",
+      "name": "pl3",
+      "formal_name": "PL3",
+      "paras": 
+      {
+        "mu": [200, 400, 600, 800, 950, 1000, 1500, 1600, 2000, 2500, 2700, 3000, 3500, 4000, 4500, 5000, 9700]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "A Study of the Dirichlet Priors for Term Frequency Normalisation",
+      "name": "bm3",
+      "formal_name": "BM3",
+      "paras": 
+      {
+        "mu": [200, 400, 600, 800, 950, 1000, 1500, 1600, 2000, 2500, 2700, 3000, 3500, 4000, 4500, 5000, 9700]
+      }
+    },
+    {
+      "year": 2009,
+      "paper": "Risky business: modeling and exploiting uncertainty in information retrieval",
+      "name": "riskyaware",
+      "paras": 
+      {
+        "b": [-100, -50, 0, 50, 100, 150, 200, 250, 300, 350, 400],
+        "lambda": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "Relevance Information: A Loss of Entropy but a Gain for IDF?",
+      "name": "lossentropy",
+      "paras": 
+      {
+        "b": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
+      "name": "f2exp",
+      "formal_name": "F2EXP",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
+      "name": "f2log",
+      "formal_name": "F2LOG",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 2008,
+      "paper": "Generalized Inverse Document Frequency",
+      "name": "generalizedidf",
+      "paras": 
+      {
+        "lambda": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+      }
+    },
+    {
+      "year": 2010,
+      "paper": "Information-Based Models for Ad Hoc IR",
+      "name": "lgd",
+      "formal_name": "LGD",
+      "paras": 
+      {
+        "c": [0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      }
+    },
+    {
+      "year": 2010,
+      "paper": "Information-Based Models for Ad Hoc IR",
+      "name": "spl",
+      "formal_name": "SPL",
+      "paras": 
+      {
+        "c": [0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      }
+    },
+    {
+      "year": 2013,
+      "paper": "A Novel TF-IDF Weighting Scheme for Effective Ranking",
+      "name": "sigir2013tfidf",
+      "formal_name": "NTFIDF",
+    },
+    {
+      "year": 2011,
+      "paper": "Lower-Bounding Term Frequency Normalization",
+      "name": "lowerboundingbm25+",
+      "formal_name": "BM25+",
+      "paras": 
+      {
+        "b": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+        "delta": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
+      }
+    },
+    {
+      "year": 2011,
+      "paper": "Lower-Bounding Term Frequency Normalization",
+      "name": "lowerboundingdir+",
+      "formal_name": "DIR+",
+      "paras": 
+      {
+        "mu": [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 7500, 10000],
+        "delta": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
+      }
+    },
+    {
+      "year": 2011,
+      "paper": "Lower-Bounding Term Frequency Normalization",
+      "name": "lowerboundingpl2+",
+      "formal_name": "PL2+",
+      "paras": 
+      {
+        "c": [0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+        "delta": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
+      }
+    }
+  ]
+}
