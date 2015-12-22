@@ -73,6 +73,8 @@ class Plots(object):
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
         ax.set_title(collection_path.split('/')[-1])
+        ax.set_xlabel('Publish Year')
+        ax.set_ylabel(evaluation_method.upper())
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
         ax.set_xticks(xticks_value)
         ax.set_xticklabels(xticks_label, rotation=90)
