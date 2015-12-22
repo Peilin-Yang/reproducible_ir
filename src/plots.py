@@ -69,6 +69,7 @@ class Plots(object):
             #print yaxis
             #if len(xaxis) != len(yaxis):
                 #continue
+            print d[1], d[3]
             ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
