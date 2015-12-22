@@ -62,7 +62,7 @@ class Plots(object):
 
         markers = ['.', 'h', 'v', 'p', 's', 'd', 
             '3', '4', '+', 'x', 'o', 
-            '*', 'D', 'H', '8', '>']
+            '*', '^', '<', '>', '8']
         marker_idx = 0
         xticks_label = []
         xticks_value = []
