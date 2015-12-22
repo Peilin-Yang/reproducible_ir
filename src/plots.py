@@ -28,7 +28,7 @@ class Plots(object):
             print '[Plots]:collection path ' + collection_path + ' does not exist....'
             exit(1)
 
-        self.performance_root = os.path.join(self.corpus_path, 'performance')
+        self.performance_root = os.path.join(self.corpus_path, 'performances')
         if not os.path.exists(self.performance_root):
             frameinfo = getframeinfo(currentframe())
             print frameinfo.filename, frameinfo.lineno
