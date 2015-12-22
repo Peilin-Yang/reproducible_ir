@@ -95,7 +95,7 @@ class Plots(object):
                 col_idx = 0
                 row_idx += 1
 
-        fig.legend(tuple(legend_line_list), legend_list, ncol=4, loc=8, fontsize=12) # lower center    
+        #fig.legend(tuple(legend_line_list), legend_list, ncol=4, loc=8, fontsize=12) # lower center    
         plot_figures_root = '../plots/'        
         if not os.path.exists(plot_figures_root):
             os.makedirs(plot_figures_root)
