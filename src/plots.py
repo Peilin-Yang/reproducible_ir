@@ -67,19 +67,16 @@ class Plots(object):
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
-        #xticks.insert(0, '')
-        #xticks.append('')
-        #xticks(x+2*width, xticks, rotation=40)
-        #print xaxis
-        #ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
-        #ax.set_xticklabels(xticks, rotation=40)
+        xticks = [str(ele)[2:]+'\'' for ele in np.arange(data[0][2]-1, data[-1][2]+1)]
+        ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
+        ax.set_xticklabels(xticks, rotation=40)
 
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
         num_cols = 2
         num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
         size = 4
-        fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
+        fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=False, 
             sharey=False, figsize=(size*num_cols, size*num_rows))
         font = {'size' : 16}
         plt.rc('font', **font)
@@ -97,7 +94,8 @@ class Plots(object):
             if col_idx >= num_cols:
                 col_idx = 0
                 row_idx += 1
-            
+
+        fig.legend(tuple(legend_line_list), legend_list, ncol=4, loc=8, fontsize=12) # lower center    
         plot_figures_root = '../plots/'        
         if not os.path.exists(plot_figures_root):
             os.makedirs(plot_figures_root)
