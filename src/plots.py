@@ -53,8 +53,10 @@ class Plots(object):
         data.sort(key=itemgetter(2))
         return data
  
-    def plot_optimal_for_single_collection(self, collection_path, ax=None, 
-            evaluation_method='map', query_part='title', show_xlabel=True, show_ylabel=True):
+    def plot_optimal_for_single_collection(self, collection_path, 
+            legend_line_list, legend_list, add_legend=False, ax=None, 
+            evaluation_method='map', query_part='title', 
+            show_xlabel=True, show_ylabel=True):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance(evaluation_method, query_part)
 
@@ -69,7 +71,10 @@ class Plots(object):
             if str_year not in xticks_label:
                 xticks_label.append(str_year)
                 xticks_value.append(d[2])
-            ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
+            l, = ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
+            if add_legend:
+                legend_line_list.append(l)
+                legend_list.append(d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
         ax.set_title(collection_path.split('/')[-1])
@@ -93,19 +98,23 @@ class Plots(object):
         row_idx = 0
         col_idx = 0
         #print self.collection_paths
+        legend_line_list = []
+        legend_list = []
         for collection in self.collection_paths:
             if num_rows > 1:
                 ax = axs[row_idx][col_idx]
             else:
                 ax = axs[col_idx]
             self.plot_optimal_for_single_collection(collection, ax, 
-                evaluation_method, query_part, row_idx==num_rows-1, col_idx==0)
+                evaluation_method, query_part, legend_line_list, legend_list, 
+                row_idx == 0 and col_idx == 0, 
+                row_idx==num_rows-1, col_idx==0)
             col_idx += 1
             if col_idx >= num_cols:
                 col_idx = 0
                 row_idx += 1
 
-        #fig.legend(tuple(legend_line_list), legend_list, ncol=4, loc=8, fontsize=12) # lower center    
+        fig.legend(tuple(legend_line_list), legend_list, ncol=4, loc=8, fontsize=12) # lower center    
         plot_figures_root = '../plots/'        
         if not os.path.exists(plot_figures_root):
             os.makedirs(plot_figures_root)
