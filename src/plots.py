@@ -78,7 +78,7 @@ class Plots(object):
         #xticks.append('')
         #xticks(x+2*width, xticks, rotation=40)
         #print xaxis
-        #ax.set_xticks(np.arange(1, len(self.data_splits_include)+1))
+        ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
         ax.set_xticklabels(xticks, rotation=40)
 
     def plot_optimal_for_all_collections(self, 
