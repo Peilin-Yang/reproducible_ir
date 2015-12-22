@@ -75,7 +75,7 @@ class Plots(object):
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
         ax.set_xticks(xticks_value)
-        ax.set_xticklabels(xticks_label, rotation=90, fontsize=14)
+        ax.set_xticklabels(xticks_label, rotation=90)
 
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
@@ -84,7 +84,7 @@ class Plots(object):
         size = 5
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
             sharey=False, figsize=(size*num_cols, size*num_rows))
-        font = {'size' : 16}
+        font = {'size' : 15}
         plt.rc('font', **font)
         row_idx = 0
         col_idx = 0
