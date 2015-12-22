@@ -57,8 +57,8 @@ class Plots(object):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance(evaluation_method, query_part)
 
-        markers = ['.', '+', 'v', 'o', 's', 'x', '1', '8', 'p', '*', 'h', 'H', 
-            'D', 'd', '2', '3', '4']
+        markers = ['.', '+', '3', 'v', 'h', 's', 'd', '1', '8', 'p', '*', 'o', 
+            '4', 'H', 'D', 'x', '2']
         marker_idx = 0
         for d in data:
             #xaxis = np.arange(data[0][2]-1, data[-1][2]+1)
