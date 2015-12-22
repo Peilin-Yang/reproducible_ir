@@ -61,7 +61,7 @@ class Plots(object):
         data = self.load_optimal_performance(evaluation_method, query_part)
 
         markers = ['.', 'h', 'v', 'p', 's', 'd', 
-            '3', '4', '+', 'x', 'o', 
+            '3', '4', '2', 'x', 'o', 
             '*', '^', '<', '>', '8']
         marker_idx = 0
         xticks_label = []
