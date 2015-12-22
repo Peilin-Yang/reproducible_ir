@@ -85,6 +85,7 @@ class Plots(object):
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
         ax.set_xticks(xticks_value)
         ax.set_xticklabels(xticks_label, rotation=90)
+        ax.grid('on')
 
     def plot_optimal_for_all_collections(self, 
             evaluation_method='map', query_part='title'):
@@ -122,7 +123,7 @@ class Plots(object):
         if not os.path.exists(plot_figures_root):
             os.makedirs(plot_figures_root)
         output_fn = os.path.join(plot_figures_root, evaluation_method+'-'+query_part+'.eps')
-        plt.savefig(output_fn, format='eps', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=100)
+        fig.savefig(output_fn, format='eps', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=100)
 
 
 if __name__ == '__main__':
