@@ -58,8 +58,9 @@ class Plots(object):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance(evaluation_method, query_part)
 
-        markers = ['.', '+', CARETUP, 'v', 'h', 's', 'd', '1', '8', 'p', '*', 'o', 
-            TICKUP, 'H', 'D', 'x', '2']
+        markers = ['.', '+', matplotlib.markers.CARETUP, 'v', 'h', 's', 'd', 
+            '1', '8', 'p', '*', 'o', 
+            matplotlib.markers.TICKUP, 'H', 'D', 'x', '2']
         marker_idx = 0
         xticks_label = []
         xticks_value = []
