@@ -60,8 +60,8 @@ class Plots(object):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance(evaluation_method, query_part)
 
-        markers = ['.', 'h', 'v', 'p', 's', 'd', 
-            '3', '4', 'o', 'x', 'h', 
+        markers = ['o', 'h', 'v', 'p', 's', 'd', 
+            '3', '4', '.', 'x', 'h', 
             '*', '^', '<', '>', '8']
         marker_idx = 0
         xticks_label = []
