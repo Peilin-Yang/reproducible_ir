@@ -71,7 +71,7 @@ class Plots(object):
             if str_year not in xticks_label:
                 xticks_label.append(str_year)
                 xticks_value.append(d[2])
-            l, = ax.plot(d[2], d[3], markers[marker_idx], markersize=14, label=d[1])
+            l, = ax.plot(d[2], d[3], markers[marker_idx], markersize=10, label=d[1])
             if add_legend:
                 legend_line_list.append(l)
                 legend_list.append(d[1])
