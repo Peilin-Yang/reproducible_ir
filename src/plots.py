@@ -61,13 +61,16 @@ class Plots(object):
         markers = ['.', '+', '3', 'v', 'h', 's', 'd', '1', '8', 'p', '*', 'o', 
             '4', 'H', 'D', 'x', '2']
         marker_idx = 0
+        xticks = []
         for d in data:
+            str_year = str(d[2])[2:]+'\''
+            if str_year not in xticks:
+                xticks.append(str_year)
             ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
-        xticks = [str(ele)[2:]+'\'' for ele in np.arange(data[0][2]-1, data[-1][2]+1)]
         ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
         ax.set_xticklabels(xticks, rotation=40)
 
