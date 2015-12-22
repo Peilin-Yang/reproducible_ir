@@ -62,15 +62,6 @@ class Plots(object):
             '4', 'H', 'D', 'x', '2']
         marker_idx = 0
         for d in data:
-            #xaxis = np.arange(data[0][2]-1, data[-1][2]+1)
-            #xticks = sorted([float(ele[7:]) for ele in self.data_splits_include])
-            #yaxis = [data[evaluation_method][feature_label][data_split_label] for data_split_label in self.data_splits_include if feature_label in data[evaluation_method]]
-            #print xaxis
-            #print xticks
-            #print yaxis
-            #if len(xaxis) != len(yaxis):
-                #continue
-            print d[1], d[3]
             ax.plot(d[2], d[3], markers[marker_idx], label=d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
@@ -87,14 +78,14 @@ class Plots(object):
             evaluation_method='map', query_part='title'):
         num_cols = 2
         num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
-        size = 3
+        size = 4
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
             sharey=False, figsize=(size*num_cols, size*num_rows))
         font = {'size' : 16}
         plt.rc('font', **font)
         row_idx = 0
         col_idx = 0
-        print self.collection_paths
+        #print self.collection_paths
         for collection in self.collection_paths:
             if num_rows > 1:
                 ax = axs[row_idx][col_idx]
@@ -124,7 +115,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.plot_optimal:
-        print args.plot_optimal
+        #print args.plot_optimal
         Plots(collection_paths=args.plot_optimal).plot_optimal_for_all_collections()
 
 
