@@ -125,7 +125,7 @@
       "year": 2013,
       "paper": "A Novel TF-IDF Weighting Scheme for Effective Ranking",
       "name": "sigir2013tfidf",
-      "formal_name": "NTFIDF",
+      "formal_name": "NTFIDF"
     },
     {
       "year": 2011,

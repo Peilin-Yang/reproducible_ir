@@ -41,13 +41,13 @@ query = [
     "query_class": query.ClueWebQuery,
     "cnt": 200,
     "qf_parts": ['title'],
-    "qrel_program": 'trec_eval -m all_trec -q'
+    "qrel_program": 'gdeval.pl'
   },
   {
     "collection": "clueweb12",
     "query_class": query.ClueWebQuery,
     "cnt": 100,
     "qf_parts": ['title'],
-    "qrel_program": 'trec_eval -m all_trec -q'
+    "qrel_program": 'gdeval.pl'
   }
 ]
