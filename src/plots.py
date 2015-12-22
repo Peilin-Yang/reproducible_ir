@@ -91,7 +91,7 @@ class Plots(object):
             evaluation_method='map', query_part='title'):
         num_cols = 2
         num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
-        size = 5
+        size = 6
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
             sharey=False, figsize=(size*num_cols, size*num_rows))
         font = {'size' : 15}
