@@ -71,7 +71,7 @@ class Plots(object):
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
         ax.set_title(collection_path.split('/')[-1])
         ax.set_xlim([data[0][2]-1, data[-1][2]+1])
-        ax.set_xticks(np.arange(data[0][2]-1, data[-1][2]+1))
+        ax.set_xticks(xticks)
         ax.set_xticklabels(xticks, rotation=40)
 
     def plot_optimal_for_all_collections(self, 
