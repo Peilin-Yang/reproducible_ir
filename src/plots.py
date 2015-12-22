@@ -93,6 +93,7 @@ class Plots(object):
         plt.rc('font', **font)
         row_idx = 0
         col_idx = 0
+        print self.collection_paths
         for collection in self.collection_paths:
             ax = axs[col_idx]
             self.plot_optimal_for_single_collection(collection, ax, 
