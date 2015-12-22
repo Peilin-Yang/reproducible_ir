@@ -53,7 +53,7 @@ class Plots(object):
     def plot_optimal_for_single_collection(self, collection_path, ax=None, 
             evaluation_method='map', query_part='title'):
         self.check_valid_path(collection_path)
-        data = self.load_optimal_performance(evaluation_methodm, query_part)
+        data = self.load_optimal_performance(evaluation_method, query_part)
 
         markers = ['.', '+', 'v', 'o', 's', 'x', '1', '8', 'p', '*', 'h', 'H', 
             'D', 'd', '2', '3', '4']
