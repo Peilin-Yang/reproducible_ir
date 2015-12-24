@@ -3,11 +3,11 @@ import evaluation
 
 query = [ 
   {
-    "collection": "wt2g",
-    "collection_formal_name": "WT2G",
+    "collection": "disk12",
+    "collection_formal_name": "disk12",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
-    "cnt": 50,
+    "cnt": 150,
     "qf_parts": ['title'],
     "qrel_program": 'trec_eval -m all_trec -q',
     "main_metric": "MAP"
@@ -23,15 +23,15 @@ query = [
     "main_metric": "MAP"
   },  
   {
-    "collection": "disk12",
-    "collection_formal_name": "disk12",
+    "collection": "wt2g",
+    "collection_formal_name": "WT2G",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
-    "cnt": 150,
+    "cnt": 50,
     "qf_parts": ['title'],
     "qrel_program": 'trec_eval -m all_trec -q',
     "main_metric": "MAP"
-  },   
+  },
   {
     "collection": "gov2",
     "collection_formal_name": "GOV2",
