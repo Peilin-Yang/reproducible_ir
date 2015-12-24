@@ -164,7 +164,7 @@ def eval_atom(fn):
             collection_name = collection_path.split('/')[-1]
             for q in g.query:
                 if q['collection'] == collection_name:
-                    q['query_class'](collection_path).output_all_evaluations(qrel_program, results_fn, eval_results_fn)
+                    q['evaluation_class'](collection_path).output_all_evaluations(qrel_program, results_fn, eval_results_fn)
                     break
                     
 
