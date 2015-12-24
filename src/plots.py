@@ -104,7 +104,7 @@ class Plots(object):
         size = 3
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
             sharey=False, figsize=(size*num_cols, size*num_rows+1)) # +1 for legend!!!
-        font = {'size' : 15}
+        font = {'size' : 12}
         plt.rc('font', **font)
         row_idx = 0
         col_idx = 0
