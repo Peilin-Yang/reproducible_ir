@@ -101,9 +101,9 @@ class Plots(object):
             evaluation_method='map', query_part='title'):
         num_cols = 2
         num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
-        size = 6
+        size = 3
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
-            sharey=False, figsize=(size*num_cols, size*num_rows))
+            sharey=False, figsize=(size*num_cols, size*num_rows+1)) # +1 for legend!!!
         font = {'size' : 15}
         plt.rc('font', **font)
         row_idx = 0
