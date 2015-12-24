@@ -116,7 +116,7 @@ class EvaluationClueWeb(Evaluation):
             if line:
                 row = line.split(',')
                 runid = row[0]
-                qid = row[1] if qid != 'amean' else 'all'
+                qid = row[1] if row[1] != 'amean' else 'all'
                 ndcg_20 = ast.literal_eval(row[2])
                 err_20 = ast.literal_eval(row[3])
                 if qid not in all_performances:
