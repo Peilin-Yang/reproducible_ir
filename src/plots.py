@@ -103,7 +103,7 @@ class Plots(object):
         num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
         size = 4
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
-            sharey=False, figsize=(size*num_cols, size*num_rows+1)) # +1 for legend!!!
+            sharey=False, figsize=(size*num_cols, size*num_rows+2)) # +1 for legend!!!
         font = {'size' : 12}
         plt.rc('font', **font)
         row_idx = 0
@@ -128,7 +128,7 @@ class Plots(object):
                 col_idx = 0
                 row_idx += 1
 
-        lgd = fig.legend(tuple(legend_line_list), legend_list, ncol=8, 
+        lgd = fig.legend(tuple(legend_line_list), legend_list, ncol=5, 
             loc='lower center', bbox_to_anchor=(0.45, -0.005), fontsize=12) # lower center    
         plot_figures_root = '../plots/'        
         if not os.path.exists(plot_figures_root):
