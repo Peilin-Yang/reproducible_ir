@@ -1,4 +1,5 @@
 import query
+import evaluation
 
 query = [ 
   {
@@ -38,8 +39,9 @@ query = [
     "main_metric": "MAP"
   },
   {
-    "collection": "clueweb09",
+    "collection": "clueweb101112",
     "query_class": query.ClueWebQuery,
+    "evaluation_class": evaluation.EvaluationClueWeb,
     "cnt": 200,
     "qf_parts": ['title'],
     "qrel_program": 'gdeval.pl',
