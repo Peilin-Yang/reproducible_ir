@@ -4,6 +4,7 @@ import evaluation
 query = [ 
   {
     "collection": "wt2g",
+    "collection_formal_name": "WT2G",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
     "cnt": 50,
@@ -13,6 +14,7 @@ query = [
   },
   {
     "collection": "disk45",
+    "collection_formal_name": "disk45",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
     "cnt": 250,
@@ -22,6 +24,7 @@ query = [
   },  
   {
     "collection": "disk12",
+    "collection_formal_name": "disk12",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
     "cnt": 150,
@@ -31,6 +34,7 @@ query = [
   },   
   {
     "collection": "gov2",
+    "collection_formal_name": "GOV2",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
     "cnt": 150,
@@ -40,6 +44,7 @@ query = [
   }, 
   {
     "collection": "clueweb101112",
+    "collection_formal_name": "CW09",
     "query_class": query.ClueWebQuery,
     "evaluation_class": evaluation.EvaluationClueWeb,
     "cnt": 200,
@@ -49,6 +54,7 @@ query = [
   },
   {
     "collection": "clueweb12",
+    "collection_formal_name": "CW12As",
     "query_class": query.ClueWebQuery,
     "evaluation_class": evaluation.EvaluationClueWeb,
     "cnt": 100,
