@@ -37,7 +37,7 @@ query = [
     "qf_parts": ['title'],
     "qrel_program": 'trec_eval -m all_trec -q',
     "main_metric": "MAP"
-  },
+  }, 
   {
     "collection": "clueweb101112",
     "query_class": query.ClueWebQuery,
