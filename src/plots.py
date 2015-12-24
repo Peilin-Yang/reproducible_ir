@@ -50,7 +50,11 @@ class Plots(object):
                     continue
                 with open(os.path.join(self.performance_root, query_part+'-'+m['name'])) as pf:
                     all_performance = json.load(pf)
-                    required = all_performance[evaluation_method]
+                    try:
+                        required = all_performance[evaluation_method]
+                    except:
+                        if evaluation_method == 'map':
+                            required = all_performance['err_cut_20']
                     data.append( (m['name'], m['formal_name'], m['year'], 
                         required['max']['value'], required['max']['para']) )
         data.sort(key=itemgetter(2))
