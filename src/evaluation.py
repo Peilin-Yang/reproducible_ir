@@ -80,9 +80,52 @@ class Evaluation(object):
         all_performances = self.get_all_performance()
         return {k: all_performances.get(k, None) for k in qids}
 
-class EvaluationClueWeb(Evaluation):
+class EvaluationClueWeb2009(Evaluation):
     pass
 
+class EvaluationClueWeb(Evaluation):
+    # other than TREC Web Track 2009 since it uses "Expected MAP" as the major evaluation.
+    def output_all_evaluations(self, qrel_program, result_file_path, eval_file_path):
+        """
+        get all kinds of performance
+
+        @Return: a dict of all performances 
+
+        Format:
+
+        runid,topic,ndcg@20,err@20
+        indri,51,0.37535,0.48743
+        indri,52,0.05270,0.03263
+        ...
+        ...
+        indri,amean,0.12321,0.08195
+
+        """
+        all_performances = {}
+        program = copy.deepcopy(qrel_program)
+        program.append( self.qrel_path )
+        program.append( result_file_path )
+        process = Popen(program, stdout=PIPE)
+        stdout, stderr = process.communicate()
+        idx = 0
+        for line in stdout.split('\n'):
+            idx += 1
+            if idx == 1: # skip first line
+                continue
+            line = line.strip()
+            if line:
+                row = line.split()
+                runid = row[0]
+                qid = row[1]
+                ndcg_20 = ast.literal_eval(row[2])
+                err_20 = ast.literal_eval(row[3])
+                if qid not in all_performances:
+                    all_performances[qid] = {}
+                all_performances[qid]['ndcg_cut_20'] = ndcg_20
+                all_performances[qid]['err_cut_20'] = err_20
+
+        with open( eval_file_path, 'wb' ) as o:
+            json.dump(all_performances, o, indent=2)
 
 
 if __name__ == '__main__':
