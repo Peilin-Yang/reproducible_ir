@@ -11,6 +11,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+import g
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -19,9 +21,10 @@ class Plots(object):
     Plot the results.
     When constructing, pass the path of the corpus. For example, "../wt2g/"
     """
-    def __init__(self, collection_paths):
+    def __init__(self, collection_paths, collection_names=None):
         # we can plot multiple collections on one canvas
         self.collection_paths = collection_paths
+        self.collection_names = collection_names
 
     def check_valid_path(self, collection_path):
         self.corpus_path = os.path.abspath(collection_path)
@@ -56,7 +59,7 @@ class Plots(object):
     def plot_optimal_for_single_collection(self, collection_path, 
             legend_line_list, legend_list, add_legend=False, ax=None, 
             evaluation_method='map', query_part='title', 
-            show_xlabel=True, show_ylabel=True):
+            show_xlabel=True, show_ylabel=True, collection_name=None):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance(evaluation_method, query_part)
 
@@ -77,7 +80,10 @@ class Plots(object):
                 legend_list.append(d[1])
             marker_idx += 1
             #print feature_label+':'+evaluation_method+':'+str(yaxis)
-        ax.set_title(collection_path.split('/')[-1])
+        if collection_name:
+            ax.set_title(collection_name)
+        else:
+            ax.set_title(collection_path.split('/')[-1])
         if show_xlabel:
             ax.set_xlabel('Publish Year')
         if show_ylabel:
@@ -101,7 +107,7 @@ class Plots(object):
         #print self.collection_paths
         legend_line_list = []
         legend_list = []
-        for collection in self.collection_paths:
+        for i, collection in enumerate(self.collection_paths):
             if num_rows > 1:
                 ax = axs[row_idx][col_idx]
             else:
@@ -111,7 +117,8 @@ class Plots(object):
                 row_idx == 0 and col_idx == 0, 
                 ax, 
                 evaluation_method, query_part, 
-                row_idx==num_rows-1, col_idx==0)
+                row_idx==num_rows-1, col_idx==0,
+                self.collection_names[i] if self.collection_names else None)
             col_idx += 1
             if col_idx >= num_cols:
                 col_idx = 0
@@ -133,10 +140,18 @@ if __name__ == '__main__':
         nargs='+',
         help="plots the optimal performances for all collections")
 
+    parser.add_argument("-b", "--plot_optimal_batch",
+        action='store_true',
+        help="plots the optimal performances for all collections using g.py")
+
     args = parser.parse_args()
 
     if args.plot_optimal:
         #print args.plot_optimal
         Plots(collection_paths=args.plot_optimal).plot_optimal_for_all_collections()
 
-
+    if args.plot_optimal_batch:
+        #print args.plot_optimal
+        collections = [os.path.join('../collections/', c['collection']) for c in g.query]
+        c_names = [c['collection_formal_name'] for c in g.query]
+        Plots(collections, c_names).plot_optimal_for_all_collections()
