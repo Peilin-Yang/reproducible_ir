@@ -25,7 +25,7 @@ from highchart import Highchart
 _root = '../collections/'
 
 def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
-        quote_command=False, memory='2G', max_task_per_node=50000, num_task_per_node=1000):
+        quote_command=False, memory='2G', max_task_per_node=50000, num_task_per_node=100):
 
     para_dir = os.path.join('batch_paras', '%s') % para_label
     if os.path.exists(para_dir):
@@ -161,8 +161,12 @@ def eval_atom(fn):
             qrel_program = row[1].split()
             results_fn = row[2]
             eval_results_fn = row[3]
-            evaluation.Evaluation(collection_path).output_all_evaluations(qrel_program, results_fn, eval_results_fn)
-
+            collection_name = collection_path.split('/')[-1]
+            for q in g.query:
+                if q['collection'] == collection_name:
+                    q['query_class'](collection_path).output_all_evaluations(qrel_program, results_fn, eval_results_fn)
+                    break
+                    
 
 def gen_output_performances_batch(eval_method='map'):
     all_paras = []
