@@ -53,8 +53,7 @@ class Plots(object):
                     try:
                         required = all_performance[evaluation_method]
                     except:
-                        if evaluation_method == 'map':
-                            required = all_performance['err_cut_20']
+                        required = all_performance['err_cut_20']
                     data.append( (m['name'], m['formal_name'], m['year'], 
                         required['max']['value'], required['max']['para']) )
         data.sort(key=itemgetter(2))
@@ -116,8 +115,6 @@ class Plots(object):
                 ax = axs[row_idx][col_idx]
             else:
                 ax = axs[col_idx]
-            if row_idx > 1:
-                evaluation_method = 'ERR@20'
             self.plot_optimal_for_single_collection(collection, 
                 legend_line_list, legend_list, 
                 row_idx == 0 and col_idx == 0, 
