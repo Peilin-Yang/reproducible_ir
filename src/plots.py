@@ -103,7 +103,7 @@ class Plots(object):
         num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
         size = 4
         fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
-            sharey=False, figsize=(size*num_cols, size*num_rows+2.2)) # +1 for legend!!!
+            sharey=False, figsize=(size*num_cols, size*num_rows+3)) # +1 for legend!!!
         font = {'size' : 12}
         plt.rc('font', **font)
         row_idx = 0
