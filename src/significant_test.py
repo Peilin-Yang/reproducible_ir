@@ -68,6 +68,7 @@ class SignificantTest(object):
                 with open(other_eval_fn) as f:
                     j = json.load(f)
                     other_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
+                print method, this_all_perform_list, other_all_perform_list
                 this_all_perform_list = [this_all_perform[k] for k in this_all_perform]
                 other_all_perform_list = [other_all_perform[k] for k in this_all_perform]
                 if query_part not in all_results:
