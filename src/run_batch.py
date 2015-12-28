@@ -17,6 +17,7 @@ import query
 from worddocdensity import WordDocDensity
 from smart import SMART
 from results import Results
+from significant_test import SignificantTest
 import g
 import evaluation
 import performance
@@ -166,7 +167,7 @@ def eval_atom(fn):
                 if q['collection'] == collection_name:
                     q['evaluation_class'](collection_path).output_all_evaluations(qrel_program, results_fn, eval_results_fn)
                     break
-                    
+
 
 def gen_output_performances_batch(eval_method='map'):
     all_paras = []
@@ -256,6 +257,13 @@ def del_method_related_files(method_name):
                 else:
                     subprocess.call('find %s -name "*%s*" -exec rm -rf {} \\;' % (os.path.join(collection_path, f), method_name), shell=True)
 
+def output_significant_test_for_optimal():
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        SignificantTest(collection_path).sig_test_for_optimal()
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -317,6 +325,10 @@ if __name__ == '__main__':
         nargs=1,
         help="Delete all the output files of a method.")
 
+    parser.add_argument("-sig1", "--output_significant_test_for_optimal",
+        action='store_true',
+        help="") 
+
     args = parser.parse_args()
 
     if args.gen_split_queries:
@@ -361,3 +373,6 @@ if __name__ == '__main__':
     if args.del_method_related_files:
         del_method_related_files(args.del_method_related_files[0])
         
+    if args.output_significant_test_for_optimal:
+        output_significant_test_for_optimal()
+
