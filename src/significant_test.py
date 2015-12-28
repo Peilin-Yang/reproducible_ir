@@ -80,7 +80,8 @@ class SignificantTest(object):
                     f.write('%s,%.3f,%.3f,%.3f,%.3f\n' % 
                         (method, all_results[query_part][method][0],
                             all_results[query_part][method][1],
-                            all_results[query_part][method][2]))
+                            all_results[query_part][method][2][0],
+                            all_results[query_part][method][2][1]))
 
 
 if __name__ == '__main__':
