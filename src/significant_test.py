@@ -82,7 +82,7 @@ class SignificantTest(object):
                         (method, all_results[query_part][method][0],
                             all_results[query_part][method][1],
                             all_results[query_part][method][2][0],
-                            all_results[query_part][method][2][1]))
+                            all_results[query_part][method][2][1]/2.0))
 
 
 if __name__ == '__main__':
