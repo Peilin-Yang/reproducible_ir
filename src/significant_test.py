@@ -69,7 +69,7 @@ class SignificantTest(object):
                 if query_part not in all_results:
                     all_results[query_part] = {}
                 all_results[query_part][method] = [this_opt_perform, other_opt_perform, 
-                    stats.ttest_rel(this_all_perform_list, other_all_perform_list)]
+                    stats.ttest_rel(this_all_perform_list, other_all_perform_list)[1]]
         for query_part in all_results:
             with open(os.path.join(self.st_root, query_part), 'wb') as f:
                 for method in all_results[query_part]:
