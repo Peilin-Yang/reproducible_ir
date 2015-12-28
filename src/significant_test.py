@@ -36,7 +36,6 @@ class SignificantTest(object):
         other_evaluation_root = os.path.join(other_collection, 'evals')
         other_perform_root = os.path.join(other_collection, 'performances')
 
-        all_paras = []
         all_results = {}
         for fn in os.listdir(self.performance_root):
             #print fn
@@ -65,9 +64,19 @@ class SignificantTest(object):
                 with open(other_eval_fn) as f:
                     j = json.load(f)
                     other_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
-                print this_all_perform
-                print other_all_perform
-                exit()
+                this_all_perform_list = [this_all_perform[k] for k in this_all_perform]
+                other_all_perform_list = [other_all_perform[k] for k in this_all_perform]
+                if query_part not in all_results:
+                    all_results[query_part] = {}
+                all_results[query_part][method] = [this_opt_perform, other_opt_perform, 
+                    stats.ttest_rel(this_all_perform_list, other_all_perform_list)]
+        for query_part in all_results:
+            with open(os.path.join(slef.st_root, query_part), 'wb') as f:
+                for method in all_results[query_part]:
+                    f.write('%s & %.3f & %.3f & %.3f\n' % 
+                        (method, all_results[query_part][method][0],
+                            all_results[query_part][method][1],
+                            all_results[query_part][method][2]))
 
 
 if __name__ == '__main__':
