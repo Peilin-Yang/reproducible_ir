@@ -4,7 +4,7 @@ import json
 from inspect import currentframe, getframeinfo
 import argparse
 
-import scipy
+from scipy import stats
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -52,10 +52,22 @@ class SignificantTest(object):
                     j = json.load(pf1)
                     other_opt_perform = j[measure]['max']['value']
                     other_opt_para = j[measure]['max']['para']  
-                print query_part, method, this_opt_perform, other_opt_perform
-            
-
-        
+                #print query_part, method, this_opt_perform, other_opt_perform
+                this_eval_fn = os.path.join(self.evaluation_root, query_part+'-method:'+method)
+                other_eval_fn = os.path.join(other_evaluation_root, query_part+'-method:'+method)
+                if this_opt_para:
+                    this_eval_fn += ','+this_opt_para
+                if other_opt_para:
+                    other_eval_fn += ','+other_opt_para
+                with open(this_eval_fn) as f:
+                    j = json.load(f)
+                    this_all_perform = {qid, j[qid][measure] for qid in j[qid] if qid != 'all'}
+                with open(other_eval_fn) as f:
+                    j = json.load(f)
+                    other_all_perform = {qid, j[qid][measure] for qid in j[qid] if qid != 'all'}
+                print this_all_perform
+                print other_all_perform
+                exit()
 
 
 if __name__ == '__main__':
