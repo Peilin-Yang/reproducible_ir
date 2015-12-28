@@ -61,10 +61,10 @@ class SignificantTest(object):
                     other_eval_fn += ','+other_opt_para
                 with open(this_eval_fn) as f:
                     j = json.load(f)
-                    this_all_perform = {qid, j[qid][measure] for qid in j[qid] if qid != 'all'}
+                    this_all_perform = {qid:j[qid][measure] for qid in j[qid] if qid != 'all'}
                 with open(other_eval_fn) as f:
                     j = json.load(f)
-                    other_all_perform = {qid, j[qid][measure] for qid in j[qid] if qid != 'all'}
+                    other_all_perform = {qid:j[qid][measure] for qid in j[qid] if qid != 'all'}
                 print this_all_perform
                 print other_all_perform
                 exit()
