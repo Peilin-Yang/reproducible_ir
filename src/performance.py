@@ -85,7 +85,7 @@ class Performances(object):
     def print_optimal_performance(self, methods=[], evaluation_method='map', query_part='title'):
         optimal_performances = self.load_optimal_performance(methods, evaluation_method, query_part)
         for ele in optimal_performances:
-            print ele
+            print ele[0], ele[1], ele[2]
 
 
 if __name__ == '__main__':
