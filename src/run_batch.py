@@ -26,7 +26,7 @@ from highchart import Highchart
 _root = '../collections/'
 
 def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
-        quote_command=False, memory='2G', max_task_per_node=50000, num_task_per_node=100):
+        quote_command=False, memory='2G', max_task_per_node=50000, num_task_per_node=50):
 
     para_dir = os.path.join('batch_paras', '%s') % para_label
     if os.path.exists(para_dir):
@@ -190,6 +190,21 @@ def output_performances_atom(para_file):
             performance.Performances(collection_path).output_performances(output_fn, input_fns)
 
 
+def output_the_optimal_performances(eval_method='map'):
+    with open('g.json') as f:
+        methods = [m['name'] for m in json.load(f)['methods']]
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        print 
+        print collection_name
+        print '='*30
+        for q in q['qf_parts']:
+            print q
+            print '-'*30
+            performance.Performances(collection_path).print_optimal_performance(methods, eval_method, q)
+
+
 def gen_output_highcharts_batch():
     all_paras = []
     for q in g.query:
@@ -325,6 +340,10 @@ if __name__ == '__main__':
         nargs=1,
         help="Delete all the output files of a method.")
 
+    parser.add_argument("-output-optimal", "--output_the_optimal_performances",
+        nargs=1,
+        help="inputs: [evaluation_method]") 
+
     parser.add_argument("-sig1", "--output_significant_test_for_optimal",
         action='store_true',
         help="") 
@@ -376,3 +395,5 @@ if __name__ == '__main__':
     if args.output_significant_test_for_optimal:
         output_significant_test_for_optimal()
 
+    if args.output_the_optimal_performances:
+        output_the_optimal_performances(args.output_the_optimal_performances[0])

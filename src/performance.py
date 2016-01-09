@@ -73,6 +73,21 @@ class Performances(object):
             json.dump(final_results, o, indent=2, sort_keys=True)
 
 
+    def load_optimal_performance(self, methods=[], evaluation_method='map', query_part='title'):
+        data = []
+        for m in methods:
+            with open(os.path.join(self.performance_root, query_part+'-'+m)) as pf:
+                all_performance = json.load(pf)
+                required = all_performance[evaluation_method]
+                data.append( (m, required['max']['value'], required['max']['para']) )
+        return data
+
+    def print_optimal_performance(self, methods=[], evaluation_method='map', query_part='title'):
+        optimal_performances = self.load_optimal_performance(methods, evaluation_method, query_part)
+        for ele in optimal_performances:
+            print ele
+
+
 if __name__ == '__main__':
     pass
 
