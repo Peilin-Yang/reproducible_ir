@@ -189,6 +189,14 @@ def output_performances_atom(para_file):
             input_fns = row[2:]
             performance.Performances(collection_path).output_performances(output_fn, input_fns)
 
+def output_batch_evals(eval_method='map'):
+    with open('g.json') as f:
+        methods = [m['name'] for m in json.load(f)['methods']]
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        for q in q['qf_parts']:
+            performance.Performances(collection_path).output_evaluation_results(methods, eval_method, q)
 
 def output_the_optimal_performances(eval_method='map'):
     with open('g.json') as f:
@@ -340,6 +348,10 @@ if __name__ == '__main__':
         nargs=1,
         help="Delete all the output files of a method.")
 
+    parser.add_argument("-output-evals", "--output_evals",
+        nargs=1,
+        help="Outputs all evals for the given methods. inputs: [evaluation_method]")
+
     parser.add_argument("-output-optimal", "--output_the_optimal_performances",
         nargs=1,
         help="inputs: [evaluation_method]") 
@@ -394,6 +406,9 @@ if __name__ == '__main__':
         
     if args.output_significant_test_for_optimal:
         output_significant_test_for_optimal()
+
+    if args.output_evals:
+        output_batch_evals(args.output_evals[0])
 
     if args.output_the_optimal_performances:
         output_the_optimal_performances(args.output_the_optimal_performances[0])

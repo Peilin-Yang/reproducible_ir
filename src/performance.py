@@ -51,6 +51,34 @@ class Performances(object):
 
         return all_paras
 
+    def output_evaluation_results(self, methods=[], evaluation_method='map', query_part='title'):
+        data = []
+        for fn in os.listdir(self.evaluation_results_root):
+            q_part = fn.split('-')[0]
+            if q_part != query_part:
+                continue
+            method_paras = '-'.join(fn.split('-')[1:])
+            method_paras_split = method_paras.split(',')
+            method_name = method_paras_split[0].split(':')[1]
+            if method_name not in methods:
+                continue
+            if method_name not in data:
+                data[method_name] = []
+            para = method_paras_split[1].split(':')[1]
+            with open( os.path.join(self.evaluation_results_root, fn) ) as _in:
+                j = json.load(_in)
+                score = j['all'][evaluation_method]
+            data.append( (method_name+'_'+method_paras_split[1], score) )
+
+        data.sort(key=itemgetter(0))
+        header = ['function_name', evaluation_method]
+
+        data.insert(0, header)
+        with open( 'batch_eval_results'+os.path.basename(self.corpus_path)+'.csv', 'wb') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+
+
     def output_performances(self, output_fn, eval_fn_list):
         all_results = {}
         for ele in eval_fn_list:
