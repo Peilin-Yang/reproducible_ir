@@ -62,7 +62,10 @@ class Performances(object):
             method_name = method_paras_split[0].split(':')[1]
             if method_name not in methods:
                 continue
-            para = method_paras_split[1].split(':')[1]
+            try:
+                para = method_paras_split[1].split(':')[1]
+            except:
+                continue
             with open( os.path.join(self.evaluation_results_root, fn) ) as _in:
                 j = json.load(_in)
                 score = j['all'][evaluation_method]
