@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys,os
 import json
+import csv
 from operator import itemgetter
 import numpy as np
 import itertools
@@ -75,7 +76,7 @@ class Performances(object):
         header = ['function_name', evaluation_method]
 
         data.insert(0, header)
-        with open( 'batch_eval_results'+os.path.basename(self.corpus_path)+'.csv', 'wb') as f:
+        with open( 'batch_eval_results_'+os.path.basename(self.corpus_path)+'.csv', 'wb') as f:
             writer = csv.writer(f)
             writer.writerows(data)
 
