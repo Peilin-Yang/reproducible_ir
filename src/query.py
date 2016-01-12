@@ -266,6 +266,7 @@ class Query(object):
                 for t in q_terms:
                     process = Popen(['dumpindex_EX', os.path.join(self.corpus_path, 'index'), 'tf', t], stdout=PIPE)
                     stdout, stderr = process.communicate()
+                    print stdout
                     j = json.loads(stdout)
                     query_topic_idf += float(j['log(idf1)'])
                 idf.append( query_topic_idf )
