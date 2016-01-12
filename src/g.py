@@ -12,8 +12,8 @@ query = [
     "qrel_program": 'trec_eval -m all_trec -q',
     "main_metric": "MAP"
   },
-  {
-    "collection": "disk45",
+  { 
+    "collection": "disk45", 
     "collection_formal_name": "disk45",
     "query_class": query.Query,
     "evaluation_class": evaluation.Evaluation,
