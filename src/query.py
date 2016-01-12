@@ -10,6 +10,7 @@ import itertools
 from subprocess import Popen, PIPE
 from inspect import currentframe, getframeinfo
 import argparse
+import numpy as np
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -253,6 +254,7 @@ class Query(object):
 
     def output_query_stats(self, query_part=None):
         l = []
+        idf = []
         with open(self.parsed_query_file_path) as f:
             queries = json.load(f)
             for q in queries:
@@ -260,13 +262,15 @@ class Query(object):
                     q_terms = q[query_part].split()
 
                 l.append( len(q_terms) )
+                query_topic_idf = 0.0
                 for t in q_terms:
                     process = Popen(['dumpindex_EX', os.path.join(self.corpus_path, 'index'), 'tf', t], stdout=PIPE)
                     stdout, stderr = process.communicate()
-                    print stdout
                     j = json.loads(stdout)
-                    print t, j['log(idf1)']
+                    query_topic_idf += float(j['log(idf1)'])
+                idf.append( query_topic_idf )
         print np.mean(l), np.std(l)
+        print np.mean(idf), np.std(idf)
 
 
 class ClueWebQuery(Query):
