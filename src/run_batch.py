@@ -287,6 +287,21 @@ def output_significant_test_for_optimal():
         SignificantTest(collection_path).sig_test_for_optimal()
 
 
+def output_the_query_stats():
+    with open('g.json') as f:
+        methods = [m['name'] for m in json.load(f)['methods']]
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        print 
+        print collection_name
+        print '='*30
+        for q in q['qf_parts']:
+            print q
+            print '-'*30
+            query.Query(collection_path).output_query_stats(q)                
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -356,6 +371,10 @@ if __name__ == '__main__':
         nargs=1,
         help="inputs: [evaluation_method]") 
 
+    parser.add_argument("-output-qstats", "--output_the_query_stats",
+        action='store_true',
+        help="output the query statistics e.g. average query length, query term IDF, etc.") 
+
     parser.add_argument("-sig1", "--output_significant_test_for_optimal",
         action='store_true',
         help="") 
@@ -412,3 +431,6 @@ if __name__ == '__main__':
 
     if args.output_the_optimal_performances:
         output_the_optimal_performances(args.output_the_optimal_performances[0])
+
+    if args.output_the_query_stats:
+        output_the_query_stats()

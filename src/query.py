@@ -251,6 +251,23 @@ class Query(object):
         return all_paras
 
 
+    def output_query_stats(self, query_part=None):
+        l = []
+        with open(self.parsed_query_file_path) as f:
+            queries = json.load(f)
+            for q in queries:
+                if query_part:
+                    q_terms = q[query_part].split()
+
+                l.append( len(q_terms) )
+                for t in q_terms:
+                    process = Popen(['dumpindex_EX', os.path.join(self.corpus_path, 'index'), 'tf', t], stdout=PIPE)
+                    stdout, stderr = process.communicate()
+                    j = json.loads(stdout)
+                    print t, j['log(idf1)']
+        print np.mean(l), np.std(l)
+
+
 class ClueWebQuery(Query):
     def get_queries(self):
         """
