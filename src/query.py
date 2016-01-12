@@ -263,6 +263,7 @@ class Query(object):
                 for t in q_terms:
                     process = Popen(['dumpindex_EX', os.path.join(self.corpus_path, 'index'), 'tf', t], stdout=PIPE)
                     stdout, stderr = process.communicate()
+                    print stdout
                     j = json.loads(stdout)
                     print t, j['log(idf1)']
         print np.mean(l), np.std(l)
