@@ -93,10 +93,9 @@ class Query(object):
                 for t in all_topics:
                     t = re.sub(r'<\/.*?>', r'', t, flags=re.DOTALL)
                     a = re.split(r'(<.*?>)', t.replace('<top>',''), re.DOTALL)
-                    print a
+                    #print a
                     aa = [ele.strip() for ele in a if ele.strip()]
-                    print aa
-                    raw_input()
+                    #print aa
                     d = {}
                     for i in range(0, len(aa), 2):
                         """
@@ -106,7 +105,10 @@ class Query(object):
                             d[aa[i-1][1:-1]] = aa[i].strip().replace('\n', ' ')
                         """
                         tag = aa[i][1:-1]
-                        value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
+                        if tag == 'querytime':
+                            value = aa[i+1].strip()
+                        else:
+                            value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
                         if tag != 'num' and tag != 'querytime' and value:
                             value = self.parse_query([value])[0]
 
