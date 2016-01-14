@@ -58,14 +58,14 @@ class MicroBlogIndex(Index):
                                 of.write('%s\n' % (ele))
                         of.write('</DOC>\n')
 
-    def gen_build_index_para_file(self, para_file_path, gen_index_path, corpus_path, class='trectext'):
+    def gen_build_index_para_file(self, para_file_path, gen_index_path, corpus_path, _class='trectext'):
         with open(para_file_path, 'wb') as f:
             f.write('<parameters>\n')
             f.write('\t<memory>1g</memory>\n')
             f.write('\t<index>%s</index>\n' % gen_index_path)
             f.write('\t<corpus>\n')
             f.write('\t\t<path>%s</path>\n' % corpus_path)
-            f.write('\t\t<class>trectext</class>\n')
+            f.write('\t\t<class>%s</class>\n' % _class)
             f.write('\t</corpus>\n')
             f.write('\t<stemmer>\n')
             f.write('\t\t<name>porter</name>\n')
