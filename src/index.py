@@ -27,7 +27,6 @@ class Index(object):
 class MicroBlogIndex(Index):
     def __init__(self, collection_path):
         super(MicroBlogIndex, self).__init__(collection_path)
-        print self.corpus_path
         self.raw_corpus_path = os.path.join( self.corpus_path, 'raw_corpus')
         if not os.path.exists( self.raw_corpus_path ):
             frameinfo = getframeinfo(currentframe())
@@ -39,6 +38,7 @@ class MicroBlogIndex(Index):
             os.makedirs( self.index_root )
 
     def extract_text_from_raw_collection(self):
+        print self.raw_corpus_path
         for fn in self.raw_corpus_path:
             print os.path.join(self.raw_corpus_path, fn)
             tree = ET.parse(os.path.join(self.raw_corpus_path, fn))
