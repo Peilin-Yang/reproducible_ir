@@ -55,5 +55,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.regen_microblog_corpus:
-        MicroBlogIndex(args.regen_microblog_corpus[0])
+        MicroBlogIndex(args.regen_microblog_corpus[0]).extract_text_from_raw_collection()
 
