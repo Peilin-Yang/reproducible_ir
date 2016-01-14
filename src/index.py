@@ -8,6 +8,7 @@ import argparse
 import inspect
 import subprocess
 import shlex
+from bs4 import BeautifulSoup
 
 import ArrayJob
 
@@ -40,13 +41,8 @@ class MicroBlogIndex(Index):
     def extract_text_from_raw_collection(self):
         for fn in os.listdir(self.raw_corpus_path):
             with open( os.path.join(self.raw_corpus_path, fn) ) as f:
-                trectext = f.read()
-                trectext = '<root>\n'+trectext+'</root>'
-                tree = ET.fromstring(trectext)
-                root = tree.getroot()
-                for child in root:
-                    print child.tag, child.attrib
-
+                bf = BeautifulSoup(f, 'lxml')
+                print bf
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
