@@ -314,8 +314,15 @@ if __name__ == '__main__':
         nargs=1,
         help="Generate the standard queries for Indri. Please give the collection path!")
 
+    parser.add_argument("-2", "--print_query_stats",
+        nargs=1,
+        help="Please give the collection path!")
+
     args = parser.parse_args()
 
     if args.gen_standard_queries:
         Query(args.gen_standard_queries[0]).gen_query_file_for_indri()
 
+    if args.print_query_stats:
+        Query(args.print_query_stats[0]).output_query_stats()
+        

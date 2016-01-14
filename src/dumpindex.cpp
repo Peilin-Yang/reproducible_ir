@@ -624,6 +624,80 @@ void print_document_stats( indri::collection::Repository& r, const char* fn )
     delete response;
 }
 
+void print_all_document_stats( indri::collection::Repository& r ) 
+// fn: filename that contains external docids line by line
+{
+    indri::server::LocalQueryServer local(r);
+    UINT64 docCount = local.documentCount();
+    vector<double> all_maxTF;
+    vector<double> all_minTF;
+    vector<double> all_avgTF;
+    vector<double> all_stdTF;
+    std::vector<lemur::api::DOCID_T> docids;
+    for( size_t i=1; i<docCount+1; i++ ) {
+      docids.push_back(i);
+      if (docids.size() >= 500 || i == docCount) {
+        indri::server::QueryServerVectorsResponse* response = local.documentVectors( docids );
+        for( size_t i = 0; i != response->getResults().size(); ++i ) {
+          indri::api::DocumentVector* docVector = response->getResults()[i];
+          std::map<string, UINT64> docMap;
+          std::vector<double> all_tfs;
+          long long maxTF = 0;
+          long long minTF = 4294967295U;
+          double sum_tf = 0.0;
+          double avg_tf = 0.0;
+          double std_tf = 0.0;
+          for( size_t j=0; j != docVector->positions().size(); ++j ) {
+            int position = docVector->positions()[j];
+            const std::string& stem = docVector->stems()[position];
+            if (docMap.count(stem)) {
+              docMap[stem]++;
+            } else {
+              docMap[stem] = 1;
+            }
+            sum_tf += 1;
+          }
+
+          for (std::map<string, UINT64>::iterator it=docMap.begin(); it!=docMap.end(); ++it) {
+            if (it->second > maxTF) {
+              maxTF = it->second;
+            }
+            if (it->second < minTF) {
+              minTF = it->second;
+            }
+            all_tfs.push_back(it->second);
+          }
+          avg_tf = docMap.empty()?0:sum_tf/docMap.size();
+          std_tf = docMap.empty()?0:cal_std( all_tfs, avg_tf);
+          /*cout << "id:" << internal_docids[i] << ",minTF:" << minTF \ 
+            << ",maxTF:" << maxTF << ",sumTF:" << sum_tf \
+            << ",avgTF:" << avg_tf << ",varTF:" << var_tf << endl;*/
+          all_minTF.push_back(minTF==4294967295U?0:minTF);
+          all_maxTF.push_back(maxTF);
+          all_avgTF.push_back(avg_tf);
+          all_stdTF.push_back(std_tf);
+          delete docVector;
+        }
+        delete response;
+        docids.clear();
+      }
+    }
+
+    //cout << all_minTF.size() << endl;
+    double avg_all_minTF = cal_avg(all_minTF);
+    cout << "avg_minTF:" << avg_all_minTF << endl;
+    cout << "std_minTF:" << cal_std(all_minTF, avg_all_minTF) << endl;
+    double avg_all_maxTF = cal_avg(all_maxTF);
+    cout << "avg_maxTF:" << avg_all_maxTF << endl;
+    cout << "std_maxTF:" << cal_std(all_maxTF, avg_all_maxTF) << endl;
+    double avg_all_avgTF = cal_avg(all_avgTF);
+    cout << "avg_avgTF:" << avg_all_avgTF << endl;
+    cout << "std_avgTF:" << cal_std(all_avgTF, avg_all_avgTF) << endl;
+    double avg_all_stdTF = cal_avg(all_stdTF);
+    cout << "avg_stdTF:" << avg_all_stdTF << endl;
+    cout << "std_stdTF:" << cal_std(all_stdTF, avg_all_stdTF) << endl;
+}
+
 void print_document_vector( indri::collection::Repository& r, const char* number ) {
   indri::server::LocalQueryServer local(r);
   lemur::api::DOCID_T documentID = atoi( number );
@@ -935,6 +1009,9 @@ int main( int argc, char** argv ) {
       } else if( command == "rs" || command == "richstats" ) {
         REQUIRE_ARGS(3);
         print_rich_repository_stats( r );
+      } else if( command == "allds" || command == "alldocumentstats" ) {
+        REQUIRE_ARGS(3);
+        print_all_document_stats( r );
       } else {
         r.close();
         usage();
