@@ -61,7 +61,7 @@ class MicroBlogIndex(Index):
         for fn in os.listdir(corpus_path):
             if os.path.exists( os.path.join(self.index_root, fn) ):
                 continue
-            subprocess.call(['IndriBuildIndex_EX', '-index=%s'%os.path.join(index_root, fn), 
+            subprocess.call(['IndriBuildIndex_EX', '-index=%s'%os.path.join(self.index_root, fn), 
               'corpus=path:%s,class:%s' % (os.path.join(corpus_path, fn), 'trectext') ])
 
 
