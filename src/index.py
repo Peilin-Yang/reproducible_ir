@@ -39,10 +39,13 @@ class MicroBlogIndex(Index):
 
     def extract_text_from_raw_collection(self):
         for fn in os.listdir(self.raw_corpus_path):
-            tree = ET.parse(os.path.join(self.raw_corpus_path, fn))
-            root = tree.getroot()
-            for child in root:
-                print child.tag, child.attrib
+            with open( os.path.join(self.raw_corpus_path, fn) ) as f:
+                trectext = f.read()
+                trectext = '<root>\n'+trectext+'</root>'
+                tree = ET.fromstring(trectext)
+                root = tree.getroot()
+                for child in root:
+                    print child.tag, child.attrib
 
 
 if __name__ == '__main__':
