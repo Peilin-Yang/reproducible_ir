@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import shutil
 import argparse
 import inspect
+from inspect import currentframe, getframeinfo
 import subprocess
 import shlex
 from bs4 import BeautifulSoup

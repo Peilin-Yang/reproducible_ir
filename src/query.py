@@ -347,7 +347,7 @@ class MicroBlogQuery(Query):
                 
                 t = ET.SubElement(qf, 'query')
                 qid = ET.SubElement(t, 'number')
-                qid.text = ele['num']
+                qid.text = str(int(ele['num'][2:]))
                 q = ET.SubElement(t, 'text')
                 q.text = ele['query']
                 index = ET.SubElement(qf, 'index')
