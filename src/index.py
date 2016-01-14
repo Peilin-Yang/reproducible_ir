@@ -48,8 +48,12 @@ class MicroBlogIndex(Index):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-
+    parser.add_argument("-e", "--regen_microblog_corpus",
+        nargs=1,
+        help="Re-generate MicroBlog Corpus")
 
     args = parser.parse_args()
 
+    if args.regen_microblog_corpus:
+        MicroBlogIndex(args.regen_microblog_corpus[0])
 
