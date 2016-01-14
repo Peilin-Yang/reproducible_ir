@@ -93,9 +93,10 @@ class Query(object):
                 for t in all_topics:
                     t = re.sub(r'<\/.*?>', r'', t, flags=re.DOTALL)
                     a = re.split(r'(<.*?>)', t.replace('<top>',''), re.DOTALL)
-                    #print a
+                    print a
                     aa = [ele.strip() for ele in a if ele.strip()]
-                    #print aa
+                    print aa
+                    raw_input()
                     d = {}
                     for i in range(0, len(aa), 2):
                         """
@@ -347,7 +348,7 @@ class MicroBlogQuery(Query):
             q = ET.SubElement(t, 'text')
             q.text = ele['query']
             index = ET.SubElement(qf, 'index')
-            index.text = os.path.join(self.corpus_path, index_root, qid)
+            index.text = os.path.join(self.corpus_path, index_root, qid.text)
 
             self.indent(qf)
 
