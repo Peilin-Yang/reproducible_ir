@@ -37,6 +37,9 @@ class MicroBlogIndex(Index):
         self.index_root = os.path.join(self.corpus_path, 'index') # for microblog collection, we need to build one index for each query
         if not os.path.exists(self.index_root):
             os.makedirs( self.index_root )
+        self.build_index_para_root = os.path.join(self.corpus_path, 'build_index_paras') # for microblog collection, we need to build one index for each query
+        if not os.path.exists(self.build_index_para_root):
+            os.makedirs( self.build_index_para_root )
 
     def extract_text_from_raw_collection(self):
         output_path = os.path.join(self.corpus_path, 'corpus')
@@ -55,14 +58,31 @@ class MicroBlogIndex(Index):
                                 of.write('%s\n' % (ele))
                         of.write('</DOC>\n')
 
+    def gen_build_index_para_file(self, para_file_path, gen_index_path, corpus_path, class='trectext'):
+        with open(para_file_path, 'wb') as f:
+            f.write('<parameters>\n')
+            f.write('\t<memory>1g</memory>\n')
+            f.write('\t<index>%s</index>\n' % gen_index_path)
+            f.write('\t<corpus>\n')
+            f.write('\t\t<path>%s</path>\n' % corpus_path)
+            f.write('\t\t<class>trectext</class>\n')
+            f.write('\t</corpus>\n')
+            f.write('\t<stemmer>\n')
+            f.write('\t\t<name>porter</name>\n')
+            f.write('\t</stemmer>\n')
+            f.write('</parameters>\n')
+
     def build_index(self):
         # for microblog we build one index for each query!!!
         corpus_path = os.path.join(self.corpus_path, 'corpus')
         for fn in os.listdir(corpus_path):
-            if os.path.exists( os.path.join(self.index_root, fn) ):
-                continue
-            subprocess.call(['IndriBuildIndex_EX', '-index=%s'%os.path.join(self.index_root, fn), 
-              'corpus=path:%s,class:%s' % (os.path.join(corpus_path, fn), 'trectext') ])
+            if not os.path.exists( os.path.join(self.build_index_para_root, fn) ):
+                self.gen_build_index_para_file(
+                  os.path.join(self.build_index_para_root, fn),
+                  os.path.join(self.index_root, fn), 
+                  os.path.join(corpus_path, fn))
+            if not os.path.exists( os.path.join(self.index_root, fn) ):
+                subprocess.call(['IndriBuildIndex_EX', os.path.join(self.build_index_para_root, fn)])
 
 
 if __name__ == '__main__':
