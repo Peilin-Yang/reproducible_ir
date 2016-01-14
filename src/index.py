@@ -56,7 +56,7 @@ class MicroBlogIndex(Index):
                         # of.write('</TEXT>\n')
                         # of.write('</DOC>\n')
                         for ele in doc.contents:
-                          print ele
+                          print ele.name
                         raw_input()
 
 
