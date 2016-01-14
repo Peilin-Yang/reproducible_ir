@@ -58,8 +58,6 @@ class MicroBlogIndex(Index):
     def build_index(self):
         # for microblog we build one index for each query!!!
         corpus_path = os.path.join(self.corpus_path, 'corpus')
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
         for fn in os.listdir(corpus_path):
             if os.path.exists( os.path.join(self.index_root, fn) ):
                 continue
