@@ -311,7 +311,7 @@ class ClueWebQuery(Query):
 class MicroBlogQuery(Query):
     def gen_query_file_for_indri(self, output_foler='split_queries', 
             index_root='index', is_trec_format=True, count=10000, 
-            remove_stopwords=False, use_which_part=None):
+            remove_stopwords=False, use_which_part=['query']):
         """
         generate the query file for Indri use.
 
@@ -332,30 +332,31 @@ class MicroBlogQuery(Query):
         all_topics = self.get_queries()
 
         for ele in all_topics:
-            qf = ET.Element('parameters')
-            ele_trec_format = ET.SubElement(qf, 'trecFormat')
-            ele_trec_format.text = 'true' if is_trec_format else 'false'
-            ele_count = ET.SubElement(qf, 'count')
-            ele_count.text = str(count)
+            for part in use_which_part:
+                qf = ET.Element('parameters')
+                ele_trec_format = ET.SubElement(qf, 'trecFormat')
+                ele_trec_format.text = 'true' if is_trec_format else 'false'
+                ele_count = ET.SubElement(qf, 'count')
+                ele_count.text = str(count)
 
-            if remove_stopwords:
-                ele_stopwords = ET.SubElement(qf, 'stopper')
-                for w in stop_words_list:
-                    stopword = ET.SubElement(ele_stopwords, 'word')
-                    stopword.text = w
-            
-            t = ET.SubElement(qf, 'query')
-            qid = ET.SubElement(t, 'number')
-            qid.text = ele['num']
-            q = ET.SubElement(t, 'text')
-            q.text = ele['query']
-            index = ET.SubElement(qf, 'index')
-            index.text = os.path.join(self.corpus_path, index_root, qid.text)
+                if remove_stopwords:
+                    ele_stopwords = ET.SubElement(qf, 'stopper')
+                    for w in stop_words_list:
+                        stopword = ET.SubElement(ele_stopwords, 'word')
+                        stopword.text = w
+                
+                t = ET.SubElement(qf, 'query')
+                qid = ET.SubElement(t, 'number')
+                qid.text = ele['num']
+                q = ET.SubElement(t, 'text')
+                q.text = ele['query']
+                index = ET.SubElement(qf, 'index')
+                index.text = os.path.join(self.corpus_path, index_root, qid.text)
 
-            self.indent(qf)
+                self.indent(qf)
 
-            tree = ET.ElementTree(qf)
-            tree.write(os.path.join(self.corpus_path, output_root, qid.text))
+                tree = ET.ElementTree(qf)
+                tree.write(os.path.join(self.corpus_path, output_root, part+'_'+qid.text))
 
 
 
