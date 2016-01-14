@@ -74,8 +74,13 @@ if __name__ == '__main__':
         nargs=1,
         help="Re-generate MicroBlog Corpus")
 
+    parser.add_argument("-i", "--build_microblog_index",
+        nargs=1,
+        help="Build Index")
+
     args = parser.parse_args()
 
     if args.regen_microblog_corpus:
         MicroBlogIndex(args.regen_microblog_corpus[0]).extract_text_from_raw_collection()
-
+    if args.build_microblog_index:
+        MicroBlogIndex(args.build_microblog_index[0]).build_index()
