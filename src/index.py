@@ -45,7 +45,7 @@ class MicroBlogIndex(Index):
         for fn in os.listdir(self.raw_corpus_path):
             if os.path.exists( os.path.join(output_path, fn) ):
                 continue
-            with codecs.open( os.path.join(self.raw_corpus_path, fn, 'utf-8') ) as f:
+            with codecs.open( os.path.join(self.raw_corpus_path, fn), 'rb', 'utf-8' ) as f:
                 bf = BeautifulSoup(f, 'lxml')
                 with codecs.open( os.path.join(self.output_path, fn), 'wb', 'utf-8' ) as of:
                     for doc in bf.find_all('doc'):
