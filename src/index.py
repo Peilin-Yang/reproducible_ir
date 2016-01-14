@@ -47,7 +47,7 @@ class MicroBlogIndex(Index):
                 continue
             with codecs.open( os.path.join(self.raw_corpus_path, fn), 'rb', 'utf-8' ) as f:
                 bf = BeautifulSoup(f, 'lxml')
-                with codecs.open( os.path.join(self.output_path, fn), 'wb', 'utf-8' ) as of:
+                with codecs.open( os.path.join(output_path, fn), 'wb', 'utf-8' ) as of:
                     for doc in bf.find_all('doc'):
                         of.write('<DOC>\n')
                         of.write('<DOCNO>%s</DOCNO>\n' % (doc.docno))
