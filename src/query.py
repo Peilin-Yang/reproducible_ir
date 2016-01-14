@@ -206,7 +206,10 @@ class Query(object):
                 
                 t = ET.SubElement(qf, 'query')
                 qid = ET.SubElement(t, 'number')
-                qid.text = str(int(ele['num']))
+                try:
+                    qid.text = str(int(ele['num']))
+                except:
+                    qid.text = ele['num']
                 q = ET.SubElement(t, 'text')
                 q.text = ''
                 for sep_part in part.split('+'):
