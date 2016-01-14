@@ -39,10 +39,24 @@ class MicroBlogIndex(Index):
             os.makedirs( self.index_root )
 
     def extract_text_from_raw_collection(self):
+        output_path = os.path.join(self.corpus_path, 'corpus')
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
         for fn in os.listdir(self.raw_corpus_path):
-            with open( os.path.join(self.raw_corpus_path, fn) ) as f:
+            if os.path.exists( os.path.join(output_path, fn) ):
+                continue
+            with codecs.open( os.path.join(self.raw_corpus_path, fn, 'utf-8') ) as f:
                 bf = BeautifulSoup(f, 'lxml')
-                print bf
+                with codecs.open( os.path.join(self.output_path, fn), 'wb', 'utf-8' ) as of:
+                    for doc in bf.find_all('doc'):
+                        of.write('<DOC>\n')
+                        of.write('<DOCNO>%s</DOCNO>\n' % (doc.docno))
+                        of.write('<TEXT>\n')
+                        of.write('%s' % (doc.text))
+                        of.write('</TEXT>\n')
+                        of.write('</DOC>\n')
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
