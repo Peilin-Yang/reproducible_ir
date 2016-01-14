@@ -49,15 +49,11 @@ class MicroBlogIndex(Index):
                 bf = BeautifulSoup(f, 'lxml')
                 with codecs.open( os.path.join(output_path, fn), 'wb', 'utf-8' ) as of:
                     for doc in bf.find_all('doc'):
-                        # of.write('<DOC>\n')
-                        # of.write('%s\n' % (doc.docno))
-                        # of.write('<TEXT>\n')
-                        # of.write('%s' % (doc.text))
-                        # of.write('</TEXT>\n')
-                        # of.write('</DOC>\n')
+                        of.write('<DOC>\n')
                         for ele in doc.contents:
-                          print ele.name
-                        raw_input()
+                            if ele.name == 'docno' or ele.name == 'text':
+                                of.write('%s\n' % (ele))
+                        of.write('</DOC>\n')
 
 
 
