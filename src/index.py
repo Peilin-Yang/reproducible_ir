@@ -39,7 +39,7 @@ class MicroBlogIndex(Index):
 
     def extract_text_from_raw_collection(self):
         print self.raw_corpus_path
-        for fn in self.raw_corpus_path:
+        for fn in os.listdir(self.raw_corpus_path):
             print os.path.join(self.raw_corpus_path, fn)
             tree = ET.parse(os.path.join(self.raw_corpus_path, fn))
             root = tree.getroot()
