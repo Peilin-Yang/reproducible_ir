@@ -106,7 +106,7 @@ class Query(object):
                         """
                         tag = aa[i][1:-1]
                         value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
-                        if tag != 'num' and value:
+                        if tag != 'num' and tag != 'querytime' and value:
                             value = self.parse_query([value])[0]
 
                         d[tag] = value
