@@ -5,6 +5,7 @@ import re
 import csv
 import ast
 from datetime import datetime
+from dateutil import parser
 import itertools
 from subprocess import Popen, PIPE
 from inspect import currentframe, getframeinfo
@@ -100,10 +101,12 @@ class MicroBlog(object):
             j = json.load(f)
             for ele in j:
                 if ele['num'] == qid:
-                    try:
-                        query_time = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %z %Y')
-                    except:
-                        query_time = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %Z %Y')
+                    # try:
+                    #     query_time = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %z %Y')
+                    # except:
+                    #     query_time = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %Z %Y')
+                    query_time = parser.parse(ele['querytime'])
+                    print query_time
                     break
         with open(corpus_path) as f:
             j = json.load(f)
