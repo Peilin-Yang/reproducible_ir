@@ -43,7 +43,6 @@ def linear_cal(x):
     return x
 
 def linear(diff, _slope=-1.0, _intercept=0.5):
-    print diff, _slope
     A = diff*_slope+_intercept
     vfunc = np.vectorize(linear_cal)
     return vfunc(A)
@@ -129,7 +128,7 @@ class MicroBlog(object):
                     continue
                 docid_set.add(docid)
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
-                diff = (querytime-doctime).total_seconds
+                diff = (querytime-doctime).total_seconds()
                 diffs.append([docid, diff])
         return diffs
 
@@ -151,7 +150,7 @@ class MicroBlog(object):
         method = method_n_para.split(',')[0]
         if len(method_n_para.split(',')) > 1:
             paras = {ele.split(':')[0]:float(ele.split(':')[1]) for ele in method_n_para.split(',')[1:]}
-        print method, paras
+        #print method, paras
         if method == 'linear':
             scores = linear(diffs_array, paras['slope'], paras['intercept'])
         if method == 'exponential':
