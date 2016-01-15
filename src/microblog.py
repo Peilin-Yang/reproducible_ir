@@ -6,6 +6,7 @@ import csv
 import ast
 from datetime import datetime
 from dateutil import parser
+from dateutil.relativedelta import *
 import itertools
 from subprocess import Popen, PIPE
 from inspect import currentframe, getframeinfo
@@ -112,7 +113,7 @@ class MicroBlog(object):
             j = json.load(f)
             for doc in j:
                 doctime = datetime.fromtimestamp(float(doc['epoch']))
-                diffs = (querytime-doctime).days if use_days else querytime-doctime
+                diffs = relativedelta(querytime-doctime)
         return diffs
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
