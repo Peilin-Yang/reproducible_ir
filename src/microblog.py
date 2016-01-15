@@ -128,7 +128,7 @@ class MicroBlog(object):
                     continue
                 docid_set.add(docid)
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
-                diff = (querytime-doctime).days+(querytime-doctime).seconds/3600
+                diff = (querytime-doctime).total_seconds
                 diffs.append([docid, diff])
         return diffs
 
