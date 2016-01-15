@@ -34,8 +34,8 @@ class MicroBlog(object):
                 corpus path. You can create a symlink for it"""
             exit(1)
 
-        self.parsed_query_file_path = os.path.join(self.corpus_path, 'parsed_topics.json')
-        self.split_queries_root = os.path.join(self.corpus_path, 'split_queries')
+        #self.parsed_query_file_path = os.path.join(self.corpus_path, 'parsed_topics.json')
+        self.raw_corpu_root = os.path.join(self.corpus_path, 'raw_corpus')
         self.decay_results_root = os.path.join(self.corpus_path, 'decay_results')
 
 
@@ -86,13 +86,13 @@ class MicroBlog(object):
                         results_fn = os.path.join(self.decay_results_root, qf+tmp)
                         if not os.path.exists(results_fn):
                             all_paras.append( (os.path.join(self.split_queries_root, qf), \
-                                para_str, results_fn) )
+                                self.raw_corpu_root, para_str, results_fn) )
                 else:
                     para_str = m['name']
                     results_fn = os.path.join(self.decay_results_root, qf+'-method:%s' % m['name'])
                     if not os.path.exists(results_fn):
                         all_paras.append( (os.path.join(self.split_queries_root, qf), \
-                            para_str, results_fn) )
+                            self.raw_corpu_root, para_str, results_fn) )
         return all_paras
 
     def cal_the_decay_results(self, method='exp'):
