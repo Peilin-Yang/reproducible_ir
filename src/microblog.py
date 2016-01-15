@@ -102,11 +102,11 @@ class MicroBlog(object):
             for ele in j:
                 if ele['num'] == qid:
                     # try:
-                    #     query_time = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %z %Y')
+                    #     querytime = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %z %Y')
                     # except:
-                    #     query_time = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %Z %Y')
-                    query_time = parser.parse(ele['querytime'])
-                    print query_time
+                    #     querytime = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %Z %Y')
+                    querytime = parser.parse(ele['querytime'])
+                    print querytime
                     break
         with open(corpus_path) as f:
             j = json.load(f)
