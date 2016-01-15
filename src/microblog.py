@@ -111,7 +111,7 @@ class MicroBlog(object):
         with open(corpus_path) as f:
             j = json.load(f)
             for doc in j:
-                doctime = datetime.fromtimestamp(doc['epoch'])
+                doctime = datetime.fromtimestamp(float(doc['epoch']))
                 diffs = (querytime-doctime).days if use_days else querytime-doctime
         return diffs
 
