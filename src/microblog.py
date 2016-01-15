@@ -101,6 +101,7 @@ class MicroBlog(object):
     def cal_diffs(self, qid, corpus_path, use_days=True):
         query_time = ''
         diffs = []
+        docid_set = set()
         with open(self.parsed_query_file_path) as f:
             j = json.load(f)
             for ele in j:
@@ -115,19 +116,23 @@ class MicroBlog(object):
         with open(corpus_path) as f:
             j = json.load(f)
             for doc in j:
+                docid = doc['id']
+                if docid in docid_set:
+                    continue
+                docid_set.add(docid)
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
                 diff = (querytime-doctime).days if use_days else querytime-doctime
-                diffs.append([doc['id'], diff])
+                diffs.append([docid, diff])
         return diffs
 
     def output_results(self, output_fn, qid, scores, runid):
         with open(output_fn, 'wb') as f:
-            total = len(scores)
+            idx = 1
             for ele in scores:
                 docid = ele[0]
                 score = ele[1]
-                f.write('%s Q0 %s %d %f %s\n' % (qid[2:], docid, total, score, runid))
-                total -= 1
+                f.write('%s Q0 %s %d %f %s\n' % (qid[2:], docid, idx, score, runid))
+                idx += 1
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
         #print self.raw_corpus_root, qid
