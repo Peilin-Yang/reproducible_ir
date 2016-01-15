@@ -85,12 +85,12 @@ class MicroBlog(object):
                                 tmp += ',%s:%s' % (k, p[k_idx])
                             results_fn = os.path.join(self.decay_results_root, 'query_'+qid[2:]+tmp)
                             if not os.path.exists(results_fn):
-                                all_paras.append( (qid, para_str, results_fn) )
+                                all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
                     else:
                         para_str = m['name']
                         results_fn = os.path.join(self.decay_results_root, 'query_'+qid[2:]+'-method:%s' % m['name'])
                         if not os.path.exists(results_fn):
-                            all_paras.append( (qid, para_str, results_fn) )
+                            all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
         return all_paras
 
     def cal_diffs(self, qid, corpus_path, use_days=True):
