@@ -4,7 +4,7 @@ import json
 import re
 import csv
 import ast
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil import parser
 import pytz
 from dateutil.relativedelta import *
@@ -116,7 +116,7 @@ class MicroBlog(object):
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
                 print doctime
                 diffs = relativedelta(querytime, doctime)
-                print diffs
+                print diffs.days
                 raw_input()
         return diffs
 
