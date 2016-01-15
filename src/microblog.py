@@ -74,7 +74,14 @@ class MicroBlog(object):
         self.merged_results_root = os.path.join(self.corpus_path, 'merged_decay_results')
         if not os.path.exists(self.merged_results_root):
             os.makedirs(self.merged_results_root)
-        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals_mb')
+        self.decay_results_root = os.path.join(self.corpus_path, 'combined_results')
+        self.merged_results_root = os.path.join(self.corpus_path, 'merged_combined_results')
+        if not os.path.exists(self.merged_results_root):
+            os.makedirs(self.merged_results_root)
+        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals_mb_decay')
+        if not os.path.exists(self.evaluation_results_root):
+            os.makedirs(self.evaluation_results_root)
+        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals_mb_combine')
         if not os.path.exists(self.evaluation_results_root):
             os.makedirs(self.evaluation_results_root)
         self.qrel_path = os.path.join(self.corpus_path, 'judgement_file')
