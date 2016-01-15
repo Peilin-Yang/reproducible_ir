@@ -201,11 +201,17 @@ class MicroBlog(object):
                             if qid not in scores[method]:
                                 scores[method][qid] = {}
                             scores[method][qid][did] = score
+        output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
         for method in scores:
-            for qid in scores[method]:
-                this_scores = scores[method][qid].values()
-                for did in scores[method][qid]:
-                    scores[method][qid][did] = (scores[method][qid][did]-min(this_scores))/(max(this_scores)-min(this_scores))
+            with open(os.path.join(output_folder, method), 'wb') as f:
+                for qid in scores[method]:
+                    this_scores = scores[method][qid].values()
+                    for did in scores[method][qid]:
+                        scores[method][qid][did] = (scores[method][qid][did]-min(this_scores))/(max(this_scores)-min(this_scores))
+                        f.write('%s,%s,%f' % (qid, did, scores[method][qid][did]))
+            
         for ele in itertools.product(funcs['rel'], funcs['decay']):
             print ele[0], ele[1]
             #for i in np.arange(0.1, 1.0, 0.1):
