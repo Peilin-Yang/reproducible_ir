@@ -194,7 +194,10 @@ class MicroBlog(object):
                             row = line.split()
                             qid = row[0]
                             did = row[2]
-                            score = row[4]
+                            try:
+                                score = float(row[4])
+                            except:
+                                score = 0.0
                             if qid not in scores[method]:
                                 scores[method][qid] = {}
                             scores[method][qid][did] = score
