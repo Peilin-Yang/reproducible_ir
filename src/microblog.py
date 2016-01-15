@@ -205,6 +205,7 @@ class MicroBlog(object):
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
         for method in scores:
+            print method
             with open(os.path.join(output_folder, method), 'wb') as f:
                 for qid in scores[method]:
                     this_scores = scores[method][qid].values()
