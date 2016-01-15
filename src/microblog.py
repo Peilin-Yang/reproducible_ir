@@ -113,6 +113,7 @@ class MicroBlog(object):
             j = json.load(f)
             for doc in j:
                 doctime = datetime.utcfromtimestamp(float(doc['epoch']))
+                print doctime
                 diffs = relativedelta(querytime, doctime)
         return diffs
 
