@@ -367,7 +367,7 @@ def combine_mb_funcs():
     for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        all_paras.extend( microblog.MicroBlog(collection_path).output_combined_rel_decay_scores() ) 
+        microblog.MicroBlog(collection_path).output_combined_rel_decay_scores()
 
 
 if __name__ == '__main__':
