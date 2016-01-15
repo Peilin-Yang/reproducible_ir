@@ -116,7 +116,8 @@ class MicroBlog(object):
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
                 diff = (querytime-doctime).days if use_days else querytime-doctime
                 diffs.append(diff)
-        return np.asarray(diffs)
+        #return np.asarray(diffs)
+        return diffs
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
         print self.raw_corpus_root, qid
