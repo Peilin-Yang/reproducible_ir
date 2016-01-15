@@ -177,7 +177,7 @@ class MicroBlog(object):
 
     def output_combined_rel_decay_scores(self):
         funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
-        p = performace.Performances(self.corpus_path)
+        p = performance.Performances(self.corpus_path)
         for k,v in funcs.items():
             optimal_pfms = p.load_optimal_performance(v)
             if k == 'rel':
