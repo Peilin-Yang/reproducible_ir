@@ -96,7 +96,7 @@ class MicroBlog(object):
         return all_paras
 
     def cal_the_decay_results(self, method='exp'):
-        
+        pass
 
 
 if __name__ == '__main__':

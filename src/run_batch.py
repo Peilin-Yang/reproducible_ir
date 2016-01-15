@@ -323,10 +323,11 @@ def run_mb_decay_atom(para_file):
     with open(para_file) as f:
         reader = csv.reader(f)
         for row in reader:
-            query_fn = row[0]
-            query_para = row[1]
-            output_fn = row[2]
-            run_query(query_fn, query_para, output_fn)
+            pass
+            # query_fn = row[0]
+            # query_para = row[1]
+            # output_fn = row[2]
+            # run_query(query_fn, query_para, output_fn)
 
 
 
