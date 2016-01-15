@@ -105,7 +105,7 @@ class MicroBlog(object):
                             all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
         return all_paras
 
-    def cal_diffs(self, qid, corpus_path, use_days=True):
+    def cal_diffs(self, qid, corpus_path):
         query_time = ''
         diffs = []
         docid_set = set()
@@ -128,7 +128,7 @@ class MicroBlog(object):
                     continue
                 docid_set.add(docid)
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
-                diff = (querytime-doctime).days if use_days else querytime-doctime
+                diff = (querytime-doctime).hours
                 diffs.append([docid, diff])
         return diffs
 
