@@ -86,18 +86,20 @@ class MicroBlog(object):
                             tmp += ',%s:%s' % (k, p[k_idx])
                         results_fn = os.path.join(self.decay_results_root, qf+tmp)
                         if not os.path.exists(results_fn):
-                            all_paras.append( (os.path.join(self.split_queries_root, qf), \
-                                self.raw_corpus_root, para_str, results_fn) )
+                            all_paras.append( (qf, para_str, results_fn) )
                 else:
                     para_str = m['name']
                     results_fn = os.path.join(self.decay_results_root, qf+'-method:%s' % m['name'])
                     if not os.path.exists(results_fn):
-                        all_paras.append( (os.path.join(self.split_queries_root, qf), \
-                            self.raw_corpus_root, para_str, results_fn) )
+                        all_paras.append( (qf, para_str, results_fn) )
         return all_paras
 
-    def cal_the_decay_results(self, method='exp'):
-        pass
+    def cal_the_decay_results(self, query_fn, method_n_para, output_fn):
+        query_path = os.path.join(self.split_queries_root, query_fn)
+        corpus_path = os.path.join(self.raw_corpus_root, 'MB'+query_fn.split('_')[-1])
+        method = method_n_para.split(',')[0]
+        if method == 'linear':
+            pass
 
 
 if __name__ == '__main__':
