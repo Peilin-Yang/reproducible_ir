@@ -4,6 +4,7 @@ import json
 import re
 import csv
 import ast
+from datetime import datetime
 import itertools
 from subprocess import Popen, PIPE
 from inspect import currentframe, getframeinfo
@@ -34,9 +35,8 @@ class MicroBlog(object):
                 corpus path. You can create a symlink for it"""
             exit(1)
 
-        #self.parsed_query_file_path = os.path.join(self.corpus_path, 'parsed_topics.json')
+        self.parsed_query_file_path = os.path.join(self.corpus_path, 'parsed_topics.json')
         self.raw_corpus_root = os.path.join(self.corpus_path, 'raw_corpus')
-        self.split_queries_root = os.path.join(self.corpus_path, 'split_queries')
         self.decay_results_root = os.path.join(self.corpus_path, 'decay_results')
 
 
@@ -67,39 +67,55 @@ class MicroBlog(object):
         vfunc = np.vectorize(linear_cal)
         return vfunc(A)
 
-    def gen_run_split_decay_paras(self, methods, use_which_part=['title']):
+    def gen_run_split_decay_paras(self, methods):
         all_paras = []
         if not os.path.exists(self.decay_results_root):
             os.makedirs(self.decay_results_root)
-
-        for qf in os.listdir( self.split_queries_root ):
-            which_part = qf.split('_')[0]
-            if which_part not in use_which_part:
-                continue
-            for m in methods:
-                if 'paras' in m:
-                    for p in itertools.product(*[ele[1] for ele in m['paras'].items()]):
+        with open( self.parsed_query_file_path ) as f:
+            j = json.load(f)
+            for ele in j:
+                qid = ele['num']
+                for m in methods:
+                    if 'paras' in m:
+                        for p in itertools.product(*[ele[1] for ele in m['paras'].items()]):
+                            para_str = m['name']
+                            tmp = '-method:%s' % m['name']
+                            for k_idx, k in enumerate(m['paras'].keys()):
+                                para_str += ',%s:%s' % (k, p[k_idx])
+                                tmp += ',%s:%s' % (k, p[k_idx])
+                            results_fn = os.path.join(self.decay_results_root, 'query_'+qid[2:]+tmp)
+                            if not os.path.exists(results_fn):
+                                all_paras.append( (qid, para_str, results_fn) )
+                    else:
                         para_str = m['name']
-                        tmp = '-method:%s' % m['name']
-                        for k_idx, k in enumerate(m['paras'].keys()):
-                            para_str += ',%s:%s' % (k, p[k_idx])
-                            tmp += ',%s:%s' % (k, p[k_idx])
-                        results_fn = os.path.join(self.decay_results_root, qf+tmp)
+                        results_fn = os.path.join(self.decay_results_root, 'query_'+qid[2:]+'-method:%s' % m['name'])
                         if not os.path.exists(results_fn):
-                            all_paras.append( (qf, para_str, results_fn) )
-                else:
-                    para_str = m['name']
-                    results_fn = os.path.join(self.decay_results_root, qf+'-method:%s' % m['name'])
-                    if not os.path.exists(results_fn):
-                        all_paras.append( (qf, para_str, results_fn) )
+                            all_paras.append( (qid, para_str, results_fn) )
         return all_paras
 
-    def cal_the_decay_results(self, query_fn, method_n_para, output_fn):
-        query_path = os.path.join(self.split_queries_root, query_fn)
-        corpus_path = os.path.join(self.raw_corpus_root, 'MB'+query_fn.split('_')[-1])
+    def cal_diffs(self, qid, corpus_path, use_days=True):
+        query_time = ''
+        diffs = []
+        with open(self.parsed_query_file_path) as f:
+            j = json.load(f)
+            for ele in j:
+                if ele['num'] == qid:
+                    query_time = datetime.strptime(ele['querytime'])
+                    break
+        with open(corpus_path) as f:
+            j = json.load(f)
+            for doc in j:
+                doctime = datetime.fromtimestamp(doc['epoch'])
+                diffs = (querytime-doctime).days if use_days else querytime-doctime
+        return diffs
+
+    def cal_the_decay_results(self, qid, method_n_para, output_fn):
+        corpus_path = os.path.join(self.raw_corpus_root, qid)
+        diffs = cal_diffs(qid, corpus_path)
+        print diffs
         method = method_n_para.split(',')[0]
-        if method == 'linear':
-            pass
+        # if method == 'linear':
+        #     pass
 
 
 if __name__ == '__main__':

@@ -311,10 +311,7 @@ def gen_microblog_run_decay_batch():
         for q in microblog_collections.query:
             collection_name = q['collection']
             collection_path = os.path.join(_root, collection_name)
-            all_paras.extend(microblog.MicroBlog(collection_path).gen_run_split_decay_paras( 
-                methods,
-                use_which_part=q['qf_parts']
-            ) )
+            all_paras.extend(microblog.MicroBlog(collection_path).gen_run_split_decay_paras(methods))
 
     #print all_paras
     gen_batch_framework('run_decay_func_mb', 'mb2', all_paras)
@@ -324,10 +321,10 @@ def run_mb_decay_atom(para_file):
         reader = csv.reader(f)
         for row in reader:
             collection_path = row[0]
-            query_fn = row[0]
+            qid = row[0]
             query_para = row[2]
             output_fn = row[3]
-            microblog.MicroBlog(collection_path).cal_the_decay_results(query_fn, query_para, output_fn)
+            microblog.MicroBlog(collection_path).cal_the_decay_results(qid, query_para, output_fn)
 
 
 
