@@ -331,7 +331,7 @@ def gen_merge_mb_decay_results_batch():
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        all_paras.extend( MicroBlog(collection_path).gen_merge_decay_results_paras(q['cnt'], use_which_part=q['qf_parts']) )
+        all_paras.extend( microblog.MicroBlog(collection_path).gen_merge_decay_results_paras(q['cnt'], use_which_part=q['qf_parts']) )
 
     #print all_paras
     gen_batch_framework('merge_mb_decay_results', 'mb4', all_paras)
