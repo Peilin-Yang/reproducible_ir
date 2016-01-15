@@ -161,7 +161,7 @@ class MicroBlog(object):
         self.output_results(output_fn, qid, res, method_n_para)
 
 
-    def gen_merge_split_results_paras(self, total_query_cnt, use_which_part=['title']):
+    def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
         all_paras = []
         all_results = {}
         for fn in os.listdir(self.split_results_root):
