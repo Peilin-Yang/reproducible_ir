@@ -186,6 +186,14 @@ class MicroBlog(object):
 
         return all_paras
 
+    def gen_eval_results_paras(self, qrel_program_str):
+        all_paras = []
+        for fn in os.listdir(self.merged_results_root):
+            if not os.path.exists( os.path.join(self.evaluation_results_root, fn) ):
+                all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(self.merged_results_root, fn), os.path.join(self.evaluation_results_root, fn)) )
+        return all_paras
+        
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 

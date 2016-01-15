@@ -348,6 +348,17 @@ def merge_mb_decay_results_atom(para_file):
                     with open(ele) as _in:
                         o.write(_in.read())
 
+def gen_mb_eval_batch():
+    all_paras = []
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        all_paras.extend( microblog.MicroBlog(collection_path).gen_eval_results_paras(q['qrel_program']) )
+
+    #print all_paras
+    gen_batch_framework('eval_results', 'd2', all_paras)
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -437,6 +448,10 @@ if __name__ == '__main__':
     parser.add_argument("-mb4", "--merge_mb_decay_results_atom",
         nargs=1,
         help="merge the results.")
+    parser.add_argument("-mb5", "--gen_mb_eval_batch",
+        action='store_true',
+        help="Evaluate the results")
+
 
     args = parser.parse_args()
 
@@ -503,3 +518,5 @@ if __name__ == '__main__':
         gen_merge_mb_decay_results_batch()
     if args.merge_mb_decay_results_atom:
         merge_mb_decay_results_atom(args.merge_mb_decay_results_atom[0])
+    if args.gen_mb_eval_batch:
+        gen_mb_eval_batch()
