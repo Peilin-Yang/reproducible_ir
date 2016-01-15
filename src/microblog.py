@@ -116,7 +116,7 @@ class MicroBlog(object):
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
                 print doctime
                 diffs = relativedelta(querytime, doctime)
-                print diffs.days
+                print diffs.days, (querytime-doctime).days
                 raw_input()
         return diffs
 
