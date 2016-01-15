@@ -1,17 +1,11 @@
 import sys,os
-import re
 import codecs
-import csv
-import xml.etree.ElementTree as ET
-import shutil
+import json
 import argparse
 import inspect
 from inspect import currentframe, getframeinfo
 import subprocess
 import shlex
-from bs4 import BeautifulSoup
-
-import ArrayJob
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
