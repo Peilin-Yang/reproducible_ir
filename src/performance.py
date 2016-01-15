@@ -92,6 +92,7 @@ class Performances(object):
                     continue
                 method_paras = '-'.join(fn.split('-')[1:])
                 method_paras_split = method_paras.split(',')
+                print method_paras, method_paras_split
                 method_name = method_paras_split[0].split(':')[1]
                 if method_name not in methods:
                     continue
