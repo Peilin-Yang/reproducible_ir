@@ -108,17 +108,15 @@ class MicroBlog(object):
                     # except:
                     #     querytime = datetime.strptime(ele['querytime'], '%a %b %d %H:%M:%S %Z %Y')
                     querytime = parser.parse(ele['querytime'])
-                    print querytime
+                    #print querytime
                     break
         with open(corpus_path) as f:
             j = json.load(f)
             for doc in j:
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
-                print doctime
-                diffs = relativedelta(querytime, doctime)
-                print diffs.days, (querytime-doctime).days
-                raw_input()
-        return diffs
+                diff = (querytime-doctime).days if use_days else querytime-doctime
+                diffs.append(diff)
+        return np.asarray(diffs)
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
         print self.raw_corpus_root, qid
