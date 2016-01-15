@@ -231,7 +231,7 @@ class MicroBlog(object):
                     if qid not in scores[method]:
                         scores[method][qid] = {}
                     scores[method][qid][docid] = score
-
+        print scores.keys()
         for ele in itertools.product(funcs['rel'], funcs['decay']):
             #print ele[0], ele[1]
             for a in np.arange(0.1, 1.0, 0.1):
