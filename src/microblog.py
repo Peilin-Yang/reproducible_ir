@@ -237,13 +237,14 @@ class MicroBlog(object):
         print scores.keys()
         for ele in itertools.product(funcs['rel'], funcs['decay']):
             #print ele[0], ele[1]
+            name = ele[0]+'_'+ele[1]
             for a in np.arange(0.1, 1.0, 0.1):
-                output_path = os.path.join(self.merged_combine_results_root, 'query-method:'+ele[0]+ele[1]+',a:%.1f'%a)
+                output_path = os.path.join(self.merged_combine_results_root, 'query-method:'+name+',a:%.1f'%a)
                 with open(output_path, 'wb') as f:
                     for qid in scores[ele[0]]:
                         for docid in scores[ele[0]][qid]:
                             score = a*scores[ele[0]][qid][docid]+(1-a)*scores[ele[1]][qid][docid]
-                            f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, ele[0]+ele[1]))
+                            f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
 
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
