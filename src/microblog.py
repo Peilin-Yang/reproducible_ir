@@ -221,11 +221,26 @@ class MicroBlog(object):
                         for did in scores[method][qid]: 
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
-            
-        for ele in itertools.product(funcs['rel'], funcs['decay']):
-            print ele[0], ele[1]
-            #for i in np.arange(0.1, 1.0, 0.1):
+            with open(os.path.join(output_folder, method)) as f:
+                r = csv.reader(f)
+                scores[method] = {}
+                for row in r:
+                    qid = row[0]
+                    docid = row[1]
+                    score = float(row[2])
+                    if qid not in scores[method]:
+                        scores[method][qid] = {}
+                    scores[method][qid][docid] = score
 
+        for ele in itertools.product(funcs['rel'], funcs['decay']):
+            #print ele[0], ele[1]
+            for a in np.arange(0.1, 1.0, 0.1):
+                output_path = os.path.join(self.merged_combine_results_root, 'query-method:'+ele[0]+ele[1]+',a:%.1f'%i)
+                with open(output_path, 'wb') as f:
+                    for qid in scores[ele[0]]:
+                        for docid in scores[ele[0]][qid]:
+                            score = a*scores[ele[0]][qid][docid]+(1-a)*scores[ele[1]][qid][docid]
+                            f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, ele[0]+ele[1]))
 
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
