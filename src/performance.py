@@ -86,23 +86,24 @@ class Performances(object):
             data.append( (method_name+'_'+method_paras_split[1], score) )
 
         if os.path.exists( self.mb_eval_results_root ):
-            q_part = fn.split('-')[0]
-            if q_part != query_part:
-                continue
-            method_paras = '-'.join(fn.split('-')[1:])
-            method_paras_split = method_paras.split(',')
-            method_name = method_paras_split[0].split(':')[1]
-            if method_name not in methods:
-                continue
-            try:
-                para = method_paras_split[1].split(':')[1]
-            except:
-                continue
-            with open( os.path.join(self.mb_eval_results_root, fn) ) as _in:
-                j = json.load(_in)
-                score = j['all'][evaluation_method]
-            data.append( (method_name+'_'+method_paras_split[1], score) )
-            
+            for fn in os.listdir(self.mb_eval_results_root):
+                q_part = fn.split('-')[0]
+                if q_part != query_part:
+                    continue
+                method_paras = '-'.join(fn.split('-')[1:])
+                method_paras_split = method_paras.split(',')
+                method_name = method_paras_split[0].split(':')[1]
+                if method_name not in methods:
+                    continue
+                try:
+                    para = method_paras_split[1].split(':')[1]
+                except:
+                    continue
+                with open( os.path.join(self.mb_eval_results_root, fn) ) as _in:
+                    j = json.load(_in)
+                    score = j['all'][evaluation_method]
+                data.append( (method_name+'_'+method_paras_split[1], score) )
+
         data.sort(key=itemgetter(0))
         header = ['function_name', evaluation_method]
 
