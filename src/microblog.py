@@ -178,14 +178,28 @@ class MicroBlog(object):
     def output_combined_rel_decay_scores(self):
         funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
         p = performance.Performances(self.corpus_path)
+        scores = {}
         for k,v in funcs.items():
             optimal_pfms = p.load_optimal_performance(v, 'map', 'query')
             if k == 'rel':
                 paths = {ele[0]:os.path.join(self.merged_rel_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
             if k == 'decay':
                 paths = {ele[0]:os.path.join(self.merged_decay_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
-            print paths
-
+            for method, path in paths.items():
+                scores[method] = {}
+                with open(path) as f:
+                    for line in f:
+                        line = line.strip()
+                        if line:
+                            row = line.split()
+                            qid = row[0]
+                            did = row[2]
+                            score = row[4]
+                            if qid not in scores[method]:
+                                scores[method][qid] = {}
+                            scores[method][qid][did] = score
+                            print scores
+                            raw_input()
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
         all_paras = []
