@@ -92,7 +92,7 @@ class Performances(object):
                     continue
                 method_paras = '-'.join(fn.split('-')[1:])
                 method_paras_split = method_paras.split(',')
-                print method_paras, method_paras_split
+                #print method_paras, method_paras_split
                 method_name = method_paras_split[0].split(':')[1]
                 if method_name not in methods:
                     continue
@@ -117,7 +117,7 @@ class Performances(object):
     def output_performances(self, output_fn, eval_fn_list):
         all_results = {}
         for ele in eval_fn_list:
-            paras = ','.join( os.path.basename(ele).split('-')[1].split(',')[1:] )
+            paras = ','.join( os.path.basename(ele).split('-')[1:].split(',')[1:] )
             with open(ele) as _in:
                 j = json.load(_in)
                 for eval_method in j['all']:
