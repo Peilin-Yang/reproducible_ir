@@ -179,6 +179,9 @@ class MicroBlog(object):
         funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
         p = performance.Performances(self.corpus_path)
         scores = {}
+        output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
         for k,v in funcs.items():
             optimal_pfms = p.load_optimal_performance(v, 'map', 'query')
             if k == 'rel':
@@ -186,6 +189,8 @@ class MicroBlog(object):
             if k == 'decay':
                 paths = {ele[0]:os.path.join(self.merged_decay_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
             for method, path in paths.items():
+                if os.path.exists(output_folder, method):
+                    continue
                 scores[method] = {}
                 with open(path) as f:
                     for line in f:
@@ -201,10 +206,10 @@ class MicroBlog(object):
                             if qid not in scores[method]:
                                 scores[method][qid] = {}
                             scores[method][qid][did] = score
-        output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
+
         for method in scores:
+            if os.path.exists(output_folder, method):
+                continue 
             print method
             with open(os.path.join(output_folder, method), 'wb') as f:
                 for qid in scores[method]:
