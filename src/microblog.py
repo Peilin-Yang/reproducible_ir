@@ -43,6 +43,7 @@ def linear_cal(x):
     return x
 
 def linear(diff, _slope=-1.0, _intercept=0.5):
+    print diff, _slope
     A = diff*_slope+_intercept
     vfunc = np.vectorize(linear_cal)
     return vfunc(A)
