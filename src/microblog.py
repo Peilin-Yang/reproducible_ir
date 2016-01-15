@@ -214,10 +214,10 @@ class MicroBlog(object):
 
     def gen_eval_results_paras(self, qrel_program_str):
         all_paras = []
-        folders = [self.merged_decay_results_root, self.merged_combined_results]
+        folders = [self.merged_decay_results_root, self.merged_combine_results_root]
         for folder in folders:
             if os.path.exists(folder):
-                eval_root = self.eval_decay_root if folder == self.merged_decay_results else self.eval_combine_root
+                eval_root = self.eval_decay_root if folder == self.merged_decay_results_root else self.eval_combine_root
                 for fn in os.listdir(folder):
                     if not os.path.exists( os.path.join(eval_root, fn) ):
                         all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(folder, fn), os.path.join(eval_root, fn)) )
