@@ -235,7 +235,7 @@ class MicroBlog(object):
         for ele in itertools.product(funcs['rel'], funcs['decay']):
             #print ele[0], ele[1]
             for a in np.arange(0.1, 1.0, 0.1):
-                output_path = os.path.join(self.merged_combine_results_root, 'query-method:'+ele[0]+ele[1]+',a:%.1f'%i)
+                output_path = os.path.join(self.merged_combine_results_root, 'query-method:'+ele[0]+ele[1]+',a:%.1f'%a)
                 with open(output_path, 'wb') as f:
                     for qid in scores[ele[0]]:
                         for docid in scores[ele[0]][qid]:
