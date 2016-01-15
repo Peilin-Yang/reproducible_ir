@@ -74,7 +74,7 @@ class MicroBlog(object):
         self.merged_results_root = os.path.join(self.corpus_path, 'merged_decay_results')
         if not os.path.exists(self.merged_results_root):
             os.makedirs(self.merged_results_root)
-        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals')
+        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals_mb')
         if not os.path.exists(self.evaluation_results_root):
             os.makedirs(self.evaluation_results_root)
         self.qrel_path = os.path.join(self.corpus_path, 'judgement_file')
@@ -196,6 +196,36 @@ class MicroBlog(object):
             if not os.path.exists( os.path.join(self.evaluation_results_root, fn) ):
                 all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(self.merged_results_root, fn), os.path.join(self.evaluation_results_root, fn)) )
         return all_paras
+
+    def output_all_evaluations(self, qrel_program, result_file_path, eval_file_path):
+        """
+        get all kinds of performance
+
+        @Return: a dict of all performances 
+        """
+        all_performances = {}
+        program = copy.deepcopy(qrel_program)
+        program.append( self.qrel_path )
+        program.append( result_file_path )
+        process = Popen(program, stdout=PIPE)
+        stdout, stderr = process.communicate()
+        for line in stdout.split('\n'):
+            line = line.strip()
+            if line:
+                row = line.split()
+                evaluation_method = row[0]
+                qid = row[1]
+                try:
+                    performace = ast.literal_eval(row[2])
+                except:
+                    continue
+
+                if qid not in all_performances:
+                    all_performances[qid] = {}
+                all_performances[qid][evaluation_method] = performace
+
+        with open( eval_file_path, 'wb' ) as o:
+            json.dump(all_performances, o, indent=2)
 
 
 if __name__ == '__main__':

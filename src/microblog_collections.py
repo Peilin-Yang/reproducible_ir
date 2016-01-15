@@ -1,6 +1,5 @@
 import query
 import evaluation
-import microblog
 
 query = [ 
   {
