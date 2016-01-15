@@ -321,7 +321,7 @@ def run_mb_decay_atom(para_file):
         reader = csv.reader(f)
         for row in reader:
             collection_path = row[0]
-            qid = row[0]
+            qid = row[1]
             query_para = row[2]
             output_fn = row[3]
             microblog.MicroBlog(collection_path).cal_the_decay_results(qid, query_para, output_fn)
