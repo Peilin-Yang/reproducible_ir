@@ -179,7 +179,7 @@ class MicroBlog(object):
         funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
         p = performance.Performances(self.corpus_path)
         for k,v in funcs.items():
-            optimal_pfms = p.load_optimal_performance(v)
+            optimal_pfms = p.load_optimal_performance(v, 'map', 'query')
             if k == 'rel':
                 paths = {ele[0]:os.path.join(self.merged_rel_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
             if k == 'decay':
