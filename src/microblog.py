@@ -112,7 +112,7 @@ class MicroBlog(object):
         with open(corpus_path) as f:
             j = json.load(f)
             for doc in j:
-                doctime = parser.parse(float(doc['epoch']))#datetime.fromtimestamp(float(doc['epoch']))
+                doctime = parser.parse(doc['epoch'])#datetime.fromtimestamp(float(doc['epoch']))
                 diffs = relativedelta(querytime, doctime)
         return diffs
 
