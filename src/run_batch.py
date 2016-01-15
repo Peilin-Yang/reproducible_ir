@@ -500,6 +500,6 @@ if __name__ == '__main__':
     if args.run_mb_decay_atom:
         run_mb_decay_atom(args.run_mb_decay_atom[0])
     if args.gen_merge_mb_decay_results_batch:
-        gen_microblog_run_decay_batch()
+        gen_merge_mb_decay_results_batch()
     if args.merge_mb_decay_results_atom:
         merge_mb_decay_results_atom(args.merge_mb_decay_results_atom[0])
