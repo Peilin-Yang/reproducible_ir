@@ -42,7 +42,7 @@ class MicroBlogIndex(Index):
         if not os.path.exists(self.build_index_para_root):
             os.makedirs( self.build_index_para_root )
 
-    def extract_text_from_raw_collection(self):
+    def transform_raw_corpus(self):
         output_path = os.path.join(self.corpus_path, 'corpus')
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -50,13 +50,12 @@ class MicroBlogIndex(Index):
             if os.path.exists( os.path.join(output_path, fn) ):
                 continue
             with codecs.open( os.path.join(self.raw_corpus_path, fn), 'rb', 'utf-8' ) as f:
-                bf = BeautifulSoup(f, 'lxml')
+                j = json.load(f)
                 with codecs.open( os.path.join(output_path, fn), 'wb', 'utf-8' ) as of:
-                    for doc in bf.find_all('doc'):
+                    for doc in j:
                         of.write('<DOC>\n')
-                        for ele in doc.contents:
-                            if ele.name == 'docno' or ele.name == 'text':
-                                of.write('%s\n' % (ele))
+                        of.write('<DOCNO>%s</DOCNO>\n' % (doc['id']))
+                        of.write('<TEXT>%s</TEXT>\n' % (doc['text']))
                         of.write('</DOC>\n')
 
     def gen_build_index_para_file(self, para_file_path, gen_index_path, corpus_path, _class='trectext'):
@@ -100,6 +99,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.regen_microblog_corpus:
-        MicroBlogIndex(args.regen_microblog_corpus[0]).extract_text_from_raw_collection()
+        MicroBlogIndex(args.regen_microblog_corpus[0]).transform_raw_corpus()
     if args.build_microblog_index:
         MicroBlogIndex(args.build_microblog_index[0]).build_index()
