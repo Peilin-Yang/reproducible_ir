@@ -243,6 +243,7 @@ class MicroBlog(object):
                 with open(output_path, 'wb') as f:
                     for qid in scores[ele[0]]:
                         for docid in scores[ele[0]][qid]:
+                            print scores[ele[0]][qid][docid]
                             score = a*scores[ele[0]][qid][docid]+(1-a)*scores[ele[1]][qid][docid]
                             f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
 
