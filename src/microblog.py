@@ -19,7 +19,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-def exponetial(x, _lambda=0.1):
+def exponential(x, _lambda=0.1):
     return np.exp((-1)*x*_lambda)
 
 def log_normal(diff, _mu=1.0, _lambda=1):
@@ -140,8 +140,8 @@ class MicroBlog(object):
         print method, paras
         if method == 'linear':
             scores = linear(diffs_array, paras['slope'], paras['intercept'])
-        if method == 'exponetial':
-            scores = exponetial(diffs_array, paras['lambda'])
+        if method == 'exponential':
+            scores = exponential(diffs_array, paras['lambda'])
         if method == 'lognormal':
             scores = log_normal(diffs_array, paras['mu'], paras['sigma'])
         if method == 'loglogistic':
