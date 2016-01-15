@@ -351,7 +351,7 @@ class MicroBlogQuery(Query):
                 q = ET.SubElement(t, 'text')
                 q.text = ele['query']
                 index = ET.SubElement(qf, 'index')
-                index.text = os.path.join(self.corpus_path, index_root, qid.text)
+                index.text = os.path.join(self.corpus_path, index_root, 'MB'+qid.text)
 
                 self.indent(qf)
 
