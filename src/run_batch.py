@@ -206,7 +206,7 @@ def output_the_optimal_performances(eval_method='map'):
     if os.path.exists('microblog_funcs.json'):
         with open('microblog_funcs.json') as f:
             methods.extend([m['name'] for m in json.load(f)['methods']])
-            
+
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
@@ -332,7 +332,7 @@ def run_mb_decay_atom(para_file):
 
 def gen_merge_mb_decay_results_batch():
     all_paras = []
-    for q in g.query:
+    for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
         all_paras.extend( microblog.MicroBlog(collection_path).gen_merge_decay_results_paras(q['cnt'], use_which_part=q['qf_parts']) )
@@ -354,7 +354,7 @@ def merge_mb_decay_results_atom(para_file):
 
 def gen_mb_eval_batch():
     all_paras = []
-    for q in g.query:
+    for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
         all_paras.extend( microblog.MicroBlog(collection_path).gen_eval_results_paras(q['qrel_program']) )
@@ -362,6 +362,12 @@ def gen_mb_eval_batch():
     #print all_paras
     gen_batch_framework('eval_results', 'd2', all_paras)
 
+def combine_mb_funcs():
+    all_paras = []
+    for q in microblog_collections.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        all_paras.extend( microblog.MicroBlog(collection_path).output_combined_rel_decay_scores() ) 
 
 
 if __name__ == '__main__':
@@ -455,7 +461,9 @@ if __name__ == '__main__':
     parser.add_argument("-mb5", "--gen_mb_eval_batch",
         action='store_true',
         help="Evaluate the results")
-
+    parser.add_argument("-mb6", "--combine_mb_funcs",
+        action='store_true',
+        help="Combine the scores of relevance func and decay func")
 
     args = parser.parse_args()
 
@@ -524,3 +532,5 @@ if __name__ == '__main__':
         merge_mb_decay_results_atom(args.merge_mb_decay_results_atom[0])
     if args.gen_mb_eval_batch:
         gen_mb_eval_batch()
+    if args.combine_mb_funcs:
+        combine_mb_funcs()

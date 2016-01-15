@@ -16,6 +16,8 @@ import argparse
 import math
 import numpy as np
 
+import performance
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -71,19 +73,20 @@ class MicroBlog(object):
         self.parsed_query_file_path = os.path.join(self.corpus_path, 'parsed_topics.json')
         self.raw_corpus_root = os.path.join(self.corpus_path, 'raw_corpus')
         self.decay_results_root = os.path.join(self.corpus_path, 'decay_results')
-        self.merged_results_root = os.path.join(self.corpus_path, 'merged_decay_results')
-        if not os.path.exists(self.merged_results_root):
-            os.makedirs(self.merged_results_root)
-        self.decay_results_root = os.path.join(self.corpus_path, 'combined_results')
-        self.merged_results_root = os.path.join(self.corpus_path, 'merged_combined_results')
-        if not os.path.exists(self.merged_results_root):
-            os.makedirs(self.merged_results_root)
-        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals_mb_decay')
-        if not os.path.exists(self.evaluation_results_root):
-            os.makedirs(self.evaluation_results_root)
-        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals_mb_combine')
-        if not os.path.exists(self.evaluation_results_root):
-            os.makedirs(self.evaluation_results_root)
+        self.merged_rel_results_root = os.path.join(self.corpus_path, 'merged_results')
+        self.merged_decay_results_root = os.path.join(self.corpus_path, 'merged_decay_results')
+        if not os.path.exists(self.merged_decay_results_root):
+            os.makedirs(self.merged_decay_results_root)
+        self.combine_results_root = os.path.join(self.corpus_path, 'combined_results')
+        self.merged_combine_results_root = os.path.join(self.corpus_path, 'merged_combined_results')
+        if not os.path.exists(self.merged_combine_results_root):
+            os.makedirs(self.merged_combine_results_root)
+        self.eval_decay_root = os.path.join(self.corpus_path, 'evals_mb_decay')
+        if not os.path.exists(self.eval_decay_root):
+            os.makedirs(self.eval_decay_root)
+        self.eval_combine_root = os.path.join(self.corpus_path, 'evals_mb_combine')
+        if not os.path.exists(self.eval_combine_root):
+            os.makedirs(self.eval_combine_root)
         self.qrel_path = os.path.join(self.corpus_path, 'judgement_file')
 
     def gen_run_split_decay_paras(self, methods):
@@ -170,6 +173,18 @@ class MicroBlog(object):
         res = [(diffs[i][0], scores[i]) for i in range(len(diffs))]
         res.sort(key=itemgetter(1), reverse=True)
         self.output_results(output_fn, qid, res, method_n_para)
+
+
+    def output_combined_rel_decay_scores(self):
+        funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
+        p = performace.Performances(self.corpus_path)
+        for k,v in funcs.items():
+            optimal_pfms = p.load_optimal_performance(v)
+            if k == 'rel':
+                paths = {ele[0]:os.path.join(self.merged_rel_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
+            if k == 'decay':
+                paths = {ele[0]:os.path.join(self.merged_decay_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
+            print paths
 
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
