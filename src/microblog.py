@@ -111,7 +111,7 @@ class MicroBlog(object):
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
         corpus_path = os.path.join(self.raw_corpus_root, qid)
-        diffs = cal_diffs(qid, corpus_path)
+        diffs = self.cal_diffs(qid, corpus_path)
         print diffs
         method = method_n_para.split(',')[0]
         # if method == 'linear':
