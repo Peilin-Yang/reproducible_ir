@@ -198,8 +198,16 @@ class MicroBlog(object):
                             if qid not in scores[method]:
                                 scores[method][qid] = {}
                             scores[method][qid][did] = score
-                            print scores
-                            raw_input()
+        for method in scores:
+            for qid in scores[method]:
+                this_scores = scores[method][qid].values()
+                for did in scores[method][qid]:
+                    scores[method][qid][did] = (scores[method][qid][did]-min(this_scores))/(max(this_scores)-min(this_scores))
+        for ele in itertools.product(funcs['rel'], funcs['decay']):
+            print ele[0], ele[1]
+            #for i in np.arange(0.1, 1.0, 0.1):
+
+
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
         all_paras = []
