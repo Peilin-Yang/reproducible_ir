@@ -8,6 +8,7 @@ qs_file_content = Template("""
 
 vpkg_require python-matplotlib
 vpkg_require python-scipy
+source ~/ENV/bin/activate
 
 SEEDFILE=$seedfile
 SEED=$$(awk "NR==$$SGE_TASK_ID" $$SEEDFILE)
