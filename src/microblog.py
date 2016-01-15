@@ -196,7 +196,7 @@ class MicroBlog(object):
             method = '-'.join(fn.split('-')[1:])
             query_part, qid = query.split('_')
             label = query_part+'-'+method
-            collect_results_fn = os.path.join(self.merged_results_root, label)
+            collect_results_fn = os.path.join(self.merged_decay_results_root, label)
             if not os.path.exists(collect_results_fn):
                 if label not in all_results:
                     all_results[label] = []
@@ -206,7 +206,7 @@ class MicroBlog(object):
             if len(all_results[label]) < total_query_cnt:
                 print 'Results of '+ self.corpus_path + ':' + label +' not enough (%d/%d).' % (len(all_results[label]), total_query_cnt)
                 continue
-            tmp = [os.path.join(self.merged_results_root, label)]
+            tmp = [os.path.join(self.merged_decay_results_root, label)]
             tmp.extend( all_results[label] )
             all_paras.append(tmp)
 
@@ -214,9 +214,13 @@ class MicroBlog(object):
 
     def gen_eval_results_paras(self, qrel_program_str):
         all_paras = []
-        for fn in os.listdir(self.merged_results_root):
-            if not os.path.exists( os.path.join(self.evaluation_results_root, fn) ):
-                all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(self.merged_results_root, fn), os.path.join(self.evaluation_results_root, fn)) )
+        folders = [self.merged_decay_results_root, self.merged_combined_results]
+        for folder in folders:
+            if os.path.exists(folder):
+                eval_root = self.eval_decay_root if folder == self.merged_decay_results else self.eval_combine_root
+                for fn in os.listdir(folder):
+                    if not os.path.exists( os.path.join(eval_root, fn) ):
+                        all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(folder, fn), os.path.join(eval_root, fn)) )
         return all_paras
 
     def output_all_evaluations(self, qrel_program, result_file_path, eval_file_path):
