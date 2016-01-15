@@ -27,6 +27,7 @@ class Performances(object):
             exit(1)
 
         self.evaluation_results_root = os.path.join(self.corpus_path, 'evals')
+        self.mb_eval_results_root = os.path.join(self.corpus_path, 'evals_mb')
         self.performances_root = os.path.join(self.corpus_path, 'performances')
         if not os.path.exists(self.performances_root):
             os.makedirs(self.performances_root)
@@ -45,10 +46,22 @@ class Performances(object):
                 all_results[label] = []
             all_results[label].append( os.path.join(self.evaluation_results_root, fn) )
 
-        for label in all_results:
-            tmp = [ self.corpus_path, os.path.join(self.performances_root, label) ]
-            tmp.extend( all_results[label] )
-            all_paras.append(tmp)
+        if os.path.exists( self.mb_eval_results_root ):
+            for fn in os.listdir(self.mb_eval_results_root):
+                query_part = fn.split('-')[0]
+                method_paras = '-'.join(fn.split('-')[1:])
+                method_paras_split = method_paras.split(',')
+                method_name = method_paras_split[0].split(':')[1]
+                label = query_part+'-'+method_name
+                compare_results_fn = os.path.join(self.performances_root, label)
+                if label not in all_results:
+                    all_results[label] = []
+                all_results[label].append( os.path.join(self.mb_eval_results_root, fn) )
+
+            for label in all_results:
+                tmp = [ self.corpus_path, os.path.join(self.performances_root, label) ]
+                tmp.extend( all_results[label] )
+                all_paras.append(tmp)
 
         return all_paras
 
@@ -72,6 +85,24 @@ class Performances(object):
                 score = j['all'][evaluation_method]
             data.append( (method_name+'_'+method_paras_split[1], score) )
 
+        if os.path.exists( self.mb_eval_results_root ):
+            q_part = fn.split('-')[0]
+            if q_part != query_part:
+                continue
+            method_paras = '-'.join(fn.split('-')[1:])
+            method_paras_split = method_paras.split(',')
+            method_name = method_paras_split[0].split(':')[1]
+            if method_name not in methods:
+                continue
+            try:
+                para = method_paras_split[1].split(':')[1]
+            except:
+                continue
+            with open( os.path.join(self.mb_eval_results_root, fn) ) as _in:
+                j = json.load(_in)
+                score = j['all'][evaluation_method]
+            data.append( (method_name+'_'+method_paras_split[1], score) )
+            
         data.sort(key=itemgetter(0))
         header = ['function_name', evaluation_method]
 
