@@ -117,6 +117,7 @@ class MicroBlog(object):
                 print doctime
                 diffs = relativedelta(querytime, doctime)
                 print diffs
+                raw_input()
         return diffs
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
