@@ -119,8 +119,14 @@ class MicroBlog(object):
                 diffs.append([doc['id'], diff])
         return diffs
 
-    def output_results(self):
-        pass
+    def output_results(self, output_fn, qid, scores, runid):
+        with open(output_fn, 'wb') as f:
+            total = len(scores)
+            for ele in scores:
+                docid = ele[0]
+                score = ele[1]
+                f.write('%s Q0 %s %d %f %s\n' % (qid[2:], docid, total, score, runid))
+                total -= 1
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
         #print self.raw_corpus_root, qid
@@ -129,8 +135,9 @@ class MicroBlog(object):
         #print diffs
         diffs_array = np.asarray([ele[1] for ele in diffs])
         method = method_n_para.split(',')[0]
-        paras = {ele.split(':')[0]:float(ele.split(':')[1]) for ele in method_n_para.split(',')[1:]}
-        print method, paras
+        if len(method_n_para.split(',')) > 1:
+            paras = {ele.split(':')[0]:float(ele.split(':')[1]) for ele in method_n_para.split(',')[1:]}
+        #print method, paras
         if method == 'linear':
             scores = linear(diffs_array, paras['slope'], paras['intercept'])
         if method == 'exponetial':
@@ -139,11 +146,10 @@ class MicroBlog(object):
             scores = log_normal(diffs_array, paras['mu'], paras['sigma'])
         if method == 'loglogistic':
             scores = log_logistic(diffs_array, paras['mu'], paras['sigma'])
-        print scores
-        raw_input()
+        #print scores
         res = [(diffs[i][0], scores[i]) for i in range(len(diffs))]
         res.sort(key=itemgetter(1), reverse=True)
-        print res
+        self.output_results(output_fn, qid, res, method_n_para)
 
 
 if __name__ == '__main__':
