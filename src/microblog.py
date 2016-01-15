@@ -138,6 +138,8 @@ class MicroBlog(object):
             scores = log_normal(diffs_array, paras['mu'], paras['sigma'])
         if method == 'loglogistic':
             scores = log_logistic(diffs_array, paras['mu'], paras['sigma'])
+        print scores
+        raw_input()
         res = [(diffs[i][0], scores[i]) for i in range(len(diffs))]
         res.sort(key=itemgetter(1), reverse=True)
         print res
