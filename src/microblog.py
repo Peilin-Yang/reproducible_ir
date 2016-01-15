@@ -130,6 +130,7 @@ class MicroBlog(object):
         diffs_array = np.asarray([ele[1] for ele in diffs])
         method = method_n_para.split(',')[0]
         paras = {ele.split(':')[0]:float(ele.split(':')[1]) for ele in method_n_para.split(',')[1:]}
+        print method, paras
         if method == 'linear':
             scores = linear(diffs_array, paras['slope'], paras['intercept'])
         if method == 'exponetial':
