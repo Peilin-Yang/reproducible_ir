@@ -212,6 +212,7 @@ class MicroBlog(object):
                     min_s = min(this_scores)
                     max_s = max(this_scores)
                     if max_s-min_s != 0:
+                        print min_s, max_s
                         for did in scores[method][qid]:
                             print scores[method][qid][did], 
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
