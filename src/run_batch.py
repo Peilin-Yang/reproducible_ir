@@ -203,6 +203,10 @@ def output_batch_evals(eval_method='map'):
 def output_the_optimal_performances(eval_method='map'):
     with open('g.json') as f:
         methods = [m['name'] for m in json.load(f)['methods']]
+    if os.path.exists('microblog_funcs.json'):
+        with open('microblog_funcs.json') as f:
+            methods.extend([m['name'] for m in json.load(f)['methods']])
+            
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
