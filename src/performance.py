@@ -117,7 +117,7 @@ class Performances(object):
     def output_performances(self, output_fn, eval_fn_list):
         all_results = {}
         for ele in eval_fn_list:
-            paras = ','.join( os.path.basename(ele).split('-')[1:].split(',')[1:] )
+            paras = ','.join( '-'.join(os.path.basename(ele).split('-')[1:]).split(',')[1:] )
             with open(ele) as _in:
                 j = json.load(_in)
                 for eval_method in j['all']:
