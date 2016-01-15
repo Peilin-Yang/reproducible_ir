@@ -74,6 +74,10 @@ class MicroBlog(object):
         self.merged_results_root = os.path.join(self.corpus_path, 'merged_decay_results')
         if not os.path.exists(self.merged_results_root):
             os.makedirs(self.merged_results_root)
+        self.evaluation_results_root = os.path.join(self.corpus_path, 'evals')
+        if not os.path.exists(self.evaluation_results_root):
+            os.makedirs(self.evaluation_results_root)
+        self.qrel_path = os.path.join(self.corpus_path, 'judgement_file')
 
     def gen_run_split_decay_paras(self, methods):
         all_paras = []
@@ -192,7 +196,7 @@ class MicroBlog(object):
             if not os.path.exists( os.path.join(self.evaluation_results_root, fn) ):
                 all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(self.merged_results_root, fn), os.path.join(self.evaluation_results_root, fn)) )
         return all_paras
-        
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
