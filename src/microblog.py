@@ -116,6 +116,7 @@ class MicroBlog(object):
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
                 print doctime
                 diffs = relativedelta(querytime, doctime)
+                print diffs
         return diffs
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
