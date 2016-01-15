@@ -14,6 +14,8 @@ import inspect
 
 import ArrayJob
 import query
+import microblog
+import microblog_collections
 from worddocdensity import WordDocDensity
 from smart import SMART
 from results import Results
@@ -302,6 +304,31 @@ def output_the_query_stats():
             query.Query(collection_path).output_query_stats(q)                
 
 
+def gen_microblog_run_decay_batch():
+    all_paras = []
+    with open('microblog_funcs.json') as f:
+        methods = json.load(f)['methods']
+        for q in microblog_collections.query:
+            collection_name = q['collection']
+            collection_path = os.path.join(_root, collection_name)
+            all_paras.extend(microblog.MicroBlog(collection_path).gen_run_split_decay_paras( 
+                methods,
+                use_which_part=q['qf_parts']
+            ) )
+
+    #print all_paras
+    gen_batch_framework('run_decay_func_mb', 'mb2', all_paras)
+
+def run_mb_decay_atom(para_file):
+    with open(para_file) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            query_fn = row[0]
+            query_para = row[1]
+            output_fn = row[2]
+            run_query(query_fn, query_para, output_fn)
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -379,6 +406,13 @@ if __name__ == '__main__':
         action='store_true',
         help="") 
 
+    parser.add_argument("-mb1", "--gen_microblog_run_decay_batch",
+        action='store_true',
+        help="Generate the batch run decay of MicroBlog para files")
+    parser.add_argument("-mb2", "--run_mb_decay_atom",
+        nargs=1,
+        help="Run Decay functions")
+
     args = parser.parse_args()
 
     if args.gen_split_queries:
@@ -434,3 +468,9 @@ if __name__ == '__main__':
 
     if args.output_the_query_stats:
         output_the_query_stats()
+
+
+    if args.gen_microblog_run_decay_batch:
+        gen_microblog_run_decay_batch()
+    if args.run_mb_decay_atom:
+        run_mb_decay_atom(args.run_mb_decay_atom[0])
