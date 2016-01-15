@@ -164,7 +164,7 @@ class MicroBlog(object):
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
         all_paras = []
         all_results = {}
-        for fn in os.listdir(self.split_results_root):
+        for fn in os.listdir(self.decay_results_root):
             #print fn
             query = fn.split('-')[0]
             method = '-'.join(fn.split('-')[1:])
@@ -174,7 +174,7 @@ class MicroBlog(object):
             if not os.path.exists(collect_results_fn):
                 if label not in all_results:
                     all_results[label] = []
-                all_results[label].append( os.path.join(self.split_results_root, fn) )
+                all_results[label].append( os.path.join(self.decay_results_root, fn) )
 
         for label in all_results:
             if len(all_results[label]) < total_query_cnt:
