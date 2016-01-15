@@ -83,13 +83,13 @@ class MicroBlog(object):
                         for k_idx, k in enumerate(m['paras'].keys()):
                             para_str += ',%s:%s' % (k, p[k_idx])
                             tmp += ',%s:%s' % (k, p[k_idx])
-                        results_fn = os.path.join(self.split_results_root, qf+tmp)
+                        results_fn = os.path.join(self.decay_results_root, qf+tmp)
                         if not os.path.exists(results_fn):
                             all_paras.append( (os.path.join(self.split_queries_root, qf), \
                                 para_str, results_fn) )
                 else:
                     para_str = m['name']
-                    results_fn = os.path.join(self.split_results_root, qf+'-method:%s' % m['name'])
+                    results_fn = os.path.join(self.decay_results_root, qf+'-method:%s' % m['name'])
                     if not os.path.exists(results_fn):
                         all_paras.append( (os.path.join(self.split_queries_root, qf), \
                             para_str, results_fn) )
