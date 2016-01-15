@@ -189,7 +189,7 @@ class MicroBlog(object):
             if k == 'decay':
                 paths = {ele[0]:os.path.join(self.merged_decay_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
             for method, path in paths.items():
-                if os.path.exists(output_folder, method):
+                if os.path.exists(os.path.join(output_folder, method)):
                     continue
                 scores[method] = {}
                 with open(path) as f:
@@ -208,7 +208,7 @@ class MicroBlog(object):
                             scores[method][qid][did] = score
 
         for method in scores:
-            if os.path.exists(output_folder, method):
+            if os.path.exists(os.path.join(output_folder, method)):
                 continue 
             print method
             with open(os.path.join(output_folder, method), 'wb') as f:
