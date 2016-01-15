@@ -234,8 +234,7 @@ class MicroBlog(object):
                         if qid not in scores[method]:
                             scores[method][qid] = {}
                         scores[method][qid][docid] = score
-        print scores.keys()
-        for ele in itertools.product(funcs['rel'], funcs['decay']):
+        for ele in itertools.product(funcs['decay'], funcs['rel']):
             #print ele[0], ele[1]
             name = ele[0]+'_'+ele[1]
             for a in np.arange(0.1, 1.0, 0.1):
@@ -243,8 +242,10 @@ class MicroBlog(object):
                 with open(output_path, 'wb') as f:
                     for qid in scores[ele[0]]:
                         for docid in scores[ele[0]][qid]:
-                            print scores[ele[0]][qid][docid]
-                            score = a*scores[ele[0]][qid][docid]+(1-a)*scores[ele[1]][qid][docid]
+                            #print scores[ele[0]][qid][docid]
+                            score = a*scores[ele[0]][qid][docid]
+                            if qid in scores[ele[1]] and docid in scores[ele[1]][qid]:
+                                score += (1-a)*scores[ele[1]][qid][docid]
                             f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
 
 
