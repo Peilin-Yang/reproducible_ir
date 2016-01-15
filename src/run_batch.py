@@ -326,6 +326,27 @@ def run_mb_decay_atom(para_file):
             output_fn = row[3]
             microblog.MicroBlog(collection_path).cal_the_decay_results(qid, query_para, output_fn)
 
+def gen_merge_mb_decay_results_batch():
+    all_paras = []
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        all_paras.extend( MicroBlog(collection_path).gen_merge_decay_results_paras(q['cnt'], use_which_part=q['qf_parts']) )
+
+    #print all_paras
+    gen_batch_framework('merge_mb_decay_results', 'mb4', all_paras)
+
+
+def merge_mb_decay_results_atom(para_file):
+    with open(para_file) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            output_fn = row[0]
+            input_fns = row[1:]
+            with open(output_fn, 'wb') as o:
+                for ele in input_fns:
+                    with open(ele) as _in:
+                        o.write(_in.read())
 
 
 if __name__ == '__main__':
@@ -410,6 +431,12 @@ if __name__ == '__main__':
     parser.add_argument("-mb2", "--run_mb_decay_atom",
         nargs=1,
         help="Run Decay functions")
+    parser.add_argument("-mb3", "--gen_merge_mb_decay_results_batch",
+        action='store_true',
+        help="We split the results by qid and by method(with paras). Now it is time to merge them.")
+    parser.add_argument("-mb4", "--merge_mb_decay_results_atom",
+        nargs=1,
+        help="merge the results.")
 
     args = parser.parse_args()
 
@@ -472,3 +499,7 @@ if __name__ == '__main__':
         gen_microblog_run_decay_batch()
     if args.run_mb_decay_atom:
         run_mb_decay_atom(args.run_mb_decay_atom[0])
+    if args.gen_merge_mb_decay_results_batch:
+        gen_microblog_run_decay_batch()
+    if args.merge_mb_decay_results_atom:
+        merge_mb_decay_results_atom(args.merge_mb_decay_results_atom[0])

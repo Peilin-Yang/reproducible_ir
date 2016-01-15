@@ -71,6 +71,9 @@ class MicroBlog(object):
         self.parsed_query_file_path = os.path.join(self.corpus_path, 'parsed_topics.json')
         self.raw_corpus_root = os.path.join(self.corpus_path, 'raw_corpus')
         self.decay_results_root = os.path.join(self.corpus_path, 'decay_results')
+        self.merged_results_root = os.path.join(self.corpus_path, 'merged_decay_results')
+        if not os.path.exists(self.merged_results_root):
+            os.makedirs(self.merged_results_root)
 
     def gen_run_split_decay_paras(self, methods):
         all_paras = []
@@ -157,6 +160,31 @@ class MicroBlog(object):
         res.sort(key=itemgetter(1), reverse=True)
         self.output_results(output_fn, qid, res, method_n_para)
 
+
+    def gen_merge_split_results_paras(self, total_query_cnt, use_which_part=['title']):
+        all_paras = []
+        all_results = {}
+        for fn in os.listdir(self.split_results_root):
+            #print fn
+            query = fn.split('-')[0]
+            method = '-'.join(fn.split('-')[1:])
+            query_part, qid = query.split('_')
+            label = query_part+'-'+method
+            collect_results_fn = os.path.join(self.merged_results_root, label)
+            if not os.path.exists(collect_results_fn):
+                if label not in all_results:
+                    all_results[label] = []
+                all_results[label].append( os.path.join(self.split_results_root, fn) )
+
+        for label in all_results:
+            if len(all_results[label]) < total_query_cnt:
+                print 'Results of '+ self.corpus_path + ':' + label +' not enough (%d/%d).' % (len(all_results[label]), total_query_cnt)
+                continue
+            tmp = [os.path.join(self.merged_results_root, label)]
+            tmp.extend( all_results[label] )
+            all_paras.append(tmp)
+
+        return all_paras
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
