@@ -115,18 +115,31 @@ class MicroBlog(object):
             for doc in j:
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
                 diff = (querytime-doctime).days if use_days else querytime-doctime
-                diffs.append(diff)
-        #return np.asarray(diffs)
+                diffs.append([doc['id'], diff])
         return diffs
 
+    def output_results(self):
+
+
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
-        print self.raw_corpus_root, qid
+        #print self.raw_corpus_root, qid
         corpus_path = os.path.join(self.raw_corpus_root, qid)
         diffs = self.cal_diffs(qid, corpus_path)
-        print diffs
+        #print diffs
+        diffs_array = np.asarray([ele[1] for ele in diffs])
         method = method_n_para.split(',')[0]
-        # if method == 'linear':
-        #     pass
+        paras = {ele.split(':')[0]:float(ele.split(':')[1]) for ele in method_n_para.split(',')[1:]}
+        if method == 'linear':
+            scores = linear(diffs_array, paras['slope'], paras['intercept'])
+        if method == 'exponetial':
+            scores = exponetial(diffs_array, paras['lambda'])
+        if method == 'lognormal':
+            scores = log_normal(diffs_array, paras['mu'], paras['sigma'])
+        if method == 'loglogistic':
+            scores = log_logistic(diffs_array, paras['mu'], paras['sigma'])
+        res = [(diffs[i][0], scores[i]) for i range(len(diffs))]
+        res.sort(key=itemgetter(1), reverse=True)
+        print res
 
 
 if __name__ == '__main__':
