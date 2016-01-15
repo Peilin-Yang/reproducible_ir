@@ -222,16 +222,18 @@ class MicroBlog(object):
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
         scores = {}
-        with open(os.path.join(output_folder, method)) as f:
-            r = csv.reader(f)
-            scores[method] = {}
-            for row in r:
-                qid = row[0]
-                docid = row[1]
-                score = float(row[2])
-                if qid not in scores[method]:
-                    scores[method][qid] = {}
-                scores[method][qid][docid] = score
+        for v in funcs.values():
+            for method in v:
+                with open(os.path.join(output_folder, method)) as f:
+                    r = csv.reader(f)
+                    scores[method] = {}
+                    for row in r:
+                        qid = row[0]
+                        docid = row[1]
+                        score = float(row[2])
+                        if qid not in scores[method]:
+                            scores[method][qid] = {}
+                        scores[method][qid][docid] = score
         print scores.keys()
         for ele in itertools.product(funcs['rel'], funcs['decay']):
             #print ele[0], ele[1]
