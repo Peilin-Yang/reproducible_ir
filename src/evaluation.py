@@ -4,9 +4,6 @@ import json
 import copy
 from subprocess import Popen, PIPE
 
-import g
-
-
 class Evaluation(object):
     """
     Get the evaluation of a corpus for a result.
