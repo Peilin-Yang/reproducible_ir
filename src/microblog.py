@@ -113,7 +113,7 @@ class MicroBlog(object):
             j = json.load(f)
             for doc in j:
                 doctime = datetime.fromtimestamp(float(doc['epoch']))
-                diffs = relativedelta(querytime-doctime)
+                diffs = relativedelta(querytime, doctime)
         return diffs
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
