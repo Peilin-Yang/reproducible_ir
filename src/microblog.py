@@ -214,10 +214,12 @@ class MicroBlog(object):
                     if max_s-min_s != 0:
                         print min_s, max_s
                         for did in scores[method][qid]:
-                            print scores[method][qid][did], 
+                            if method == 'loglogistic':
+                                print scores[method][qid][did], 
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
-                            print scores[method][qid][did]
-                            raw_input()
+                            if method == 'loglogistic':
+                                print scores[method][qid][did]
+                                raw_input()
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
             
         for ele in itertools.product(funcs['rel'], funcs['decay']):
