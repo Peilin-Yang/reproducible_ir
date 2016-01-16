@@ -470,7 +470,7 @@ if __name__ == '__main__':
     parser.add_argument("-mb6", "--combine_mb_funcs",
         action='store_true',
         help="Combine the scores of relevance func and decay func")
-   parser.add_argument("-mb7", "--output_combine_evals",
+    parser.add_argument("-mb7", "--output_combine_evals",
         nargs=1,
         help="Outputs all evals for the given methods. inputs: [evaluation_method]")
 
