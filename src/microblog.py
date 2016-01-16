@@ -302,11 +302,11 @@ class MicroBlog(object):
                         continue
                     with open( os.path.join(folder, fn) ) as _in:
                         j = json.load(_in)
-                        score = j['all'][evaluation_method]
+                        score = j['all'][eval_method]
                     data.append( (method_name+'_'+method_paras_split[1], score) )
                     
         data.sort(key=itemgetter(0))
-        header = ['function_name', evaluation_method]
+        header = ['function_name', eval_method]
 
         data.insert(0, header)
         with open( 'mb_combined_eval_results_'+os.path.basename(self.corpus_path)+'.csv', 'wb') as f:
