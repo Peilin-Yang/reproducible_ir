@@ -285,35 +285,33 @@ class MicroBlog(object):
                         all_paras.append( (self.corpus_path, qrel_program_str, os.path.join(folder, fn), os.path.join(eval_root, fn)) )
         return all_paras
 
-    def output_all_evaluations(self, qrel_program, result_file_path, eval_file_path):
-        """
-        get all kinds of performance
 
-        @Return: a dict of all performances 
-        """
-        all_performances = {}
-        program = copy.deepcopy(qrel_program)
-        program.append( self.qrel_path )
-        program.append( result_file_path )
-        process = Popen(program, stdout=PIPE)
-        stdout, stderr = process.communicate()
-        for line in stdout.split('\n'):
-            line = line.strip()
-            if line:
-                row = line.split()
-                evaluation_method = row[0]
-                qid = row[1]
-                try:
-                    performace = ast.literal_eval(row[2])
-                except:
-                    continue
+    def output_combine_evals(self, eval_method='map'):
+        data = []
+        all_folders = [self.eval_combine_root]
+        for folder in all_folders:
+            if os.path.exists( folder ):
+                for fn in os.listdir(folder):
+                    q_part = fn.split('-')[0]
+                    method_paras = '-'.join(fn.split('-')[1:])
+                    method_paras_split = method_paras.split(',')
+                    method_name = method_paras_split[0].split(':')[1]
+                    try:
+                        para = method_paras_split[1].split(':')[1]
+                    except:
+                        continue
+                    with open( os.path.join(folder, fn) ) as _in:
+                        j = json.load(_in)
+                        score = j['all'][evaluation_method]
+                    data.append( (method_name+'_'+method_paras_split[1], score) )
+                    
+        data.sort(key=itemgetter(0))
+        header = ['function_name', evaluation_method]
 
-                if qid not in all_performances:
-                    all_performances[qid] = {}
-                all_performances[qid][evaluation_method] = performace
-
-        with open( eval_file_path, 'wb' ) as o:
-            json.dump(all_performances, o, indent=2)
+        data.insert(0, header)
+        with open( 'mb_combined_eval_results_'+os.path.basename(self.corpus_path)+'.csv', 'wb') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
 
 
 if __name__ == '__main__':

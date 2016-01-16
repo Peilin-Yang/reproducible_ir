@@ -59,7 +59,7 @@ class Performances(object):
 
     def output_evaluation_results(self, methods=[], evaluation_method='map', query_part='title'):
         data = []
-        all_folders = [self.evaluation_results_root, self.mb_decay_eval_results_root, self.mb_combine_eval_results_root]
+        all_folders = [self.evaluation_results_root, self.mb_decay_eval_results_root]
         for folder in all_folders:
             if os.path.exists( folder ):
                 for fn in os.listdir(folder):

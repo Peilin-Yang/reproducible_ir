@@ -369,6 +369,12 @@ def combine_mb_funcs():
         collection_path = os.path.join(_root, collection_name)
         microblog.MicroBlog(collection_path).output_combined_rel_decay_scores()
 
+def output_combine_mb_evals():
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        microblog.MicroBlog(collection_path).output_combine_evals()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -464,6 +470,9 @@ if __name__ == '__main__':
     parser.add_argument("-mb6", "--combine_mb_funcs",
         action='store_true',
         help="Combine the scores of relevance func and decay func")
+   parser.add_argument("-mb7", "--output_combine_evals",
+        nargs=1,
+        help="Outputs all evals for the given methods. inputs: [evaluation_method]")
 
     args = parser.parse_args()
 
@@ -534,3 +543,5 @@ if __name__ == '__main__':
         gen_mb_eval_batch()
     if args.combine_mb_funcs:
         combine_mb_funcs()
+    if args.output_combine_mb_evals:
+        output_combine_mb_evals()
