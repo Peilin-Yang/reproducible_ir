@@ -201,11 +201,11 @@ def output_batch_evals(eval_method='map'):
             performance.Performances(collection_path).output_evaluation_results(methods, eval_method, q)
 
 def output_the_optimal_performances(eval_method='map'):
-    with open('g.json') as f:
-        methods = [m['name'] for m in json.load(f)['methods']]
-    if os.path.exists('microblog_funcs.json'):
-        with open('microblog_funcs.json') as f:
-            methods.extend([m['name'] for m in json.load(f)['methods']])
+    # with open('g.json') as f:
+    #     methods = [m['name'] for m in json.load(f)['methods']]
+    # if os.path.exists('microblog_funcs.json'):
+    #     with open('microblog_funcs.json') as f:
+    #         methods.extend([m['name'] for m in json.load(f)['methods']])
 
     for q in g.query:
         collection_name = q['collection']
@@ -213,10 +213,10 @@ def output_the_optimal_performances(eval_method='map'):
         print 
         print collection_name
         print '='*30
-        for q in q['qf_parts']:
-            print q
+        for q_part in q['qf_parts']:
+            print q_part
             print '-'*30
-            performance.Performances(collection_path).print_optimal_performance(methods, eval_method, q)
+            performance.Performances(collection_path).print_optimal_performance(eval_method, q_part)
 
 
 def gen_output_highcharts_batch():
