@@ -349,7 +349,10 @@ class MicroBlogQuery(Query):
                 qid = ET.SubElement(t, 'number')
                 qid.text = str(int(ele['num'][2:]))
                 q = ET.SubElement(t, 'text')
-                q.text = ele['query']
+                try:
+                    q.text = ele['query']
+                except:
+                    q.text = ele['title']
                 index = ET.SubElement(qf, 'index')
                 index.text = os.path.join(self.corpus_path, index_root, 'MB'+qid.text)
 
