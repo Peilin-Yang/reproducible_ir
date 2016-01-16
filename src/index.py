@@ -41,11 +41,12 @@ class MicroBlogIndex(Index):
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         for fn in os.listdir(self.raw_corpus_path):
-            if os.path.exists( os.path.join(output_path, fn) ):
+            real_fn = 'MB'+str(int(fn[2:]))
+            if os.path.exists( os.path.join(output_path, real_fn) ):
                 continue
-            with codecs.open( os.path.join(self.raw_corpus_path, fn), 'rb', 'utf-8' ) as f:
+            with codecs.open( os.path.join(self.raw_corpus_path, real_fn), 'rb', 'utf-8' ) as f:
                 j = json.load(f)
-                with codecs.open( os.path.join(output_path, fn), 'wb', 'utf-8' ) as of:
+                with codecs.open( os.path.join(output_path, real_fn), 'wb', 'utf-8' ) as of:
                     for doc in j:
                         of.write('<DOC>\n')
                         of.write('<DOCNO>%s</DOCNO>\n' % (doc['id']))
