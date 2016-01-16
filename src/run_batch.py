@@ -544,4 +544,4 @@ if __name__ == '__main__':
     if args.combine_mb_funcs:
         combine_mb_funcs()
     if args.output_combine_mb_evals:
-        output_combine_mb_evals()
+        output_combine_mb_evals(args.output_combine_mb_evals[0])
