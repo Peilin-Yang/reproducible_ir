@@ -44,7 +44,7 @@ class MicroBlogIndex(Index):
             real_fn = 'MB'+str(int(fn[2:]))
             if os.path.exists( os.path.join(output_path, real_fn) ):
                 continue
-            with codecs.open( os.path.join(self.raw_corpus_path, real_fn), 'rb', 'utf-8' ) as f:
+            with codecs.open( os.path.join(self.raw_corpus_path, fn), 'rb', 'utf-8' ) as f:
                 j = json.load(f)
                 with codecs.open( os.path.join(output_path, real_fn), 'wb', 'utf-8' ) as of:
                     for doc in j:
