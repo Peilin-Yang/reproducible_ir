@@ -371,7 +371,7 @@ def combine_mb_funcs():
         microblog.MicroBlog(collection_path).output_combined_rel_decay_scores()
 
 def output_combine_mb_evals(eval_method):
-    for q in g.query:
+    for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
         microblog.MicroBlog(collection_path).output_combine_evals(eval_method)
