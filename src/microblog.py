@@ -96,7 +96,7 @@ class MicroBlog(object):
         with open( self.parsed_query_file_path ) as f:
             j = json.load(f)
             for ele in j:
-                raw_qid = ele['num'][2:]
+                raw_qid = ele['num']
                 qid = str(int(ele['num'][2:]))
                 for m in methods:
                     if 'paras' in m:
