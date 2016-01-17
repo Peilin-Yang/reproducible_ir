@@ -107,12 +107,12 @@ class MicroBlog(object):
                                 tmp += ',%s:%s' % (k, p[k_idx])
                             results_fn = os.path.join(self.decay_results_root, query_part+'_'+qid+tmp)
                             if not os.path.exists(results_fn):
-                                all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
+                                all_paras.append( (self.corpus_path, ele['num'][2:], para_str, results_fn) )
                     else:
                         para_str = m['name']
                         results_fn = os.path.join(self.decay_results_root, query_part+'_'+'-method:%s' % m['name'])
                         if not os.path.exists(results_fn):
-                            all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
+                            all_paras.append( (self.corpus_path, ele['num'][2:], para_str, results_fn) )
         return all_paras
 
     def cal_diffs(self, qid, corpus_path):
@@ -148,7 +148,7 @@ class MicroBlog(object):
             for ele in scores:
                 docid = ele[0]
                 score = ele[1]
-                f.write('%s Q0 %s %d %f %s\n' % (qid[2:], docid, idx, score, runid))
+                f.write('%d Q0 %s %d %f %s\n' % (int(qid[2:]), docid, idx, score, runid))
                 idx += 1
 
     def cal_the_decay_results(self, qid, method_n_para, output_fn):
