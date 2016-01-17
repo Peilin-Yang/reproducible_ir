@@ -177,7 +177,6 @@ class MicroBlog(object):
 
 
     def output_combined_rel_decay_scores(self):
-        all_funcs = ['okapi','pivoted','f2exp', 'exponential', 'lognormal', 'loglogistic']
         funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
         p = performance.Performances(self.corpus_path)
         scores = {}
@@ -191,10 +190,10 @@ class MicroBlog(object):
                 query_part = 'query'
             optimal_pfms = p.load_optimal_performance('map', query_part)
             if k == 'rel':
-                paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in all_funcs}
+                paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in v}
             if k == 'decay':
-                paths = {ele[0]:os.path.join(self.merged_decay_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in all_funcs}
-            print paths
+                paths = {ele[0]:os.path.join(self.merged_decay_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in v}
+            #print paths
             for method, path in paths.items():
                 if os.path.exists(os.path.join(output_folder, method)):
                     continue
