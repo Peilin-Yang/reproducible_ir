@@ -96,6 +96,7 @@ class MicroBlog(object):
         with open( self.parsed_query_file_path ) as f:
             j = json.load(f)
             for ele in j:
+                raw_qid = ele['num'][2:]
                 qid = str(int(ele['num'][2:]))
                 for m in methods:
                     if 'paras' in m:
@@ -107,12 +108,12 @@ class MicroBlog(object):
                                 tmp += ',%s:%s' % (k, p[k_idx])
                             results_fn = os.path.join(self.decay_results_root, query_part+'_'+qid+tmp)
                             if not os.path.exists(results_fn):
-                                all_paras.append( (self.corpus_path, ele['num'][2:], para_str, results_fn) )
+                                all_paras.append( (self.corpus_path, raw_qid, para_str, results_fn) )
                     else:
                         para_str = m['name']
                         results_fn = os.path.join(self.decay_results_root, query_part+'_'+'-method:%s' % m['name'])
                         if not os.path.exists(results_fn):
-                            all_paras.append( (self.corpus_path, ele['num'][2:], para_str, results_fn) )
+                            all_paras.append( (self.corpus_path, raw_qid, para_str, results_fn) )
         return all_paras
 
     def cal_diffs(self, qid, corpus_path):
