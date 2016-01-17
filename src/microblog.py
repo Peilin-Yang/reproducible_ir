@@ -89,14 +89,14 @@ class MicroBlog(object):
             os.makedirs(self.eval_combine_root)
         self.qrel_path = os.path.join(self.corpus_path, 'judgement_file')
 
-    def gen_run_split_decay_paras(self, methods):
+    def gen_run_split_decay_paras(self, methods, query_part='title'):
         all_paras = []
         if not os.path.exists(self.decay_results_root):
             os.makedirs(self.decay_results_root)
         with open( self.parsed_query_file_path ) as f:
             j = json.load(f)
             for ele in j:
-                qid = ele['num']
+                qid = str(int(ele['num'][2:]))
                 for m in methods:
                     if 'paras' in m:
                         for p in itertools.product(*[ele[1] for ele in m['paras'].items()]):
@@ -105,12 +105,12 @@ class MicroBlog(object):
                             for k_idx, k in enumerate(m['paras'].keys()):
                                 para_str += ',%s:%s' % (k, p[k_idx])
                                 tmp += ',%s:%s' % (k, p[k_idx])
-                            results_fn = os.path.join(self.decay_results_root, 'query_'+qid[2:]+tmp)
+                            results_fn = os.path.join(self.decay_results_root, query_part+'_'+qid+tmp)
                             if not os.path.exists(results_fn):
                                 all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
                     else:
                         para_str = m['name']
-                        results_fn = os.path.join(self.decay_results_root, 'query_'+qid[2:]+'-method:%s' % m['name'])
+                        results_fn = os.path.join(self.decay_results_root, query_part+'_'+'-method:%s' % m['name'])
                         if not os.path.exists(results_fn):
                             all_paras.append( (self.corpus_path, qid, para_str, results_fn) )
         return all_paras

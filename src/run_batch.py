@@ -316,7 +316,7 @@ def gen_microblog_run_decay_batch():
         for q in microblog_collections.query:
             collection_name = q['collection']
             collection_path = os.path.join(_root, collection_name)
-            all_paras.extend(microblog.MicroBlog(collection_path).gen_run_split_decay_paras(methods))
+            all_paras.extend(microblog.MicroBlog(collection_path).gen_run_split_decay_paras(methods, q['qf_parts'][0]))
 
     #print all_paras
     gen_batch_framework('run_decay_func_mb', 'mb2', all_paras)
