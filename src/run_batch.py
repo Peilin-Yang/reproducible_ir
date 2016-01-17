@@ -116,11 +116,12 @@ def run_query_atom(para_file):
 def run_query(query_fn, query_para, output_fn):
     p = Popen(['IndriRunQuery_EX', query_fn, query_para], stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
-    if 'EXCEPT' not in stdout:
+    if 'exiting' not in stdout:
         with open(output_fn, 'wb') as o:
             o.write(stdout)
     else:
-        print line, stdout
+        print stdout, stderr
+        exit()
 
 
 def gen_merge_split_results_batch():
