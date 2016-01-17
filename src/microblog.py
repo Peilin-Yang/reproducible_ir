@@ -177,6 +177,7 @@ class MicroBlog(object):
 
 
     def output_combined_rel_decay_scores(self):
+        all_funcs = ['okapi','pivoted','f2exp', 'exponential', 'lognormal', 'loglogistic']
         funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
         p = performance.Performances(self.corpus_path)
         scores = {}
@@ -184,11 +185,15 @@ class MicroBlog(object):
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
         for k,v in funcs.items():
-            optimal_pfms = p.load_optimal_performance(v, 'map', 'query')
+            if '2011' in self.corpus_path or '2012' in self.corpus_path:
+                query_part = 'title'
+            else:
+                query_part = 'query'
+            optimal_pfms = p.load_optimal_performance('map', query_part)
             if k == 'rel':
-                paths = {ele[0]:os.path.join(self.merged_rel_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
+                paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in all_funcs}
             if k == 'decay':
-                paths = {ele[0]:os.path.join(self.merged_decay_results_root, 'query-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms}
+                paths = {ele[0]:os.path.join(self.merged_decay_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in all_funcs}
             for method, path in paths.items():
                 if os.path.exists(os.path.join(output_folder, method)):
                     continue
@@ -239,7 +244,7 @@ class MicroBlog(object):
             #print ele[0], ele[1]
             name = ele[0]+'_'+ele[1]
             for a in np.arange(0.1, 1.0, 0.1):
-                output_path = os.path.join(self.merged_combine_results_root, 'query-method:'+name+',a:%.1f'%a)
+                output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
                 with open(output_path, 'wb') as f:
                     for qid in scores[ele[0]]:
                         for docid in scores[ele[0]][qid]:
