@@ -102,7 +102,7 @@ class MicroBlog(object):
                     if 'paras' in m:
                         for p in itertools.product(*[ele[1] for ele in m['paras'].items()]):
                             para_str = m['name']
-                            tmp = '-method:%s' % m['name']
+                            tmp = '-method:%s4h' % m['name']
                             for k_idx, k in enumerate(m['paras'].keys()):
                                 para_str += ',%s:%s' % (k, p[k_idx])
                                 tmp += ',%s:%s' % (k, p[k_idx])
@@ -111,7 +111,7 @@ class MicroBlog(object):
                                 all_paras.append( (self.corpus_path, raw_qid, para_str, results_fn) )
                     else:
                         para_str = m['name']
-                        results_fn = os.path.join(self.decay_results_root, query_part+'_'+'-method:%s' % m['name'])
+                        results_fn = os.path.join(self.decay_results_root, query_part+'_'+'-method:%s4h' % m['name'])
                         if not os.path.exists(results_fn):
                             all_paras.append( (self.corpus_path, raw_qid, para_str, results_fn) )
         return all_paras
@@ -139,7 +139,7 @@ class MicroBlog(object):
                     continue
                 docid_set.add(docid)
                 doctime = datetime.fromtimestamp(float(doc['epoch']), pytz.utc)
-                diff = (querytime-doctime).total_seconds()
+                diff = ((querytime-doctime).total_seconds())/3600.0/4.0 # 4h interval
                 diffs.append([docid, diff])
         return diffs
 
@@ -162,13 +162,13 @@ class MicroBlog(object):
         if len(method_n_para.split(',')) > 1:
             paras = {ele.split(':')[0]:float(ele.split(':')[1]) for ele in method_n_para.split(',')[1:]}
         #print method, paras
-        if method == 'linear':
+        if 'linear' in method:
             scores = linear(diffs_array, paras['slope'], paras['intercept'])
-        if method == 'exponential':
+        if 'exponential' in method:
             scores = exponential(diffs_array, paras['lambda'])
-        if method == 'lognormal':
+        if 'lognormal' in method:
             scores = log_normal(diffs_array, paras['mu'], paras['sigma'])
-        if method == 'loglogistic':
+        if 'loglogistic' in method:
             scores = log_logistic(diffs_array, paras['mu'], paras['sigma'])
         #print scores
         res = [(diffs[i][0], scores[i]) for i in range(len(diffs))]
