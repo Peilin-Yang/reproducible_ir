@@ -177,46 +177,47 @@ class MicroBlog(object):
 
 
     def output_combined_rel_decay_scores(self):
-        funcs = {'rel': ['okapi','pivoted','f2exp'], 'decay':['exponential', 'lognormal', 'loglogistic']}
+        rel_funcs = ['okapi','pivoted','f2exp']
         p = performance.Performances(self.corpus_path)
         scores = {}
         output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
-        for k,v in funcs.items():
+        for rel_func in rel_funcs:
             if '2011' in self.corpus_path or '2012' in self.corpus_path:
                 query_part = 'title'
             else:
                 query_part = 'query'
             optimal_pfms = p.load_optimal_performance('map', query_part)
-            if k == 'rel':
-                paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in v}
-            if k == 'decay':
-                paths = {ele[0]:os.path.join(self.merged_decay_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in v}
-            #print paths
-            for method, path in paths.items():
-                if os.path.exists(os.path.join(output_folder, method)):
-                    continue
-                scores[method] = {}
-                with open(path) as f:
-                    for line in f:
-                        line = line.strip()
-                        if line:
-                            row = line.split()
-                            qid = row[0]
-                            did = row[2]
-                            try:
-                                score = float(row[4])
-                            except:
-                                score = 0.0
-                            if qid not in scores[method]:
-                                scores[method][qid] = {}
-                            scores[method][qid][did] = score
+            paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in rel_func}
+
+        for fn in os.listdir(self.merged_decay_results_root):
+            recency_func = ':'.join(fn.split(':')[1:])
+            paths[recency_func] = os.path.join(self.merged_decay_results_root, fn)
+        #print paths
+        for method, path in paths.items():
+            if os.path.exists(os.path.join(output_folder, method)):
+                continue
+            scores[method] = {}
+            with open(path) as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        row = line.split()
+                        qid = row[0]
+                        did = row[2]
+                        try:
+                            score = float(row[4])
+                        except:
+                            score = 0.0
+                        if qid not in scores[method]:
+                            scores[method][qid] = {}
+                        scores[method][qid][did] = score
 
         for method in scores:
             if os.path.exists(os.path.join(output_folder, method)):
                 continue 
-            print method
+            #print method
             with open(os.path.join(output_folder, method), 'wb') as f:
                 for qid in scores[method]:
                     this_scores = scores[method][qid].values()
@@ -240,19 +241,23 @@ class MicroBlog(object):
                         if qid not in scores[method]:
                             scores[method][qid] = {}
                         scores[method][qid][docid] = score
-        for ele in itertools.product(funcs['decay'], funcs['rel']):
-            #print ele[0], ele[1]
-            name = ele[0]+'_'+ele[1]
-            for a in np.arange(0.1, 1.0, 0.1):
-                output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
-                with open(output_path, 'wb') as f:
-                    for qid in scores[ele[0]]:
-                        for docid in scores[ele[0]][qid]:
-                            #print scores[ele[0]][qid][docid]
-                            score = a*scores[ele[0]][qid][docid]
-                            if qid in scores[ele[1]] and docid in scores[ele[1]][qid]:
-                                score += (1-a)*scores[ele[1]][qid][docid]
-                            f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
+
+        for rel_func in rel_funcs:            
+            for method in scores:
+                if method in rel_funcs:
+                    continue
+                recency_func = method
+                name = rel_func+'_'+recency_func
+                for a in np.arange(0.1, 1.0, 0.1):
+                    output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
+                    with open(output_path, 'wb') as f:
+                        for qid in scores[recency_func]:
+                            for docid in scores[recency_func][qid]:
+                                #print scores[recency_func][qid][docid]
+                                score = a*scores[recency_func][qid][docid]
+                                if qid in scores[rel_func] and docid in scores[rel_func][qid]:
+                                    score += (1-a)*scores[rel_func][qid][docid]
+                                f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
 
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
