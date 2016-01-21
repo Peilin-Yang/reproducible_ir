@@ -243,6 +243,8 @@ class MicroBlog(object):
                         scores[method][qid] = {}
                     scores[method][qid][docid] = score
 
+        print scores.keys()
+
         for rel_func in rel_funcs:            
             for method in scores:
                 if method in rel_funcs:
