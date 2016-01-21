@@ -307,32 +307,13 @@ class MicroBlog(object):
         return all_paras
 
 
-    def output_combine_evals(self, eval_method='map'):
-        data = []
-        all_folders = [self.eval_combine_root]
-        for folder in all_folders:
-            if os.path.exists( folder ):
-                for fn in os.listdir(folder):
-                    q_part = fn.split('-')[0]
-                    method_paras = '-'.join(fn.split('-')[1:])
-                    method_paras_split = method_paras.split(',')
-                    method_name = method_paras_split[0].split(':')[1]
-                    try:
-                        para = method_paras_split[1].split(':')[1]
-                    except:
-                        continue
-                    with open( os.path.join(folder, fn) ) as _in:
-                        j = json.load(_in)
-                        score = j['all'][eval_method]
-                    data.append( (method_name+'_'+method_paras_split[1], score) )
-                    
-        data.sort(key=itemgetter(0))
-        header = ['function_name', eval_method]
-
-        data.insert(0, header)
-        with open( 'mb_combined_eval_results_'+os.path.basename(self.corpus_path)+'.csv', 'wb') as f:
-            writer = csv.writer(f)
-            writer.writerows(data)
+    def combined_funcs_significant_test(self, eval_method='map'):
+        if '2011' in self.corpus_path or '2012' in self.corpus_path:
+            query_part = 'title'
+        else:
+            query_part = 'query'
+        optimal_pfms = p.load_optimal_performance('map', query_part)
+        
 
 
 if __name__ == '__main__':
