@@ -334,10 +334,10 @@ if __name__ == '__main__':
 
     parser.add_argument("-mb_decay", "--cal_the_decay_results",
         nargs=1,
-        help="input: function_name and paras")
+        help="input: collection_path")
 
     parser.add_argument("-sig_test", "--significant_test",
-        nargs=1,
+        nargs=2,
         help="input: collection_path and evaluation method")
 
     args = parser.parse_args()
