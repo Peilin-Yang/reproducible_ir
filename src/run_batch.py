@@ -363,12 +363,24 @@ def gen_mb_eval_batch():
     #print all_paras
     gen_batch_framework('eval_results', 'd2', all_paras)
 
-def combine_mb_funcs():
+def gen_combine_mb_funs_batch():
     all_paras = []
     for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        microblog.MicroBlog(collection_path).output_combined_rel_decay_scores()
+        microblog.MicroBlog(collection_path).gen_output_combined_rel_decay_scores_para()    
+
+def combine_mb_funcs(para_file):
+    with open(para_file) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            collection_path = row[0]
+            query_part = row[1]
+            rel_func = row[2]
+            recency_func = row[3]
+            a = float(row[4])
+            microblog.MicroBlog(collection_path).output_combined_rel_decay_scores(query_part, rel_func, recency_func, a)
+
 
 def output_combine_mb_evals(eval_method):
     for q in microblog_collections.query:
@@ -468,8 +480,11 @@ if __name__ == '__main__':
     parser.add_argument("-mb5", "--gen_mb_eval_batch",
         action='store_true',
         help="Evaluate the results")
-    parser.add_argument("-mb6", "--combine_mb_funcs",
+    parser.add_argument("-mb11", "--gen_combine_mb_funcs_batch",
         action='store_true',
+        help="Generate the batch combine funcs of MicroBlog para files")
+    parser.add_argument("-mb12", "--combine_mb_funcs",
+        nargs=1,
         help="Combine the scores of relevance func and decay func")
     parser.add_argument("-mb7", "--output_combine_mb_evals",
         nargs=1,
@@ -542,7 +557,9 @@ if __name__ == '__main__':
         merge_mb_decay_results_atom(args.merge_mb_decay_results_atom[0])
     if args.gen_mb_eval_batch:
         gen_mb_eval_batch()
+    if args.gen_combine_mb_funcs_batch():
+        gen_combine_mb_funcs_batch()
     if args.combine_mb_funcs:
-        combine_mb_funcs()
+        combine_mb_funcs(args.combine_mb_funcs[0])
     if args.output_combine_mb_evals:
         output_combine_mb_evals(args.output_combine_mb_evals[0])
