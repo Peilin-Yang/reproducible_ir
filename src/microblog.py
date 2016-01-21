@@ -335,7 +335,8 @@ class MicroBlog(object):
                             j = json.load(f)
                             methods_sets[rel_func][method] = {k:j[k][eval_method] for k in j if k != 'all'}
                         break
-        print methods_sets
+        for k,v in methods_sets.items():
+            print k, v
 
 
 if __name__ == '__main__':
