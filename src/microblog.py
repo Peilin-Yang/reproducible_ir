@@ -178,6 +178,7 @@ class MicroBlog(object):
 
     def output_combined_rel_decay_scores(self):
         rel_funcs = ['okapi','pivoted','f2exp']
+        all_methods = []
         p = performance.Performances(self.corpus_path)
         scores = {}
         output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
@@ -196,6 +197,7 @@ class MicroBlog(object):
             paths[recency_func] = os.path.join(self.merged_decay_results_root, fn)
         #print paths
         for method, path in paths.items():
+            all_methods.append(method)
             if os.path.exists(os.path.join(output_folder, method)):
                 continue
             scores[method] = {}
@@ -229,18 +231,17 @@ class MicroBlog(object):
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
         scores = {}
-        for v in funcs.values():
-            for method in v:
-                with open(os.path.join(output_folder, method)) as f:
-                    r = csv.reader(f)
-                    scores[method] = {}
-                    for row in r:
-                        qid = row[0]
-                        docid = row[1]
-                        score = float(row[2])
-                        if qid not in scores[method]:
-                            scores[method][qid] = {}
-                        scores[method][qid][docid] = score
+        for method in paths[:
+            with open(os.path.join(output_folder, paths[method])) as f:
+                r = csv.reader(f)
+                scores[method] = {}
+                for row in r:
+                    qid = row[0]
+                    docid = row[1]
+                    score = float(row[2])
+                    if qid not in scores[method]:
+                        scores[method][qid] = {}
+                    scores[method][qid][docid] = score
 
         for rel_func in rel_funcs:            
             for method in scores:
