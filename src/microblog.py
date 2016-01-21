@@ -15,6 +15,7 @@ from inspect import currentframe, getframeinfo
 import argparse
 import math
 import numpy as np
+from scipy import stats
 
 import performance
 
@@ -335,8 +336,15 @@ class MicroBlog(object):
                             j = json.load(f)
                             methods_sets[rel_func][method] = {k:j[k][eval_method] for k in j if k != 'all'}
                         break
-        for k in methods_sets:
-            print k, methods_sets[k].keys()
+
+        for rel_func in methods_sets:
+            for method in methods_sets[k]:
+                base_list = [methods_sets[rel_func]['base'][k] for k in methods_sets[rel_func]['base']]
+                if method == 'base':
+                    continue
+                other_list = [methods_sets[rel_func][method][k] for k in methods_sets[rel_func]['base']]
+                ttest = stats.ttest_rel(base_list, other_list)
+                print method, ttest[0], ttest[1]/2.0
 
 
 
