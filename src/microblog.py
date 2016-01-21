@@ -320,6 +320,7 @@ class MicroBlog(object):
             method = p[0]
             optimal_para = p[1]
             score = p[2]
+            print method, optimal_para
             if method in rel_funcs:
                 if method not in methods_sets:
                     methods_sets[method] = {}
