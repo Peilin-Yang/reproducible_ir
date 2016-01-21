@@ -241,6 +241,7 @@ class MicroBlog(object):
                     output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
                     if not os.path.exists(output_path):
                         all_paras.append( (self.corpus_path, query_part, rel_func, recency_func, a) )
+        print all_paras
         return all_paras
 
 
