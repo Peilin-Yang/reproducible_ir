@@ -368,7 +368,8 @@ def gen_combine_mb_funcs_batch():
     for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        microblog.MicroBlog(collection_path).gen_output_combined_rel_decay_scores_para()    
+        all_paras.extend(microblog.MicroBlog(collection_path).gen_output_combined_rel_decay_scores_para() )   
+    gen_batch_framework('combine_mb_funs', 'mb12', all_paras)
 
 def combine_mb_funcs(para_file):
     with open(para_file) as f:
