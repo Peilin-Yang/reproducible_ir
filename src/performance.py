@@ -126,6 +126,7 @@ class Performances(object):
 
     def print_optimal_performance(self, evaluation_method='map', query_part='title'):
         optimal_performances = self.load_optimal_performance(evaluation_method, query_part)
+        optimal_performances.sort(key=itemgetter(0, 1, 2))
         for ele in optimal_performances:
             print ele[0], ele[1], ele[2]
 
