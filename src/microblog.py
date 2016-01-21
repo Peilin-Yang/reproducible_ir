@@ -329,7 +329,7 @@ class MicroBlog(object):
                     methods_sets[method]['base'] = {k:j[k][eval_method] for k in j if k != 'all'}
             else:
                 for rel_func in rel_funcs:
-                    if rel_func in method:
+                    if rel_func in method and '4h' not in method:
                         if rel_func not in methods_sets:
                             methods_sets[rel_func] = {}
                         with open( os.path.join(self.eval_combine_root, query_part+'-method:'+method+','+optimal_para) ) as f:
