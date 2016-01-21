@@ -184,14 +184,13 @@ class MicroBlog(object):
         output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
-        for rel_func in rel_funcs:
-            if '2011' in self.corpus_path or '2012' in self.corpus_path:
-                query_part = 'title'
-            else:
-                query_part = 'query'
-            optimal_pfms = p.load_optimal_performance('map', query_part)
-            paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in rel_func}
+        if '2011' in self.corpus_path or '2012' in self.corpus_path:
+            query_part = 'title'
+        else:
+            query_part = 'query'
+        optimal_pfms = p.load_optimal_performance('map', query_part)
 
+        paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for rel_func in optimal_pfms if ele[0] in rel_funcs}
         for fn in os.listdir(self.merged_decay_results_root):
             recency_func = ':'.join(fn.split(':')[1:])
             paths[recency_func] = os.path.join(self.merged_decay_results_root, fn)
