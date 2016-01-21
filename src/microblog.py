@@ -176,7 +176,8 @@ class MicroBlog(object):
         self.output_results(output_fn, qid, res, method_n_para)
 
 
-    def output_combined_rel_decay_scores(self):
+    def gen_output_combined_rel_decay_scores_para(self):
+        all_paras = []
         rel_funcs = ['okapi','pivoted','f2exp']
         all_methods = []
         p = performance.Performances(self.corpus_path)
@@ -229,8 +230,24 @@ class MicroBlog(object):
                         for did in scores[method][qid]: 
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
+
+        for rel_func in rel_funcs:            
+            for method in scores:
+                if method in rel_funcs:
+                    continue
+                recency_func = method
+                name = rel_func+'_'+recency_func
+                for a in np.arange(0.1, 1.0, 0.1):
+                    output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
+                    if not os.path.exists(output_path):
+                        all_paras.append( (self.corpus_path, query_part, rel_func, recency_func, a) )
+        return all_paras
+
+
+    def output_combined_rel_decay_scores(self, query_part, rel_func, recency_func, a):
+        output_folder = os.path.join(self.corpus_path, 'optimal_scores_norm')
         scores = {}
-        for method in all_methods:
+        for method in [rel_func, recency_func]:
             with open( os.path.join(output_folder, method) ) as f:
                 r = csv.reader(f)
                 scores[method] = {}
@@ -242,23 +259,16 @@ class MicroBlog(object):
                         scores[method][qid] = {}
                     scores[method][qid][docid] = score
 
-        for rel_func in rel_funcs:            
-            for method in scores:
-                if method in rel_funcs:
-                    continue
-                recency_func = method
-                name = rel_func+'_'+recency_func
-                for a in np.arange(0.1, 1.0, 0.1):
-                    output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
-                    with open(output_path, 'wb') as f:
-                        for qid in scores[recency_func]:
-                            for docid in scores[recency_func][qid]:
-                                #print scores[recency_func][qid][docid]
-                                score = a*scores[recency_func][qid][docid]
-                                if qid in scores[rel_func] and docid in scores[rel_func][qid]:
-                                    score += (1-a)*scores[rel_func][qid][docid]
-                                f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
-
+        name = rel_func+'_'+recency_func
+        output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
+        with open(output_path, 'wb') as f:
+            for qid in scores[recency_func]:
+                for docid in scores[recency_func][qid]:
+                    #print scores[recency_func][qid][docid]
+                    score = a*scores[recency_func][qid][docid]
+                    if qid in scores[rel_func] and docid in scores[rel_func][qid]:
+                        score += (1-a)*scores[rel_func][qid][docid]
+                    f.write('%s Q0 %s 0 %f %s\n' % (qid, docid, score, name))
 
     def gen_merge_decay_results_paras(self, total_query_cnt, use_which_part=['title']):
         all_paras = []
