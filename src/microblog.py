@@ -317,13 +317,13 @@ class MicroBlog(object):
         optimal_pfms = performance.Performances(self.corpus_path).load_optimal_performance('map', query_part)
         methods_sets = {}
         for p in optimal_pfms:
+            print p
             method = p[0]
-            optimal_para = p[1]
-            para_name = p[2]
+            optimal_para = p[2]
             if method in rel_funcs:
                 if method not in methods_sets:
                     methods_sets[method] = {}
-                with open( os.path.join(self.eval_rel_root, query_part+'-'+method+','+para_name+':'+str(optimal_para)) ) as f:
+                with open( os.path.join(self.eval_rel_root, query_part+'-'+method+','+optimal_para) ) as f:
                     j = json.load(f)
                     methods_sets[method]['base'] = {k:j[k][eval_method] for k in j if k != 'all'}
         print methods_sets
