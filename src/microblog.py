@@ -314,7 +314,7 @@ class MicroBlog(object):
             query_part = 'title'
         else:
             query_part = 'query'
-        optimal_pfms = p.load_optimal_performance('map', query_part)
+        optimal_pfms = performance.Performances(self.corpus_path).load_optimal_performance('map', query_part)
         methods_sets = {}
         for p in optimal_pfms:
             method = p[0]
