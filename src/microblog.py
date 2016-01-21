@@ -231,7 +231,6 @@ class MicroBlog(object):
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
 
-        print all_methods
         for rel_func in rel_funcs:            
             for method in all_methods:
                 if method in rel_funcs:
@@ -242,7 +241,6 @@ class MicroBlog(object):
                     output_path = os.path.join(self.merged_combine_results_root, query_part+'-method:'+name+',a:%.1f'%a)
                     if not os.path.exists(output_path):
                         all_paras.append( (self.corpus_path, query_part, rel_func, recency_func, a) )
-        print all_paras
         return all_paras
 
 
