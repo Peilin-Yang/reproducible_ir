@@ -478,18 +478,21 @@ if __name__ == '__main__':
     parser.add_argument("-mb4", "--merge_mb_decay_results_atom",
         nargs=1,
         help="merge the results.")
-    parser.add_argument("-mb5", "--gen_mb_eval_batch",
-        action='store_true',
-        help="Evaluate the results")
+
     parser.add_argument("-mb11", "--gen_combine_mb_funcs_batch",
         action='store_true',
         help="Generate the batch combine funcs of MicroBlog para files")
     parser.add_argument("-mb12", "--combine_mb_funcs",
         nargs=1,
         help="Combine the scores of relevance func and decay func")
+    
     parser.add_argument("-mb7", "--output_combine_mb_evals",
         nargs=1,
         help="Outputs all evals for the given methods. inputs: [evaluation_method]")
+
+    parser.add_argument("-mb50", "--gen_mb_eval_batch",
+        action='store_true',
+        help="Evaluate the results")
 
     args = parser.parse_args()
 
