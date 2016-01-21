@@ -232,6 +232,7 @@ class MicroBlog(object):
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
         scores = {}
         for method, path in paths.items():
+            print path
             with open(path) as f:
                 r = csv.reader(f)
                 scores[method] = {}
