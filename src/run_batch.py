@@ -383,11 +383,11 @@ def combine_mb_funcs(para_file):
             microblog.MicroBlog(collection_path).output_combined_rel_decay_scores(query_part, rel_func, recency_func, a)
 
 
-def output_combine_mb_evals(eval_method):
+def sigtest_combine_mb(eval_method):
     for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        microblog.MicroBlog(collection_path).output_combine_evals(eval_method)
+        microblog.MicroBlog(collection_path).combined_funcs_significant_test(eval_method)
 
 
 if __name__ == '__main__':
@@ -486,9 +486,9 @@ if __name__ == '__main__':
         nargs=1,
         help="Combine the scores of relevance func and decay func")
     
-    parser.add_argument("-mb7", "--output_combine_mb_evals",
+    parser.add_argument("-mb7", "--sigtest_combine_mb",
         nargs=1,
-        help="Outputs all evals for the given methods. inputs: [evaluation_method]")
+        help="Significant Test. inputs: [evaluation_method]")
 
     parser.add_argument("-mb50", "--gen_mb_eval_batch",
         action='store_true',
@@ -565,5 +565,5 @@ if __name__ == '__main__':
         gen_combine_mb_funcs_batch()
     if args.combine_mb_funcs:
         combine_mb_funcs(args.combine_mb_funcs[0])
-    if args.output_combine_mb_evals:
-        output_combine_mb_evals(args.output_combine_mb_evals[0])
+    if args.sigtest_combine_mb:
+        sigtest_combine_mb(args.sigtest_combine_mb[0])
