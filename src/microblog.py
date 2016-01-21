@@ -231,8 +231,9 @@ class MicroBlog(object):
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
 
+        print all_methods
         for rel_func in rel_funcs:            
-            for method in scores:
+            for method in all_methods:
                 if method in rel_funcs:
                     continue
                 recency_func = method
