@@ -338,7 +338,7 @@ class MicroBlog(object):
                         break
 
         for rel_func in methods_sets:
-            for method in methods_sets[k]:
+            for method in methods_sets[rel_func]:
                 base_list = [methods_sets[rel_func]['base'][k] for k in methods_sets[rel_func]['base']]
                 if method == 'base':
                     continue
