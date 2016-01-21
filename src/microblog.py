@@ -190,7 +190,7 @@ class MicroBlog(object):
             query_part = 'query'
         optimal_pfms = p.load_optimal_performance('map', query_part)
 
-        paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for rel_func in optimal_pfms if ele[0] in rel_funcs}
+        paths = {ele[0]:os.path.join(self.merged_rel_results_root, query_part+'-method:'+ele[0]+','+ele[2]) for ele in optimal_pfms if ele[0] in rel_funcs}
         for fn in os.listdir(self.merged_decay_results_root):
             recency_func = ':'.join(fn.split(':')[1:])
             paths[recency_func] = os.path.join(self.merged_decay_results_root, fn)
