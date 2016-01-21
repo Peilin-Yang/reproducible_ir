@@ -387,6 +387,9 @@ def sigtest_combine_mb(eval_method):
     for q in microblog_collections.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
+        print 
+        print collection_name
+        print '='*30
         microblog.MicroBlog(collection_path).combined_funcs_significant_test(eval_method)
 
 
