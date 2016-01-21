@@ -343,7 +343,7 @@ class MicroBlog(object):
                 if method == 'base':
                     continue
                 print method
-                other_list = [methods_sets[rel_func][method][k] for k in methods_sets[rel_func]['base'] if k in methods_sets[rel_func][method] else 0]
+                other_list = [methods_sets[rel_func][method][k] if k in methods_sets[rel_func][method] else 0 for k in methods_sets[rel_func]['base']]
                 ttest = stats.ttest_rel(base_list, other_list)
                 print method, ttest[0], ttest[1]/2.0
 
