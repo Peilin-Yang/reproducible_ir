@@ -81,6 +81,7 @@ class MicroBlog(object):
         self.merged_combine_results_root = os.path.join(self.corpus_path, 'merged_combined_results')
         if not os.path.exists(self.merged_combine_results_root):
             os.makedirs(self.merged_combine_results_root)
+        self.eval_rel_root = os.path.join(self.corpus_path, 'evals')
         self.eval_decay_root = os.path.join(self.corpus_path, 'evals_mb_decay')
         if not os.path.exists(self.eval_decay_root):
             os.makedirs(self.eval_decay_root)
@@ -308,12 +309,24 @@ class MicroBlog(object):
 
 
     def combined_funcs_significant_test(self, eval_method='map'):
+        rel_funcs = ['okapi','pivoted','f2exp']
         if '2011' in self.corpus_path or '2012' in self.corpus_path:
             query_part = 'title'
         else:
             query_part = 'query'
         optimal_pfms = p.load_optimal_performance('map', query_part)
-        
+        methods_sets = {}
+        for p in optimal_pfms:
+            method = p[0]
+            optimal_para = p[1]
+            score = p[2]
+            if method in rel_funcs:
+                if method not in methods_sets:
+                    methods_sets[method] = {}
+                with open( os.path.join(self.eval_rel_root, method) ) as f:
+                    j = json.load(f)
+                    methods_sets[method]['base'] = {k:j[k][eval_method] for k in j if k != 'all'}
+        print methods_sets
 
 
 if __name__ == '__main__':
@@ -323,9 +336,15 @@ if __name__ == '__main__':
         nargs=1,
         help="input: function_name and paras")
 
+    parser.add_argument("-sig_test", "--significant_test",
+        nargs=1,
+        help="input: collection_path and evaluation method")
+
     args = parser.parse_args()
 
     if args.cal_the_decay_results:
         MicroBlog(args.cal_the_decay_results[0]).cal_the_decay_results()
 
+    if args.significant_test:
+        MicroBlog(args.significant_test[0]).combined_funcs_significant_test(args.significant_test[1])
         
