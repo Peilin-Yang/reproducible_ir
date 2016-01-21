@@ -230,7 +230,6 @@ class MicroBlog(object):
                             scores[method][qid][did] = (scores[method][qid][did]-min_s)/(max_s-min_s)
                             f.write('%s,%s,%f\n' % (qid, did, scores[method][qid][did]))
         scores = {}
-        print all_methods
         for method in all_methods:
             with open( os.path.join(output_folder, method) ) as f:
                 r = csv.reader(f)
@@ -242,8 +241,6 @@ class MicroBlog(object):
                     if qid not in scores[method]:
                         scores[method][qid] = {}
                     scores[method][qid][docid] = score
-
-        print scores.keys()
 
         for rel_func in rel_funcs:            
             for method in scores:
