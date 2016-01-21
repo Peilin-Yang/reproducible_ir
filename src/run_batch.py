@@ -363,7 +363,7 @@ def gen_mb_eval_batch():
     #print all_paras
     gen_batch_framework('eval_results', 'd2', all_paras)
 
-def gen_combine_mb_funs_batch():
+def gen_combine_mb_funcs_batch():
     all_paras = []
     for q in microblog_collections.query:
         collection_name = q['collection']
