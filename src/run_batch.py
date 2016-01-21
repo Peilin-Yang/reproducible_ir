@@ -557,7 +557,7 @@ if __name__ == '__main__':
         merge_mb_decay_results_atom(args.merge_mb_decay_results_atom[0])
     if args.gen_mb_eval_batch:
         gen_mb_eval_batch()
-    if args.gen_combine_mb_funcs_batch():
+    if args.gen_combine_mb_funcs_batch:
         gen_combine_mb_funcs_batch()
     if args.combine_mb_funcs:
         combine_mb_funcs(args.combine_mb_funcs[0])
