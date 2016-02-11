@@ -44,12 +44,15 @@ class Performances(object):
                     method_paras = '-'.join(fn.split('-')[1:])
                     method_paras_split = method_paras.split(',')
                     method_name = method_paras_split[0].split(':')[1]
-                    label = query_part+'-'+method_name
+                    if 'perturb' in method_name:
+                        method_paras_split = {ele.split(':')[0]:ele.split(':')[1] for ele in method_paras_split}
+                        label = query_part+'-'+method_name+'_'+method_paras_split['perturb_type']
+                    else:
+                        label = query_part+'-'+method_name
                     compare_results_fn = os.path.join(self.performances_root, label)
                     if label not in all_results:
                         all_results[label] = []
                     all_results[label].append( os.path.join(folder, fn) )
-
                 for label in all_results:
                     tmp = [ self.corpus_path, os.path.join(self.performances_root, label) ]
                     tmp.extend( all_results[label] )
