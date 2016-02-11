@@ -78,10 +78,14 @@ class Performances(object):
                         para = method_paras_split[1].split(':')[1]
                     except:
                         continue
+                    if 'perturb' in method_name:
+                        method_paras_split = {ele.split(':')[0]:ele.split(':')[1] for ele in method_paras_split}
+                        method_name += '_'+method_paras_split['perturb_type']
+                        para = method_paras_split['perturb_var']
                     with open( os.path.join(folder, fn) ) as _in:
                         j = json.load(_in)
                         score = j['all'][evaluation_method]
-                    data.append( (method_name+'_'+method_paras_split[1], score) )
+                    data.append( (method_name+'_'+para, score) )
                     
         data.sort(key=itemgetter(0))
         header = ['function_name', evaluation_method]
