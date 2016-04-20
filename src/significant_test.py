@@ -26,8 +26,11 @@ class SignificantTest(object):
         self.evaluation_root = os.path.join(self.corpus_path, 'evals')
         self.performance_root = os.path.join(self.corpus_path, 'performances')
         self.st_root = os.path.join(self.corpus_path, 'significant_test')
+        self.pairwise_st_root = os.path.join(self.corpus_path, 'pairwise_significant_test')
         if not os.path.exists(self.st_root):
             os.makedirs(self.st_root)
+        if not os.path.exists(self.pairwise_st_root):
+            os.makedirs(self.pairwise_st_root)
 
     def sig_test_for_optimal(self, measure='map', use_which_part=['title']):
         other_collection = self.corpus_path+'_nostopwords'
@@ -93,6 +96,7 @@ class SignificantTest(object):
         with open('g.json') as f:
             j = json.load(f)
             all_methods = [m['name'] for m in j['methods']]
+            methods_mapping = {m['name']:m['formal_name'] for m in j['methods']}
 
         all_results = {}
         for fn in os.listdir(self.performance_root):
@@ -114,20 +118,27 @@ class SignificantTest(object):
             if query_part not in all_results:
                 all_results[query_part] = {}
             all_results[query_part][method] = this_all_perform
-                    
+        
+        final_results = {}
         for query_part in all_results:
             for ele in itertools.permutations(all_methods, 2):
                 m1_list = [all_results[query_part][ele[0]][k] for k in all_results[query_part][ele[0]] if k in all_results[query_part][ele[1]]]
                 m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[1]]]
                 t, p = stats.ttest_rel(m1_list, m2_list)
-                print ele[0], ele[1], t, p/2.0
-                # with open(os.path.join(self.st_root, query_part), 'wb') as f:
-                #     for method in all_results[query_part]:
-                #         f.write('%s,%.3f,%.3f,%.3f,%.3f\n' % 
-                #             (method, all_results[query_part][method][0],
-                #                 all_results[query_part][method][1],
-                #                 all_results[query_part][method][2][0],
-                #                 all_results[query_part][method][2][1]/2.0))
+                m1 = methods_mapping[ele[0]]
+                m2 = methods_mapping[ele[1]]
+                if p/2.0 < 0.05:
+                    if t > 0:
+                        if m1 not in final_results:
+                            final_results[m1] = []
+                        final_results[m1].append(m2)
+                    else:
+                        if m2 not in final_results:
+                            final_results[m2] = []
+                        final_results[m2].append(m1)
+
+        with open(os.path.join(self.pairwise_st_root, query_part), 'wb') as f:
+            json.dump(final_results, f, indent=2, sort_keys=True)
 
 
 if __name__ == '__main__':
