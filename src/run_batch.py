@@ -53,7 +53,10 @@ def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
             bf.write('%s\n' % (para_file_fn))
             with open(para_file_fn, 'wb') as f:
                 writer = csv.writer(f)
-                writer.writerows(ele)
+                if len(ele) == 1:
+                    writer.writerow(ele)
+                else:
+                    writer.writerows(ele)
     command = 'python %s -%s' % (
         inspect.getfile(inspect.currentframe()), \
         batch_pythonscript_para
@@ -300,7 +303,7 @@ def gen_pairwise_significant_test():
         collection_path = os.path.join(_root, collection_name)
         all_paras.append( collection_path )
     print all_paras
-    #gen_batch_framework('pairwise_significant_test', 'sig4', all_paras)
+    gen_batch_framework('pairwise_significant_test', 'sig4', all_paras)
 
 def run_pairwise_significant_test(para_file):
     with open(para_file) as f:
