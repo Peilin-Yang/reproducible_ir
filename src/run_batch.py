@@ -298,7 +298,7 @@ def gen_pairwise_significant_test():
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        all_paras.append( collection_path )
+        all_paras.extend( [collection_path] )
     gen_batch_framework('pairwise_significant_test', 'sig4', all_paras)
 
 def run_pairwise_significant_test(para_file):
