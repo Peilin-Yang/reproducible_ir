@@ -96,26 +96,24 @@ class SignificantTest(object):
 
         all_results = {}
         for fn in os.listdir(self.performance_root):
-            print fn
             query_part, method = fn.split('-')
             if query_part not in use_which_part or method not in all_methods:
                 continue
-            if os.path.exists(os.path.join(other_perform_root, fn)):
-                with open(os.path.join(self.performance_root, fn)) as pf1:
-                    j = json.load(pf1)
-                    this_opt_perform = j[measure]['max']['value']
-                    this_opt_para = j[measure]['max']['para']
-                #print query_part, method, this_opt_perform, other_opt_perform
-                this_eval_fn = os.path.join(self.evaluation_root, query_part+'-method:'+method)
-                if this_opt_para:
-                    this_eval_fn += ','+this_opt_para
-                with open(this_eval_fn) as f:
-                    j = json.load(f)
-                    this_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
-                #print method, this_opt_para, other_opt_para
-                if query_part not in all_results:
-                    all_results[query_part] = {}
-                all_results[query_part][method] = this_all_perform
+            with open(os.path.join(self.performance_root, fn)) as pf1:
+                j = json.load(pf1)
+                this_opt_perform = j[measure]['max']['value']
+                this_opt_para = j[measure]['max']['para']
+            #print query_part, method, this_opt_perform, other_opt_perform
+            this_eval_fn = os.path.join(self.evaluation_root, query_part+'-method:'+method)
+            if this_opt_para:
+                this_eval_fn += ','+this_opt_para
+            with open(this_eval_fn) as f:
+                j = json.load(f)
+                this_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
+            #print method, this_opt_para, other_opt_para
+            if query_part not in all_results:
+                all_results[query_part] = {}
+            all_results[query_part][method] = this_all_perform
                     
         for query_part in all_results:
             for ele in itertools.permutations(all_methods, 2):
