@@ -90,14 +90,13 @@ class SignificantTest(object):
         Compare each pair of ranking models for each collection.
         See whether one model outperforms the other model.
         """
-        print '111'
         with open('g.json') as f:
             j = json.load(f)
             all_methods = [m['name'] for m in j['methods']]
 
         all_results = {}
         for fn in os.listdir(self.performance_root):
-            #print fn
+            print fn
             query_part, method = fn.split('-')
             if query_part not in use_which_part or method not in all_methods:
                 continue
