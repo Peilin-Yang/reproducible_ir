@@ -110,7 +110,7 @@
       {
         "c": [0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9]
       }
-    },
+    }, 
     {
       "year": 2010,
       "paper": "Information-Based Models for Ad Hoc IR",
