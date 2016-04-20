@@ -93,7 +93,7 @@ class SignificantTest(object):
         Compare each pair of ranking models for each collection.
         See whether one model outperforms the other model.
         """
-        if 'clueweb' in self.collection_path:
+        if 'clueweb' in self.corpus_path:
             measure = 'err@20'
 
         with open('g.json') as f:
