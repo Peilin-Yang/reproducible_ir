@@ -293,6 +293,20 @@ def output_significant_test_for_optimal():
         collection_path = os.path.join(_root, collection_name)
         SignificantTest(collection_path).sig_test_for_optimal()
 
+def gen_pairwise_significant_test():
+    all_paras = []
+    for q in g.query:
+        collection_name = q['collection']
+        collection_path = os.path.join(_root, collection_name)
+        all_paras.extend( collection_path )
+    gen_batch_framework('pairwise_significant_test', 'sig4', all_paras)
+
+def pairwise_significant_test_atom(para_file):
+    with open(para_file) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            collection_path = row[0]
+            SignificantTest(collection_path).pairwise_sig_test()
 
 def output_the_query_stats():
     with open('g.json') as f:
@@ -468,6 +482,12 @@ if __name__ == '__main__':
     parser.add_argument("-sig1", "--output_significant_test_for_optimal",
         action='store_true',
         help="") 
+    parser.add_argument("-sig3", "--gen_pairwise_significant_test",
+        action='store_true',
+        help="Significant test for each pair of ranking models")
+    parser.add_argument("-sig4", "--pairwise_significant_test_atom",
+        nargs=1,
+        help="Significant test for each pair of ranking models")
 
     parser.add_argument("-mb1", "--gen_microblog_run_decay_batch",
         action='store_true',
@@ -543,6 +563,10 @@ if __name__ == '__main__':
         
     if args.output_significant_test_for_optimal:
         output_significant_test_for_optimal()
+    if args.gen_pairwise_significant_test:
+        gen_pairwise_significant_test()
+    if args.pairwise_significant_test_atom:
+        run_pairwise_significant_test(args.pairwise_significant_test_atom[0])
 
     if args.output_evals:
         output_batch_evals(args.output_evals[0])
