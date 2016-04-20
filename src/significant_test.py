@@ -130,12 +130,12 @@ class SignificantTest(object):
                 if p/2.0 < 0.05:
                     if t > 0:
                         if m1 not in final_results:
-                            final_results[m1] = []
-                        final_results[m1].append(m2)
+                            final_results[m1] = set()
+                        final_results[m1].add(m2)
                     else:
                         if m2 not in final_results:
                             final_results[m2] = []
-                        final_results[m2].append(m1)
+                        final_results[m2].add(m1)
 
         with open(os.path.join(self.pairwise_st_root, query_part), 'wb') as f:
             json.dump(final_results, f, indent=2, sort_keys=True)
