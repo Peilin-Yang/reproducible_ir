@@ -2,6 +2,7 @@
 import sys,os
 import json
 from inspect import currentframe, getframeinfo
+import itertools
 import argparse
 
 from scipy import stats
@@ -89,7 +90,6 @@ class SignificantTest(object):
         Compare each pair of ranking models for each collection.
         See whether one model outperforms the other model.
         """
-        return
         with open('g.json') as f:
             j = json.load(f)
             all_methods = [m['name'] for m in j['methods']]
@@ -113,19 +113,24 @@ class SignificantTest(object):
                     j = json.load(f)
                     this_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
                 #print method, this_opt_para, other_opt_para
-                this_all_perform_list = [this_all_perform[k] for k in this_all_perform if k in other_all_perform]
                 if query_part not in all_results:
                     all_results[query_part] = {}
-                all_results[query_part][method] = [this_opt_perform, other_opt_perform, 
-                    stats.ttest_rel(this_all_perform_list, other_all_perform_list)]
+                all_results[query_part][method] = this_all_perform
+                    
         for query_part in all_results:
-            with open(os.path.join(self.st_root, query_part), 'wb') as f:
-                for method in all_results[query_part]:
-                    f.write('%s,%.3f,%.3f,%.3f,%.3f\n' % 
-                        (method, all_results[query_part][method][0],
-                            all_results[query_part][method][1],
-                            all_results[query_part][method][2][0],
-                            all_results[query_part][method][2][1]/2.0))
+            for ele in itertools.permutations(all_methods, 2):
+                m1_list = [all_results[query_part][ele[0]][k] for k in all_results[query_part][ele[0]] if k in all_results[query_part][ele[1]]]
+                m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[1]]]
+                print m1_list, m2_list
+                exit()
+                stats.ttest_rel(this_all_perform_list, other_all_perform_list)
+                # with open(os.path.join(self.st_root, query_part), 'wb') as f:
+                #     for method in all_results[query_part]:
+                #         f.write('%s,%.3f,%.3f,%.3f,%.3f\n' % 
+                #             (method, all_results[query_part][method][0],
+                #                 all_results[query_part][method][1],
+                #                 all_results[query_part][method][2][0],
+                #                 all_results[query_part][method][2][1]/2.0))
 
 
 if __name__ == '__main__':
