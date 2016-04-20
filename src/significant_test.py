@@ -119,9 +119,8 @@ class SignificantTest(object):
             for ele in itertools.permutations(all_methods, 2):
                 m1_list = [all_results[query_part][ele[0]][k] for k in all_results[query_part][ele[0]] if k in all_results[query_part][ele[1]]]
                 m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[1]]]
-                print m1_list, m2_list
-                exit()
-                stats.ttest_rel(this_all_perform_list, other_all_perform_list)
+                t, p = stats.ttest_rel(m1_list, m2_list)
+                print ele[0], ele[1], t, p/2.0
                 # with open(os.path.join(self.st_root, query_part), 'wb') as f:
                 #     for method in all_results[query_part]:
                 #         f.write('%s,%.3f,%.3f,%.3f,%.3f\n' % 
