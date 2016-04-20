@@ -298,10 +298,10 @@ def gen_pairwise_significant_test():
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
-        all_paras.extend( collection_path )
+        all_paras.append( collection_path )
     gen_batch_framework('pairwise_significant_test', 'sig4', all_paras)
 
-def pairwise_significant_test_atom(para_file):
+def run_pairwise_significant_test(para_file):
     with open(para_file) as f:
         reader = csv.reader(f)
         for row in reader:

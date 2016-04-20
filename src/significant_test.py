@@ -107,20 +107,13 @@ class SignificantTest(object):
                     this_opt_para = j[measure]['max']['para']
                 #print query_part, method, this_opt_perform, other_opt_perform
                 this_eval_fn = os.path.join(self.evaluation_root, query_part+'-method:'+method)
-                other_eval_fn = os.path.join(other_evaluation_root, query_part+'-method:'+method)
                 if this_opt_para:
                     this_eval_fn += ','+this_opt_para
-                if other_opt_para:
-                    other_eval_fn += ','+other_opt_para
                 with open(this_eval_fn) as f:
                     j = json.load(f)
                     this_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
-                with open(other_eval_fn) as f:
-                    j = json.load(f)
-                    other_all_perform = {qid:j[qid][measure] for qid in j if qid != 'all'}
                 #print method, this_opt_para, other_opt_para
                 this_all_perform_list = [this_all_perform[k] for k in this_all_perform if k in other_all_perform]
-                other_all_perform_list = [other_all_perform[k] for k in this_all_perform if k in other_all_perform]
                 if query_part not in all_results:
                     all_results[query_part] = {}
                 all_results[query_part][method] = [this_opt_perform, other_opt_perform, 
