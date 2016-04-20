@@ -136,7 +136,8 @@ class SignificantTest(object):
                         if m2 not in final_results:
                             final_results[m2] = set()
                         final_results[m2].add(m1)
-
+        for m in final_results:
+            final_results[m] = list(final_results[m])
         with open(os.path.join(self.pairwise_st_root, query_part), 'wb') as f:
             json.dump(final_results, f, indent=2, sort_keys=True)
 
