@@ -94,7 +94,7 @@ class SignificantTest(object):
         See whether one model outperforms the other model.
         """
         if 'clueweb' in self.corpus_path:
-            measure = 'err@20'
+            measure = 'err_cut_20'
 
         with open('g.json') as f:
             j = json.load(f)
