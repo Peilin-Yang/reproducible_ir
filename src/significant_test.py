@@ -90,6 +90,7 @@ class SignificantTest(object):
         Compare each pair of ranking models for each collection.
         See whether one model outperforms the other model.
         """
+        print '111'
         with open('g.json') as f:
             j = json.load(f)
             all_methods = [m['name'] for m in j['methods']]
