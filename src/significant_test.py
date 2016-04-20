@@ -134,7 +134,7 @@ class SignificantTest(object):
                         final_results[m1].add(m2)
                     else:
                         if m2 not in final_results:
-                            final_results[m2] = []
+                            final_results[m2] = set()
                         final_results[m2].add(m1)
 
         with open(os.path.join(self.pairwise_st_root, query_part), 'wb') as f:
