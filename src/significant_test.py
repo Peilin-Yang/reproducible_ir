@@ -123,7 +123,7 @@ class SignificantTest(object):
         for query_part in all_results:
             for ele in itertools.permutations(all_methods, 2):
                 m1_list = [all_results[query_part][ele[0]][k] for k in all_results[query_part][ele[0]] if k in all_results[query_part][ele[1]]]
-                m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[1]]]
+                m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[0]]]
                 print ele[0], ele[1], m1_list, m2_list
                 t, p = stats.ttest_rel(m1_list, m2_list)
                 m1 = methods_mapping[ele[0]]
