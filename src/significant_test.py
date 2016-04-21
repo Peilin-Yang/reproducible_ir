@@ -146,7 +146,11 @@ class SignificantTest(object):
                 elif cal_type == 1 or cal_type == 2:
                     critieria = p
                 if critieria < 0.05:
-                    if t > 0:
+                    if cal_type == 0 or cal_type == 1:
+                        positive = (t > 0)
+                    elif cal_type == 2:
+                        positive = (np.mean(m1_list) > np.mean(m2_list))
+                    if positive:
                         if m1 not in final_results:
                             final_results[m1] = set()
                         final_results[m1].add(m2)
