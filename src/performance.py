@@ -56,7 +56,7 @@ class Performances(object):
                 for label in all_results:
                     tmp = [ self.corpus_path, os.path.join(self.performances_root, label) ]
                     tmp.extend( all_results[label] )
-                    all_paras.append(tmp)
+                    all_paras.append(tuple(tmp))
 
         return all_paras
 
