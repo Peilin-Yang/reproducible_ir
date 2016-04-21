@@ -1,7 +1,7 @@
 import query
 import evaluation
 
-query = [ 
+query = [  
   {
     "collection": "disk12",
     "collection_formal_name": "disk12",
