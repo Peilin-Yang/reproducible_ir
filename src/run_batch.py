@@ -54,7 +54,7 @@ def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
             with open(para_file_fn, 'wb') as f:
                 writer = csv.writer(f)
                 if len(ele) == 1:
-                    writer.writerow(ele)
+                    writer.writerow(ele[0])
                 else:
                     writer.writerows(ele)
     command = 'python %s -%s' % (
