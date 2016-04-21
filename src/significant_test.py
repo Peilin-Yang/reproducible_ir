@@ -6,6 +6,7 @@ import itertools
 import argparse
 
 from scipy import stats
+import numpy as np
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
