@@ -84,6 +84,26 @@
     {
       "year": 2005,
       "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
+      "name": "f1exp",
+      "formal_name": "F1EXP",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
+      "name": "f1log",
+      "formal_name": "F1LOG",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
       "name": "f2exp",
       "formal_name": "F2EXP",
       "paras": 
@@ -96,6 +116,26 @@
       "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
       "name": "f2log",
       "formal_name": "F2LOG",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
+      "name": "f3exp",
+      "formal_name": "F3EXP",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      }
+    },
+    {
+      "year": 2005,
+      "paper": "An Exploration of Axiomatic Approaches to Information Retrieval",
+      "name": "f3log",
+      "formal_name": "F3LOG",
       "paras": 
       {
         "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
@@ -135,6 +175,17 @@
       "paras": 
       {
         "b": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+        "delta": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
+      }
+    },
+    {
+      "year": 2011,
+      "paper": "Lower-Bounding Term Frequency Normalization",
+      "name": "lowerboundingpiv+",
+      "formal_name": "PIV+",
+      "paras": 
+      {
+        "s": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         "delta": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
       }
     },
