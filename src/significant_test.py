@@ -132,6 +132,7 @@ class SignificantTest(object):
                 if cal_type == 2:
                     try:
                         t, p = stats.wilcoxon(m1_list, m2_list)
+                        print methods_mapping[ele[0]], methods_mapping[ele[1]]
                         print t, p
                         raw_input()
                     except: # which means that the two lists are exactly the same
