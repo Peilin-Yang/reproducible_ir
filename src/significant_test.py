@@ -88,10 +88,12 @@ class SignificantTest(object):
                             all_results[query_part][method][2][0],
                             all_results[query_part][method][2][1]/2.0))
 
-    def pairwise_sig_test(self, measure='map', use_which_part=['title']):
+    def pairwise_sig_test(self, measure='map', use_which_part=['title'], cal_type=0):
         """
         Compare each pair of ranking models for each collection.
         See whether one model outperforms the other model.
+        cal_type: 
+        0-one tailed paired t-test; 1-two tailed paired t-test; 2-two tailed paired wilcoxon
         """
         if 'clueweb' in self.corpus_path:
             measure = 'err_cut_20'
@@ -127,10 +129,17 @@ class SignificantTest(object):
             for ele in itertools.permutations(all_methods, 2):
                 m1_list = [all_results[query_part][ele[0]][k] for k in all_results[query_part][ele[0]] if k in all_results[query_part][ele[1]]]
                 m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[0]]]
-                t, p = stats.ttest_rel(m1_list, m2_list)
+                if cal_type == 2:
+                    t, p = stats.wilcoxon(m1_list, m2_list)
+                else:
+                    t, p = stats.ttest_rel(m1_list, m2_list)
                 m1 = methods_mapping[ele[0]]
                 m2 = methods_mapping[ele[1]]
-                if p/2.0 < 0.05:
+                if cal_type == 0:
+                    critieria = p/2.0
+                elif cal_type == 1 or cal_type == 2:
+                    critieria = p
+                if critieria < 0.05:
                     if t > 0:
                         if m1 not in final_results:
                             final_results[m1] = set()
@@ -141,7 +150,7 @@ class SignificantTest(object):
                         final_results[m2].add(m1)
         for m in final_results:
             final_results[m] = list(final_results[m])
-        with open(os.path.join(self.pairwise_st_root, query_part), 'wb') as f:
+        with open(os.path.join(self.pairwise_st_root, query_part+'-'+str(cal_type)), 'wb') as f:
             json.dump(final_results, f, indent=2, sort_keys=True)
 
 
