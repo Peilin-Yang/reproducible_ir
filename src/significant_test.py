@@ -88,7 +88,7 @@ class SignificantTest(object):
                             all_results[query_part][method][2][0],
                             all_results[query_part][method][2][1]/2.0))
 
-    def pairwise_sig_test(self, measure='map', use_which_part=['title'], cal_type=0):
+    def pairwise_sig_test(self, measure='map', use_which_part=['title'], cal_type=2):
         """
         Compare each pair of ranking models for each collection.
         See whether one model outperforms the other model.
@@ -129,6 +129,7 @@ class SignificantTest(object):
             for ele in itertools.permutations(all_methods, 2):
                 m1_list = [all_results[query_part][ele[0]][k] for k in all_results[query_part][ele[0]] if k in all_results[query_part][ele[1]]]
                 m2_list = [all_results[query_part][ele[1]][k] for k in all_results[query_part][ele[1]] if k in all_results[query_part][ele[0]]]
+                print m1_list, m2_list
                 if cal_type == 2:
                     t, p = stats.wilcoxon(m1_list, m2_list)
                 else:
