@@ -2,7 +2,7 @@ import query
 import evaluation
 
 query = [
-  {
+  { 
     "collection": "disk12",
     "collection_formal_name": "disk12",
     "query_class": query.Query,
