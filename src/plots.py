@@ -178,7 +178,7 @@ class Plots(object):
         b = ax.bar(xaxis, yaxis, width)
         if add_legend:
             legend_line_list.append(b)
-            legend_list.append(d[1])
+            legend_list = [d[1] for d in data]
         #marker_idx += 1
         #print feature_label+':'+evaluation_method+':'+str(yaxis)
         if collection_name:
@@ -232,7 +232,7 @@ class Plots(object):
         plot_figures_root = '../plots/'        
         if not os.path.exists(plot_figures_root):
             os.makedirs(plot_figures_root)
-        output_fn = os.path.join(plot_figures_root, evaluation_method+'-'+query_part+'.eps')
+        output_fn = os.path.join(plot_figures_root, evaluation_method+'-'+query_part+'_bar.eps')
         fig.savefig(output_fn, format='eps', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=100)
 
 
