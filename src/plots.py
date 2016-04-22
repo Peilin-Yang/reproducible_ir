@@ -148,7 +148,15 @@ class Plots(object):
             'twostage', 'f3log',
             'lowerboundingpl2+', 'lgd'
         ]
-        for m in methods:
+        all_methods = []
+        with open('g.json') as f:
+            j = json.load(f)
+            for required_m in methods:
+                for m in j['methods']:
+                    if m['name'] == required_m:
+                        all_methods.append(m)
+
+        for m in all_methods:
             with open(os.path.join(self.performance_root, query_part+'-'+m['name'])) as pf:
                 all_performance = json.load(pf)
                 try:
