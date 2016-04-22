@@ -180,7 +180,7 @@ class Plots(object):
         xticks_value = []
         xaxis = np.arange(len(data))
         yaxis = [d[3] for d in data]
-        width = 0.5
+        width = 0.65
         print xaxis, yaxis
         b = ax.bar(xaxis, yaxis, width)
         if add_legend:
@@ -208,6 +208,12 @@ class Plots(object):
             sharey=False, figsize=(size*num_cols, size*num_rows+2)) # +1 for legend!!!
         font = {'size' : 12}
         plt.rc('font', **font)
+        plt.tick_params(
+            axis='x',          # changes apply to the x-axis
+            which='both',      # both major and minor ticks are affected
+            bottom='off',      # ticks along the bottom edge are off
+            top='off',         # ticks along the top edge are off
+            labelbottom='off') # labels along the bottom edge are off
         row_idx = 0
         col_idx = 0
         #print self.collection_paths
