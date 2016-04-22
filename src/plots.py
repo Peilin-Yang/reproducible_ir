@@ -149,8 +149,6 @@ class Plots(object):
             'lowerboundingpl2+', 'lgd'
         ]
         for m in methods:
-            if not 'formal_name' in m:
-                continue
             with open(os.path.join(self.performance_root, query_part+'-'+m['name'])) as pf:
                 all_performance = json.load(pf)
                 try:
