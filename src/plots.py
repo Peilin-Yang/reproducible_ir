@@ -180,7 +180,7 @@ class Plots(object):
         for i, d in enumerate(data):
             xaxis = [i]
             yaxis = d[3]
-            b = ax.bar(xaxis, yaxis, width, color=colors[i], hatch=patterns[i])
+            b = ax.bar(xaxis, yaxis, width, color='w', hatch=patterns[i])
             if add_legend:
                 legend_list.append(d[1])
                 legend_line_list.append(b)
