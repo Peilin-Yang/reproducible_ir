@@ -140,6 +140,102 @@ class Plots(object):
         fig.savefig(output_fn, format='eps', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=100)
 
 
+
+    def load_optimal_performance_for_barchart(self, evaluation_method='map', query_part='title'):
+        data = []
+        methods = ['f2log', 'lowerboundingbm25+', 
+            'lowerboundingpiv+', 'sigir2013tfidf',
+            'twostage', 'f3log',
+            'lowerboundingpl2+', 'lgd'
+        ]
+        for m in methods:
+            if not 'formal_name' in m:
+                continue
+            with open(os.path.join(self.performance_root, query_part+'-'+m['name'])) as pf:
+                all_performance = json.load(pf)
+                try:
+                    required = all_performance[evaluation_method]
+                except:
+                    required = all_performance['err_cut_20']
+                data.append( (m['name'], m['formal_name'], m['year'], 
+                    required['max']['value'], required['max']['para']) )
+        return data
+ 
+    def plot_single_barchart(self, collection_path, 
+            legend_line_list, legend_list, add_legend=False, ax=None, 
+            evaluation_method='map', query_part='title', 
+            show_xlabel=True, show_ylabel=True, collection_name=None):
+        self.check_valid_path(collection_path)
+        data = self.load_optimal_performance_for_barchart(evaluation_method, query_part)
+
+        markers = []
+        marker_idx = 0
+        xticks_label = []
+        xticks_value = []
+        xaxis = np.arange(len(data))
+        yaxis = [d[3] for d in data]
+        width = 0.5
+        b = ax.bar(xaxis, yaxis, width)
+        if add_legend:
+            legend_line_list.append(b)
+            legend_list.append(d[1])
+        #marker_idx += 1
+        #print feature_label+':'+evaluation_method+':'+str(yaxis)
+        if collection_name:
+            ax.set_title(collection_name)
+        else:
+            ax.set_title(collection_path.split('/')[-1])
+        if show_ylabel:
+            ax.set_ylabel(evaluation_method.upper())
+        #ax.set_xlim([data[0][2]-1, data[-1][2]+1])
+        #ax.set_xticks(xticks_value)
+        #ax.set_xticklabels(xticks_label, rotation=90)
+        #ax.grid('on')
+
+    def plot_barchart_for_all_collections(self, 
+            evaluation_method='map', query_part='title'):
+        num_cols = 2
+        num_rows = int(math.ceil(len(self.collection_paths)/num_cols))
+        size = 3
+        fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
+            sharey=False, figsize=(size*num_cols, size*num_rows+2)) # +1 for legend!!!
+        font = {'size' : 12}
+        plt.rc('font', **font)
+        row_idx = 0
+        col_idx = 0
+        #print self.collection_paths
+        legend_line_list = []
+        legend_list = []
+        for i, collection in enumerate(self.collection_paths):
+            if num_rows > 1:
+                ax = axs[row_idx][col_idx]
+            else:
+                ax = axs[col_idx]
+            if row_idx > 1:
+                evaluation_method = 'ERR@20'
+            print row_idx, evaluation_method
+            self.plot_single_barchart(collection, 
+                legend_line_list, legend_list, 
+                row_idx == 0 and col_idx == 0, 
+                ax, 
+                evaluation_method, query_part, 
+                row_idx==num_rows-1, col_idx==0,
+                self.collection_names[i] if self.collection_names else None)
+            col_idx += 1
+            if col_idx >= num_cols:
+                col_idx = 0
+                row_idx += 1
+
+        lgd = fig.legend(tuple(legend_line_list), legend_list, ncol=5, 
+            loc='lower center', bbox_to_anchor=(0.45, -0.01), fontsize=12,
+            frameon=False) # lower center    
+        plot_figures_root = '../plots/'        
+        if not os.path.exists(plot_figures_root):
+            os.makedirs(plot_figures_root)
+        output_fn = os.path.join(plot_figures_root, evaluation_method+'-'+query_part+'.eps')
+        fig.savefig(output_fn, format='eps', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=100)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
@@ -148,6 +244,10 @@ if __name__ == '__main__':
         help="plots the optimal performances for all collections")
 
     parser.add_argument("-b", "--plot_optimal_batch",
+        action='store_true',
+        help="plots the optimal performances for all collections using g.py")
+
+    parser.add_argument("-c", "--plot_optimal_barchart_batch",
         action='store_true',
         help="plots the optimal performances for all collections using g.py")
 
@@ -162,3 +262,9 @@ if __name__ == '__main__':
         collections = [os.path.join('../collections/', c['collection']) for c in g.query]
         c_names = [c['collection_formal_name'] for c in g.query]
         Plots(collections, c_names).plot_optimal_for_all_collections()
+
+    if args.plot_optimal_barchart_batch:
+        #print args.plot_optimal
+        collections = [os.path.join('../collections/', c['collection']) for c in g.query]
+        c_names = [c['collection_formal_name'] for c in g.query]
+        Plots(collections, c_names).plot_barchart_for_all_collections()
