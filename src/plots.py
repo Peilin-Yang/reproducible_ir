@@ -178,15 +178,15 @@ class Plots(object):
         marker_idx = 0
         xticks_label = []
         xticks_value = []
-        xaxis = np.arange(len(data))
-        yaxis = [d[3] for d in data]
         width = 0.65
-        print xaxis, yaxis
-        b = ax.bar(xaxis, yaxis, width)
-        if add_legend:
-            legend_line_list.append(b)
-            for d in data:
+        for i, d in enumerate(data):
+            xaxis = [i]
+            yaxis = d[3]
+            b = ax.bar(xaxis, yaxis, width)
+            if add_legend:
                 legend_list.append(d[1])
+                legend_line_list.append(b)
+
         #marker_idx += 1
         #print feature_label+':'+evaluation_method+':'+str(yaxis)
         if collection_name:
