@@ -175,6 +175,7 @@ class Plots(object):
         xaxis = np.arange(len(data))
         yaxis = [d[3] for d in data]
         width = 0.5
+        print xaxis, yaxis
         b = ax.bar(xaxis, yaxis, width)
         if add_legend:
             legend_line_list.append(b)
@@ -213,7 +214,7 @@ class Plots(object):
                 ax = axs[col_idx]
             if row_idx > 1:
                 evaluation_method = 'ERR@20'
-            print row_idx, evaluation_method
+            #print row_idx, evaluation_method
             self.plot_single_barchart(collection, 
                 legend_line_list, legend_list, 
                 row_idx == 0 and col_idx == 0, 
