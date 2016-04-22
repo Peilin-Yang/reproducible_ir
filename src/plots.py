@@ -174,15 +174,12 @@ class Plots(object):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance_for_barchart(evaluation_method, query_part)
 
-        markers = []
-        marker_idx = 0
-        xticks_label = []
-        xticks_value = []
+        patterns = ('-', '+', 'x', '\\', '*', 'o', '/', '.')
         width = 0.65
         for i, d in enumerate(data):
             xaxis = [i]
             yaxis = d[3]
-            b = ax.bar(xaxis, yaxis, width)
+            b = ax.bar(xaxis, yaxis, width, hatch=patterns[i])
             if add_legend:
                 legend_list.append(d[1])
                 legend_line_list.append(b)
