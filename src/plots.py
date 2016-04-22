@@ -185,7 +185,8 @@ class Plots(object):
         b = ax.bar(xaxis, yaxis, width)
         if add_legend:
             legend_line_list.append(b)
-            legend_list = [d[1] for d in data]
+            for d in data:
+                legend_list.append(d[1])
         #marker_idx += 1
         #print feature_label+':'+evaluation_method+':'+str(yaxis)
         if collection_name:
