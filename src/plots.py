@@ -238,7 +238,7 @@ class Plots(object):
             if col_idx >= num_cols:
                 col_idx = 0
                 row_idx += 1
-
+        print legend_line_list, legend_list
         lgd = fig.legend(tuple(legend_line_list), legend_list, ncol=5, 
             loc='lower center', bbox_to_anchor=(0.45, -0.01), fontsize=12,
             frameon=False) # lower center    
