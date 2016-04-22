@@ -174,7 +174,7 @@ class Plots(object):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance_for_barchart(evaluation_method, query_part)
 
-        patterns = ('-', '+', 'x', '\\', '*', 'o', '/', '.')
+        patterns = ('-', '//', 'x', '\\', '+', 'o', '/', '.')
         width = 0.65
         for i, d in enumerate(data):
             xaxis = [i]
