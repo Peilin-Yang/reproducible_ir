@@ -173,7 +173,7 @@ class Plots(object):
             show_xlabel=True, show_ylabel=True, collection_name=None):
         self.check_valid_path(collection_path)
         data = self.load_optimal_performance_for_barchart(evaluation_method, query_part)
-
+        print data
         patterns = ('-', '//', 'x', '\\', '+', 'o', '/', '.')
         colors = ('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w')
         width = 0.65
