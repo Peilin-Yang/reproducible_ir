@@ -19,6 +19,8 @@ sys.setdefaultencoding('utf-8')
 
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
+matplotlib.rcParams['ps.useafm'] = True
+matplotlib.rcParams['pdf.use14corefonts'] = True
 matplotlib.rcParams['text.usetex'] = True
 
 class Plots(object):
@@ -316,8 +318,7 @@ class Plots(object):
             size = 6
             fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
                 sharey=True, figsize=(size*num_cols, size*num_rows)) # +1 for legend!!!
-            font = {'size' : 18}
-            plt.rc('font', **font)
+            plt.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica'], 'size': 18})
             plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 which='both',      # both major and minor ticks are affected
