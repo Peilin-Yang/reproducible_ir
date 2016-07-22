@@ -8,6 +8,7 @@ import csv
 from operator import itemgetter
 from inspect import currentframe, getframeinfo
 import matplotlib
+from pylab import *
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
@@ -15,6 +16,10 @@ import g
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+matplotlib.rcParams['text.usetex'] = True
 
 class Plots(object):
     """
@@ -248,6 +253,115 @@ class Plots(object):
         fig.savefig(output_fn, format='eps', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=100)
 
 
+    def plot_single_barchart_clueweb(self, row_idx, idx, data, 
+            legend_line_list, legend_list, add_legend=False, ax=None, 
+            evaluation_method='map', query_part='title', 
+            show_xlabel=True, show_ylabel=True, title=None):
+        #self.check_valid_path(collection_path)
+        #data = self.load_optimal_performance_for_barchart(evaluation_method, query_part)
+        #print data
+        patterns = ('-', '//', 'x', '\\', '+', 'o', '/', '.')
+        colors = ('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w')
+        width = 0.8
+        all_bars = []
+        for i, d in enumerate(data):
+            xaxis = np.asarray([i])
+            yaxis = d[1]
+            if idx == 1:
+                b = ax.bar(xaxis+1, yaxis, width, color='c', hatch=patterns[i], label=d[0])
+            if idx == 3:
+                b = ax.bar(xaxis+2, yaxis, width, color='c', hatch=patterns[i], label=d[0])
+            else:
+                b = ax.bar(xaxis+1, yaxis, width, color='c', hatch=patterns[i], label=d[0])
+            all_bars.append(b[0])
+            # if add_legend:
+            #     legend_list.append(d[0])
+            #     legend_line_list.append(b)
+
+        print row_idx, all_bars, [d[0] for d in data]
+        if row_idx == 0:
+            ax.legend(all_bars, [d[0] for d in data], 
+                ncol=3, fontsize=12,frameon=False,
+                loc='lower center', bbox_to_anchor=(0.5, -0.15)
+                )
+        #marker_idx += 1
+        #print feature_label+':'+evaluation_method+':'+str(yaxis)
+        ax.set_title(title, fontsize=16)
+        if show_ylabel:
+            ax.set_ylabel(evaluation_method.upper())
+        #ax.set_xlim([data[0][2]-1, data[-1][2]+1])
+        #ax.set_xticks(xticks_value)
+        ax.set_xticklabels(())
+        #ax.grid('on')
+
+    def plot_barchart_for_clubweb(self, 
+            evaluation_method='ERR@20', query_part='title'):
+        datas = {
+            'CW09': [
+                ('BM25 and its variants', [('BM25', 0.089),('F2EXP', 0.099),('F2LOG', 0.1),('BM3', 0.098),('BM25+', 0.102)]),
+                ('PIV and its variants', [('PIV', 0.104),('F1EXP', 0.1),('F1LOG', 0.104),('PIV+', 0.113)]),
+                ('DIR and its variants', [('DIR', 0.09),('TSL', 0.09),('F3EXP', 0.101),('F3LOG', 0.109),('DIR+', 0.09)]),
+                ('PL2 and its variants', [('PL2', 0.089),('PL3', 0.093),('PL2+', 0.089)])
+            ],
+            'CW12': [
+                ('BM25 and its variants', [('BM25', 0.128),('F2EXP', 0.139),('F2LOG', 0.137),('BM3', 0.130),('BM25+', 0.137)]),
+                ('PIV and its variants', [('PIV', 0.137),('F1EXP', 0.135),('F1LOG', 0.137),('PIV+', 0.141)]),
+                ('DIR and its variants', [('DIR', 0.134),('TSL', 0.134),('F3EXP', 0.138),('F3LOG', 0.138),('DIR+', 0.134)]),
+                ('PL2 and its variants', [('PL2', 0.116),('PL3', 0.117),('PL2+', 0.119)])
+            ], 
+        }
+        for collection in sorted(datas):
+            num_cols = 4
+            num_rows = 1
+            size = 6
+            fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, sharex=True, 
+                sharey=True, figsize=(size*num_cols, size*num_rows)) # +1 for legend!!!
+            font = {'size' : 18}
+            plt.rc('font', **font)
+            plt.tick_params(
+                axis='x',          # changes apply to the x-axis
+                which='both',      # both major and minor ticks are affected
+                bottom='off',      # ticks along the bottom edge are off
+                top='off',         # ticks along the top edge are off
+                labelbottom='off') # labels along the bottom edge are off
+            row_idx = 0
+            col_idx = 0
+            #print self.collection_paths
+            legend_line_list = []
+            legend_list = []
+        
+            for ele in datas[collection]:
+                title = ele[0]
+                data = ele[1]
+                if num_rows > 1:
+                    ax = axs[row_idx][col_idx]
+                else:
+                    ax = axs[col_idx]
+                #print row_idx, evaluation_method
+                self.plot_single_barchart_clueweb(
+                    row_idx, col_idx, data, 
+                    legend_line_list, legend_list, 
+                    row_idx == 0 and col_idx == 0, 
+                    ax, 
+                    evaluation_method, query_part, 
+                    row_idx==num_rows-1, col_idx==0,
+                    title)
+                col_idx += 1
+                if col_idx >= num_cols:
+                    col_idx = 0
+                    row_idx += 1
+            fig.suptitle(collection, fontsize=18)
+            print legend_line_list, legend_list
+            # lgd = fig.legend(tuple(legend_line_list), legend_list, ncol=4, 
+            #     loc='lower center', bbox_to_anchor=(0.5, 0.01), fontsize=12,
+            #     frameon=False) # lower center    
+            plot_figures_root = '../plots/'        
+            if not os.path.exists(plot_figures_root):
+                os.makedirs(plot_figures_root)
+            output_fn = os.path.join(plot_figures_root, '%s_bar.eps' % collection)
+            fig.savefig(output_fn, format='eps', bbox_inches='tight', dpi=100)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
@@ -260,6 +374,10 @@ if __name__ == '__main__':
         help="plots the optimal performances for all collections using g.py")
 
     parser.add_argument("-c", "--plot_optimal_barchart_batch",
+        action='store_true',
+        help="plots the optimal performances for all collections using g.py")
+
+    parser.add_argument("-d", "--plot_clubweb",
         action='store_true',
         help="plots the optimal performances for all collections using g.py")
 
@@ -276,7 +394,11 @@ if __name__ == '__main__':
         Plots(collections, c_names).plot_optimal_for_all_collections()
 
     if args.plot_optimal_barchart_batch:
-        #print args.plot_optimal
         collections = [os.path.join('../collections/', c['collection']) for c in g.query]
         c_names = [c['collection_formal_name'] for c in g.query]
         Plots(collections, c_names).plot_barchart_for_all_collections()
+
+    if args.plot_clubweb:
+        collections = ['clueweb101112', 'clueweb12'] # this is supposed to only include ClueWeb collections
+        c_names = [c['collection_formal_name'] for c in g.query]
+        Plots(collections, c_names).plot_barchart_for_clubweb()
