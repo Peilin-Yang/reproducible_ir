@@ -197,11 +197,11 @@ class Query(object):
         all_topics = self.get_queries()
 
         combined_qf = ET.Element('parameters')
-        combined_index = ET.SubElement(qf, 'index')
+        combined_index = ET.SubElement(combined_qf, 'index')
         combined_index.text = os.path.join(self.corpus_path, index_path)
-        combined_ele_trec_format = ET.SubElement(qf, 'trecFormat')
+        combined_ele_trec_format = ET.SubElement(combined_qf, 'trecFormat')
         combined_ele_trec_format.text = 'true' if is_trec_format else 'false'
-        combined_ele_count = ET.SubElement(qf, 'count')
+        combined_ele_count = ET.SubElement(combined_qf, 'count')
         combined_ele_count.text = str(count)
 
         # also generate the combined ones
