@@ -169,7 +169,8 @@ class Query(object):
                 elem.tail = i
 
 
-    def gen_query_file_for_indri(self, output_foler='split_queries', 
+    def gen_query_file_for_indri(self, output_folder='split_queries', 
+            combined_query_folder='combined_queries',
             index_path='index', is_trec_format=True, count=1000, 
             remove_stopwords=False, use_which_part=['title']):
         """
@@ -185,11 +186,25 @@ class Query(object):
             with open('stopwords') as f:
                 stop_words_list = [line.strip() for line in f.readlines()]
 
-        output_root = os.path.join(self.corpus_path, output_foler)
+        output_root = os.path.join(self.corpus_path, output_folder)
         if not os.path.exists(output_root):
             os.makedirs(output_root)
 
+        combined_output_root = os.path.join(self.corpus_path, combined_query_folder)
+        if not os.path.exists(combined_output_root):
+            os.makedirs(combined_output_root)
+
         all_topics = self.get_queries()
+
+        combined_qf = ET.Element('parameters')
+        combined_index = ET.SubElement(qf, 'index')
+        combined_index.text = os.path.join(self.corpus_path, index_path)
+        combined_ele_trec_format = ET.SubElement(qf, 'trecFormat')
+        combined_ele_trec_format.text = 'true' if is_trec_format else 'false'
+        combined_ele_count = ET.SubElement(qf, 'count')
+        combined_ele_count.text = str(count)
+
+        # also generate the combined ones
 
         for ele in all_topics:
             for part in use_which_part:
@@ -212,13 +227,24 @@ class Query(object):
                 qid.text = str(int(ele['num']))
                 q = ET.SubElement(t, 'text')
                 q.text = ''
+
+                combined_t = ET.SubElement(combined_qf, 'query')
+                combined_qid = ET.SubElement(combined_t, 'number')
+                combined_qid.text = str(int(ele['num']))
+                combined_q = ET.SubElement(combined_t, 'text')
+                combined_q.text = ''
+
                 for sep_part in part.split('+'):
                     q.text += ele[sep_part]+' '
+                    combined_q.text += ele[sep_part]+' '
 
                 self.indent(qf)
-
                 tree = ET.ElementTree(qf)
                 tree.write(os.path.join(self.corpus_path, output_root, part+'_'+qid.text))
+
+        self.indent(combined_qf)
+        tree = ET.ElementTree(combined_qf)
+        tree.write(os.path.join(self.corpus_path, combined_output_root, part))
 
 
     def gen_run_split_query_paras(self, methods, use_which_part=['title']):
@@ -309,7 +335,7 @@ class ClueWebQuery(Query):
             return json.load(f)    
 
 class MicroBlogQuery(Query):
-    def gen_query_file_for_indri(self, output_foler='split_queries', 
+    def gen_query_file_for_indri(self, output_folder='split_queries', 
             index_root='index', is_trec_format=True, count=10000, 
             remove_stopwords=False, use_which_part=['query']):
         """
@@ -325,7 +351,7 @@ class MicroBlogQuery(Query):
             with open('stopwords') as f:
                 stop_words_list = [line.strip() for line in f.readlines()]
 
-        output_root = os.path.join(self.corpus_path, output_foler)
+        output_root = os.path.join(self.corpus_path, output_folder)
         if not os.path.exists(output_root):
             os.makedirs(output_root)
 
