@@ -82,7 +82,7 @@ def gen_batch_framework(para_label, batch_pythonscript_para, all_paras, \
     """
 
 
-def gen_split_queries(remove_stopwords=False):
+def gen_queries(remove_stopwords=False):
     for q in g.query:
         collection_name = q['collection']
         collection_path = os.path.join(_root, collection_name)
@@ -413,7 +413,7 @@ def sigtest_combine_mb(eval_method):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-a", "--gen_split_queries",
+    parser.add_argument("-a", "--gen_queries",
         nargs=1,
         help="First Step: Generate the split queries (one query file only contains one qid)")
 
@@ -522,9 +522,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.gen_split_queries:
-        use_stopwords = False if args.gen_split_queries[0] == '0' else True
-        gen_split_queries(use_stopwords)
+    if args.gen_queries:
+        remove_stopwords = False if args.gen_queries[0] == '0' else True
+        gen_queries(remove_stopwords)
 
     if args.gen_run_query_batch:
         gen_run_query_batch()

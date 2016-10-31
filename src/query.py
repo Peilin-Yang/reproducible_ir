@@ -74,15 +74,19 @@ class Query(object):
         return r
 
 
-    def get_queries(self):
+    def get_queries(self, remove_stopwords=False):
         """
         Get the query of a corpus
 
         @Return: a list of dict [{'num':'401', 'title':'the query terms',
          'desc':description, 'narr': narrative description}, ...]
         """
-
         if not os.path.exists(self.parsed_query_file_path):
+            stop_words_list = set()
+            if remove_stopwords:
+                with open('stopwords') as f:
+                    stop_words_list = set([line.strip() for line in f.readlines()])
+
             with open(self.query_file_path) as f:
                 s = f.read()
                 all_topics = re.findall(r'<top>.*?<\/top>', s, re.DOTALL)
@@ -108,7 +112,13 @@ class Query(object):
                         if tag == 'querytime':
                             value = aa[i+1].strip()
                         else:
-                            value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
+                            orig_value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
+                            value_list = orig_value.split()
+                            if remove_stopwords:
+                                for w in orig_value.split():
+                                    if w not in stop_words_list:
+                                        value_list.append(w)
+                            value = ' '.join(value_list)
                         if tag != 'num' and tag != 'querytime' and value:
                             value = self.parse_query([value])[0]
 
@@ -182,10 +192,6 @@ class Query(object):
             is_trec_format - whether to output the results in TREC format, default True
             count - how many documents will be returned for each topic, default 1000
         """
-        if remove_stopwords:
-            with open('stopwords') as f:
-                stop_words_list = [line.strip() for line in f.readlines()]
-
         output_root = os.path.join(self.corpus_path, output_folder)
         if not os.path.exists(output_root):
             os.makedirs(output_root)
@@ -194,7 +200,7 @@ class Query(object):
         if not os.path.exists(combined_output_root):
             os.makedirs(combined_output_root)
 
-        all_topics = self.get_queries()
+        all_topics = self.get_queries(remove_stopwords)
 
         combined_qf = ET.Element('parameters')
         combined_index = ET.SubElement(combined_qf, 'index')
@@ -216,12 +222,6 @@ class Query(object):
                 ele_count = ET.SubElement(qf, 'count')
                 ele_count.text = str(count)
 
-                if remove_stopwords:
-                    ele_stopwords = ET.SubElement(qf, 'stopper')
-                    for w in stop_words_list:
-                        stopword = ET.SubElement(ele_stopwords, 'word')
-                        stopword.text = w
-                
                 t = ET.SubElement(qf, 'query')
                 qid = ET.SubElement(t, 'number')
                 qid.text = str(int(ele['num']))
