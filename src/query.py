@@ -111,6 +111,8 @@ class Query(object):
                         tag = aa[i][1:-1]
                         if tag == 'querytime':
                             value = aa[i+1].strip()
+                        elif tag == 'num':
+                            value = str(int(value)) # remove the trailing '0' at the beginning
                         else:
                             orig_value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
                             value_list = []
