@@ -124,6 +124,34 @@ class EvaluationClueWeb(Evaluation):
         with open( eval_file_path, 'wb' ) as o:
             json.dump(all_performances, o, indent=2)
 
+class EvaluationMQ(Evaluation):
+    def output_all_evaluations(self, qrel_program, result_file_path, eval_file_path):
+        """
+        get all kinds of performance
+
+        @Return: a dict of all performances 
+        """
+        all_performances = {}
+        program = copy.deepcopy(qrel_program)
+        program.append( self.qrel_path )
+        program.append( result_file_path )
+        process = Popen(program, stdout=PIPE)
+        stdout, stderr = process.communicate()
+        for line in stdout.split('\n'):
+            line = line.strip()
+            if line:
+                row = line.split(',')
+                runid = row[0]
+                qid = row[1] if row[1] != 'amean' else 'all'
+                ndcg_20 = ast.literal_eval(row[2])
+                err_20 = ast.literal_eval(row[3])
+                if qid not in all_performances:
+                    all_performances[qid] = {}
+                all_performances[qid]['ndcg_cut_20'] = ndcg_20
+                all_performances[qid]['err_cut_20'] = err_20
+
+        with open( eval_file_path, 'wb' ) as o:
+            json.dump(all_performances, o, indent=2)
 
 if __name__ == '__main__':
     e = Evaluation('../../wt2g', '../../wt2g/results/tf1')
