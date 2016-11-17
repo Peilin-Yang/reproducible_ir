@@ -148,7 +148,19 @@ class EvaluationMQ(Evaluation):
                     continue
                 m2 = re.search(r'AP=(.*?)\s+', line)
                 if m2:
-                    ap = ast.literal_eval(m2.group(1))
+                    try:
+                        ap = ast.literal_eval(m2.group(1))
+                    except:
+                        ap = 0.0
+                    if qid not in all_performances:
+                        all_performances[qid] = {}
+                    all_performances[qid]['map'] = ap
+                m3 = re.search(r'statMAP_on_valid_topics=(.*?)\s+', line)
+                if m3:
+                    try:
+                        ap = ast.literal_eval(m3.group(1))
+                    except:
+                        ap = 0.0
                     if qid not in all_performances:
                         all_performances[qid] = {}
                     all_performances[qid]['map'] = ap
