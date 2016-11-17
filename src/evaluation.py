@@ -1,6 +1,7 @@
 import sys,os
 import ast
 import json
+import re
 import copy
 from subprocess import Popen, PIPE
 
@@ -137,18 +138,20 @@ class EvaluationMQ(Evaluation):
         program.append( result_file_path )
         process = Popen(program, stdout=PIPE)
         stdout, stderr = process.communicate()
+        qid = None
         for line in stdout.split('\n'):
             line = line.strip()
             if line:
-                row = line.split(',')
-                runid = row[0]
-                qid = row[1] if row[1] != 'amean' else 'all'
-                ndcg_20 = ast.literal_eval(row[2])
-                err_20 = ast.literal_eval(row[3])
-                if qid not in all_performances:
-                    all_performances[qid] = {}
-                all_performances[qid]['ndcg_cut_20'] = ndcg_20
-                all_performances[qid]['err_cut_20'] = err_20
+                m1 = re.search(r'topic=(\d+)', line)
+                if m1:
+                    qid = m1.group(1)
+                    continue
+                m2 = re.search(r'AP=(.*)\s', line)
+                if m2:
+                    ap = ast.literal_eval(m2.group(1))
+                    if qid not in all_performances:
+                        all_performances[qid] = {}
+                    all_performances[qid]['map'] = ap
 
         with open( eval_file_path, 'wb' ) as o:
             json.dump(all_performances, o, indent=2)
