@@ -13,7 +13,7 @@ class Judgment():
             print '[Judgment Constructor]:Please provide a valid corpus path'
             exit(1)
 
-        self.judgment_file_path = os.path.join(self.corpus_path, 'judgment_file')
+        self.judgment_file_path = os.path.join(self.corpus_path, 'judgement_file')
         if not os.path.exists(self.judgment_file_path):
             print """No judgment file found! 
                 judgment file should be called "judgment_file" under 
