@@ -309,7 +309,7 @@ class Query(object):
 
 
 class LineQuery(Query):
-    def get_queries(self, remove_stopwords=False)):
+    def get_queries(self, remove_stopwords=False):
         """
         Get the query of a corpus
 
