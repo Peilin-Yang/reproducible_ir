@@ -15,6 +15,8 @@ import numpy as np
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+from judgment import Judgment
+
 class Query(object):
     """
     Get the judgments of a corpus.
@@ -329,6 +331,48 @@ class LineQuery(Query):
                     if line:
                         row = line.split(':')
                         num = row[0]
+                        text = row[1]
+                        value_list = []
+                        for w in text.split():
+                            if not remove_stopwords or (remove_stopwords and w not in stop_words_list):
+                                value_list.append(w)
+                        value = ' '.join(value_list)
+                        if value:
+                            query_text = self.parse_query([value])[0]
+                        _all.append({'num':num, 'title':query_text})
+
+            with open(self.parsed_query_file_path, 'wb') as f:
+                json.dump(_all, f, indent=2)
+
+        with open(self.parsed_query_file_path) as f:
+            return json.load(f) 
+
+class MQQuery(Query):
+    def get_queries(self, remove_stopwords=False):
+        """
+        Get the query of a corpus
+
+        @Return: a list of dict [{'num':'401', 'title':'the query terms',
+         'desc':description, 'narr': narrative description}, ...]
+        """
+
+        judgments = Judgment(self.corpus_path).get_all_judgments()
+        qids = judgments.keys()
+        if not os.path.exists(self.parsed_query_file_path):
+            stop_words_list = set()
+            if remove_stopwords:
+                with open('stopwords') as f:
+                    stop_words_list = set([line.strip() for line in f.readlines()])
+            _all = []
+            with open(self.query_file_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        row = line.split(':')
+                        num = row[0]
+                        if not num in qids:
+                            continue
+                        print 'parsing qid: %s' % num
                         text = row[1]
                         value_list = []
                         for w in text.split():
