@@ -308,8 +308,8 @@ class Query(object):
         print np.mean(idf), np.std(idf)
 
 
-class ClueWebQuery(Query):
-    def get_queries(self):
+class LineQuery(Query):
+    def get_queries(self, remove_stopwords=False)):
         """
         Get the query of a corpus
 
@@ -318,6 +318,10 @@ class ClueWebQuery(Query):
         """
 
         if not os.path.exists(self.parsed_query_file_path):
+            stop_words_list = set()
+            if remove_stopwords:
+                with open('stopwords') as f:
+                    stop_words_list = set([line.strip() for line in f.readlines()])
             _all = []
             with open(self.query_file_path) as f:
                 for line in f:
@@ -326,14 +330,20 @@ class ClueWebQuery(Query):
                         row = line.split(':')
                         num = row[0]
                         text = row[1]
-                        query_text = self.parse_query([text])[0]
+                        value_list = []
+                        for w in text.split():
+                            if not remove_stopwords or (remove_stopwords and w not in stop_words_list):
+                                value_list.append(w)
+                        value = ' '.join(value_list)
+                        if value:
+                            query_text = self.parse_query([value])[0]
                         _all.append({'num':num, 'title':query_text})
 
             with open(self.parsed_query_file_path, 'wb') as f:
                 json.dump(_all, f, indent=2)
 
         with open(self.parsed_query_file_path) as f:
-            return json.load(f)    
+            return json.load(f) 
 
 class MicroBlogQuery(Query):
     def gen_query_file_for_indri(self, output_folder='split_queries', 
