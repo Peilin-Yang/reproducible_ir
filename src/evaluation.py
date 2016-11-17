@@ -146,7 +146,7 @@ class EvaluationMQ(Evaluation):
                 if m1:
                     qid = m1.group(1)
                     continue
-                m2 = re.search(r'AP=(.*)\s', line)
+                m2 = re.search(r'AP=(.*?)\s+', line)
                 if m2:
                     ap = ast.literal_eval(m2.group(1))
                     if qid not in all_performances:
