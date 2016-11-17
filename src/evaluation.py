@@ -161,9 +161,7 @@ class EvaluationMQ(Evaluation):
                         ap = ast.literal_eval(m3.group(1))
                     except:
                         ap = 0.0
-                    if qid not in all_performances:
-                        all_performances[qid] = {}
-                    all_performances[qid]['map'] = ap
+                    all_performances['all'] = {'map': ap}
 
         with open( eval_file_path, 'wb' ) as o:
             json.dump(all_performances, o, indent=2)
