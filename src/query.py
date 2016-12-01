@@ -114,17 +114,16 @@ class Query(object):
                         if tag == 'querytime':
                             value = aa[i+1].strip()
                         else:
-                            orig_value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
-                            value_list = []
-                            for w in orig_value.split():
-                                if not remove_stopwords or (remove_stopwords and w not in stop_words_list):
-                                    value_list.append(w)
-                            value = ' '.join(value_list)
+                            value = aa[i+1].replace('\n', ' ').strip().split(':')[-1].strip()
                             if tag == 'num':
                                 value = str(int(value)) # remove the trailing '0' at the beginning
                         if tag != 'num' and tag != 'querytime' and value:
                             value = self.parse_query([value])[0]
-
+                            value_list = []
+                            for w in value.split():
+                                if not remove_stopwords or (remove_stopwords and w not in stop_words_list):
+                                    value_list.append(w)
+                            value = ' '.join(value_list)
                         d[tag] = value
                     _all.append(d)
 
