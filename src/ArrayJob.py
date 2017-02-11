@@ -6,12 +6,10 @@ qs_file_content = Template("""
 #$$ -t 1-$nodes_range
 #$$ -l m_mem_free=$memory,h_rt=4:00:00
 
-vpkg_require python-matplotlib
-vpkg_require python-scipy
-source ~/ENV/bin/activate
-
 SEEDFILE=$seedfile
 SEED=$$(awk "NR==$$SGE_TASK_ID" $$SEEDFILE)
+
+source ~/after_login
 
 $s $quote$$SEED$quote
 """)
@@ -21,8 +19,7 @@ qs_file_content_no_para = Template("""
 #$$ -t 1-$nodes_range
 #$$ -l m_mem_free=$memory
 
-vpkg_require python-matplotlib
-vpkg_require python-scipy
+source ~/after_login
 
 $s
 """)
